@@ -10,21 +10,11 @@ import static org.junit.Assert.*;
  */
 public class LoginTest {
 
-    private static final String LANG = "pl";
-    private static final String UNI_ID = "136"; // Japetus
-    private static final String LOGIN = "dev_test";
-    private static final String PASSWORD = "qwerty1234";
-
     private Login login;
 
     @Before
     public void setUp() {
-        Login.Data loginData = new Login.Data();
-        loginData.server.lang = LANG;
-        loginData.uniId = UNI_ID;
-        loginData.login = LOGIN;
-        loginData.password = PASSWORD;
-
+        Login.Data loginData = TestUser.getLoginData();
         login = new Login(loginData);
     }
 
@@ -52,13 +42,10 @@ public class LoginTest {
 
     @Test(expected = Login.FailedLoginException.class)
     public void testFailedLogin() throws Exception {
-        Login.Data data = new Login.Data();
-        data.server.lang = "pl";
-        data.uniId = UNI_ID;
-        data.login = LOGIN;
-        data.password = "!@#INVALID_PASSWOD$%^";
+        Login.Data loginData = TestUser.getLoginData();
+        loginData.password += "InvalidPassword";
 
-        Login failedLogin = new Login(data);
+        Login failedLogin = new Login(loginData);
         failedLogin.tryLogin();
 
         assertTrue(false); // Powinien zostać wyrzucony wyjątek
