@@ -23,4 +23,9 @@ android {
 }
 
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/commons-lang3-3.3.2.jar')
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'junit:junit:4.12'
 }
