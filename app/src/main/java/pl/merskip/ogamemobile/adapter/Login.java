@@ -53,7 +53,7 @@ public class Login {
     }
 
     public String getLoginUrl() {
-        return loginData.server.getGameUrl() + "/main/login";
+        return loginData.server.getServerUrl() + "/main/login";
     }
 
     public String getUniversumHost() {

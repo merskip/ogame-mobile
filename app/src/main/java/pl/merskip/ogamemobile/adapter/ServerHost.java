@@ -8,7 +8,7 @@ public class ServerHost {
     public String host = "ogame.gameforge.com";
     public String lang;
 
-    public String getGameUrl() {
+    public String getServerUrl() {
         return String.format("http://%s.%s",
                 lang, host);
     }
