@@ -4,9 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.UniversumList.Universum;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,17 +19,20 @@ public class UniversumListTest {
         ServerHost server = TestUser.getLoginData().server;
 
         UniversumList universumList = new UniversumList(server);
-        List<Universum> uniList = universumList.downloadUniversumList();
+        Map<String, String> uniList = universumList.downloadUniversumList();
 
         assertNotEquals(0, uniList.size());
 
-        for (Universum uni : uniList) {
-            System.out.println("id=" + uni.id + ", name=" + uni.name);
+        for (Map.Entry uni : uniList.entrySet()) {
+            String uniId = (String) uni.getKey();
+            String name = (String) uni.getValue();
 
-            assertNotEquals("", uni.id);
-            assertNotEquals("", uni.name);
+            System.out.println("id=" + uniId + ", name=" + name);
 
-            assertTrue(StringUtils.isNumeric(uni.id));
+            assertNotEquals("", uniId);
+            assertNotEquals("", name);
+
+            assertTrue(StringUtils.isNumeric(uniId));
         }
     }
 }
