@@ -18,7 +18,7 @@ public class Login {
      */
     public static class Data {
         public ServerHost server = new ServerHost();
-        public int uniId;
+        public String uniId;
         public String login;
         public String password;
     }
@@ -57,7 +57,7 @@ public class Login {
     }
 
     public String getUniversumHost() {
-        return String.format("s%d-%s.%s",
+        return String.format("s%s-%s.%s",
                 loginData.uniId, loginData.server.lang, loginData.server.host);
     }
 

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class LoginTest {
 
     private static final String LANG = "pl";
-    private static final int UNI_ID = 136; // Japetus
+    private static final String UNI_ID = "136"; // Japetus
     private static final String LOGIN = "dev_test";
     private static final String PASSWORD = "qwerty1234";
 
