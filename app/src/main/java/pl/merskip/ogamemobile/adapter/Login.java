@@ -17,8 +17,7 @@ public class Login {
      * Przechowuje dane niezbędne do logowania
      */
     public static class Data {
-        public String gameHost = "ogame.gameforge.com";
-        public String lang;
+        public ServerHost server = new ServerHost();
         public int uniId;
         public String login;
         public String password;
@@ -54,17 +53,12 @@ public class Login {
     }
 
     public String getLoginUrl() {
-        return getGameUrl() + "/main/login";
+        return loginData.server.getGameUrl() + "/main/login";
     }
 
     public String getUniversumHost() {
         return String.format("s%d-%s.%s",
-                loginData.uniId, loginData.lang, loginData.gameHost);
-    }
-
-    public String getGameUrl() {
-        return String.format("http://%s.%s",
-                loginData.lang, loginData.gameHost);
+                loginData.uniId, loginData.server.lang, loginData.server.host);
     }
 
     /**

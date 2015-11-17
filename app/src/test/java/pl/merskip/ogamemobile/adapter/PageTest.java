@@ -5,7 +5,7 @@ import org.junit.Before;
 /**
  * Pomocnicza klasa testu strony
  */
-public class PageTest {
+abstract public class PageTest {
 
     private static final String LANG = "pl";
     private static final int UNI_ID = 136; // Japetus
@@ -17,7 +17,7 @@ public class PageTest {
     @Before
     public void setUp() throws Exception {
         Login.Data loginData = new Login.Data();
-        loginData.lang = LANG;
+        loginData.server.lang = LANG;
         loginData.uniId = UNI_ID;
         loginData.login = LOGIN;
         loginData.password = PASSWORD;

@@ -83,11 +83,11 @@ public abstract class AbstractPage<Result> {
 
     public String getGameIndexUrl() {
         int uniId = auth.loginData.uniId;
-        String lang = auth.loginData.lang;
-        String gameHost = auth.loginData.gameHost;
+        String lang = auth.loginData.server.lang;
+        String host = auth.loginData.server.host;
 
         return String.format("http://s%d-%s.%s/game/index.php",
-                uniId, lang, gameHost);
+                uniId, lang, host);
     }
 
     public static boolean isSuccessResponse(Connection.Response response) {

@@ -20,7 +20,7 @@ public class LoginTest {
     @Before
     public void setUp() {
         Login.Data loginData = new Login.Data();
-        loginData.lang = LANG;
+        loginData.server.lang = LANG;
         loginData.uniId = UNI_ID;
         loginData.login = LOGIN;
         loginData.password = PASSWORD;
@@ -53,7 +53,7 @@ public class LoginTest {
     @Test(expected = Login.FailedLoginException.class)
     public void testFailedLogin() throws Exception {
         Login.Data data = new Login.Data();
-        data.lang = "pl";
+        data.server.lang = "pl";
         data.uniId = UNI_ID;
         data.login = LOGIN;
         data.password = "!@#INVALID_PASSWOD$%^";
