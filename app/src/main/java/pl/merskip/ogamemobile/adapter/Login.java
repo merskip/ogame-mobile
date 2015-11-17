@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.Map;
 
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+
 /**
  * Logowanie
  */
@@ -41,7 +43,7 @@ public class Login {
 
         Connection.Response response = connection.execute();
 
-        if (response.url().getPath().equals("/game/index.php")) {
+        if (AbstractPage.isSuccessResponse(response)) {
             Map<String, String> cookies = response.cookies();
             AuthorizationData auth = AuthorizationData.fromCookies(cookies);
             auth.loginData = loginData;

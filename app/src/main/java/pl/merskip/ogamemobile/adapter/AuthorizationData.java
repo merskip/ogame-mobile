@@ -56,4 +56,13 @@ public class AuthorizationData implements Serializable {
         map.put("prsess_" + userId, prsess);
         return map;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "sessionId='" + sessionId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", prsess='" + prsess + '\'' +
+                '}';
+    }
 }

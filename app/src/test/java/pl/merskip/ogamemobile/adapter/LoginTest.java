@@ -39,14 +39,15 @@ public class LoginTest {
     @Test
     public void testLogin() throws Exception {
         AuthorizationData auth = login.tryLogin();
+
         assertNotEquals("", auth.sessionId);
         assertNotEquals("", auth.userId);
         assertNotEquals("", auth.prsess);
 
         System.out.println("Login success: ");
-        System.out.printf("\tsessionId=%s\n", auth.sessionId);
-        System.out.printf("\tuserId=%s\n", auth.userId);
-        System.out.printf("\tprsess=%s\n", auth.prsess);
+        System.out.println("\tsessionId=" + auth.sessionId);
+        System.out.println("\tuserId=" + auth.userId);
+        System.out.println("\tprsess=" + auth.prsess);
     }
 
     @Test(expected = Login.FailedLoginException.class)
