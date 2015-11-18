@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">OGameMobile</string>
+    <string name="app_name" translatable="false">OGameMobile</string>
+    <string name="email_or_username">Email or username</string>
+    <string name="password">Password</string>
+    <string name="connection_error">Network error. Check your internet connection and try again.</string>
+    <string name="sign_in">Sign in</string>
+    <string name="universum">Universum:</string>
+    <string name="downloading">Downloading</string>
+    <string name="get_universum_list_failed">Failed to download list universum. Check your internet connection and try again.</string>
+    <string name="try_again">Try again</string>
+    <string name="refresh">Refresh</string>
 </resources>

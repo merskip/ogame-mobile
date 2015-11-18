@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_or_username">Email lub nazwa użytkownika</string>
+    <string name="password">Hasło</string>
+    <string name="connection_error">Błąd połączenia. Sprawdź połączenie internetowe i spróbuj ponownie.</string>
+    <string name="sign_in">Zaloguj się</string>
+    <string name="universum">Uniwersum:</string>
+    <string name="get_universum_list_failed">Nie udało się pobrać listy uniwersów. Sprawdź połączenie internetowe i spróbuj ponownie.</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="refresh">Odśwież</string>
+    <string name="downloading">Pobieranie</string>
+</resources>
