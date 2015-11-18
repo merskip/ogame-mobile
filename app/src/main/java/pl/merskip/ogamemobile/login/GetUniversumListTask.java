@@ -59,11 +59,13 @@ public class GetUniversumListTask extends AsyncTask<Void, Void, Map<String, Stri
     protected void onPostExecute(Map<String, String> universumList) {
 
         if (exception instanceof IOException) {
-            Toast.makeText(activity, R.string.connection_error, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.connection_error, Toast.LENGTH_LONG)
+                    .show();
         }
 
         if (universumList != null) {
             activity.setUniversumList(universumList);
+            activity.saveUniversumList();
         }
 
         progressDialog.dismiss();

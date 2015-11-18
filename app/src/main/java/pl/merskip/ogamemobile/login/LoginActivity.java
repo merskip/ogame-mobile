@@ -1,5 +1,6 @@
 package pl.merskip.ogamemobile.login;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -47,7 +54,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button signInButton = (Button) findViewById(R.id.sign_in);
         signInButton.setOnClickListener(this);
 
-        downloadUniversumList();
+        if (!loadUniversumList())
+            downloadUniversumList();
     }
 
     @Override
@@ -92,6 +100,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("Login", "login=" + login + ", uniId=" + uniId);
     }
 
+    public boolean saveUniversumList() {
+        try {
+            FileOutputStream fileOut = openFileOutput("universum_map", Context.MODE_PRIVATE);
+            ObjectOutputStream output = new ObjectOutputStream(fileOut);
+            output.writeObject(universumList);
+
+            output.close();
+            fileOut.close();
+
+            Log.d("UniversumList", "Saved " + universumList.size() + " universum to cache");
+            return true;
+        } catch (Exception e) {
+            Log.e("UniversumList", Log.getStackTraceString(e));
+            return false;
+        }
+    }
+
+    public boolean loadUniversumList() {
+        try {
+            FileInputStream fileIn = openFileInput("universum_map");
+            ObjectInputStream input = new ObjectInputStream(fileIn);
+            Object readObject = input.readObject();
+
+            input.close();
+            fileIn.close();
+
+            if (readObject instanceof HashMap) {
+                @SuppressWarnings("unchecked")
+                Map<String, String> universumList = (Map<String, String>) readObject;
+                setUniversumList(universumList);
+
+                Log.d("UniversumList", "Loaded " + universumList.size() + " universum from cache");
+                return true;
+            }
+            return false;
+        } catch (FileNotFoundException e) {
+            Log.w("UniversumList", Log.getStackTraceString(e));
+            return false;
+        } catch (Exception e) {
+            Log.e("UniversumList", Log.getStackTraceString(e));
+            return false;
+        }
+    }
+
     public void setUniversumList(Map<String, String> universumList) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,10 +160,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public String getUniversumIdByName(String name) {
-        for (Map.Entry uni : universumList.entrySet()) {
+        for (Map.Entry<String, String> uni : universumList.entrySet()) {
             if (uni.getValue().equals(name))
-                return (String) uni.getKey();
+                return uni.getKey();
         }
         return null;
     }
+
+
 }
