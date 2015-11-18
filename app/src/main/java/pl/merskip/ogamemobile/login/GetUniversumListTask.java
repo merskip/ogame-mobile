@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
@@ -48,8 +49,11 @@ public class GetUniversumListTask extends AsyncTask<Void, Void, Map<String, Stri
         try {
             UniversumList universumList = new UniversumList(server);
             return universumList.downloadUniversumList();
+        } catch (UnknownHostException e) {
+            exception = e;
+            return null;
         } catch (IOException e) {
-            Log.e("GetUniversumListTask", Log.getStackTraceString(e));
+            Log.e("GetUniversumListTask", "Failed download universum list: ", e);
             exception = e;
             return null;
         }
