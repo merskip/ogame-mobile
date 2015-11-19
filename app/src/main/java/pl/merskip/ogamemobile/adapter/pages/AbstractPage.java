@@ -23,6 +23,7 @@ public abstract class AbstractPage<Result> {
     protected Connection connection;
     protected Connection.Response response;
 
+    protected Document document;
     protected ScriptData scriptData;
 
     protected AbstractPage(AuthorizationData auth, String page) {
@@ -50,7 +51,7 @@ public abstract class AbstractPage<Result> {
         if (!isSuccessResponse(response))
             throw new UnexpectedLogoutException();
 
-        Document document = response.parse();
+        document = response.parse();
         scriptData = new ScriptData(document);
         return createResult(document);
     }
