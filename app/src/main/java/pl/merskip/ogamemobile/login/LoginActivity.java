@@ -1,8 +1,10 @@
 package pl.merskip.ogamemobile.login;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!loadUniversumList())
             downloadUniversumList();
+
+        restoreLastLoginAndUniversum();
     }
 
     @Override
@@ -93,6 +97,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void singIn() {
+        Login.Data loginData = getLoginData();
+        new LoginTask(this, loginData).execute();
+
+        Log.d("Login", "login=" + loginData.login + ", uniId=" + loginData.uniId);
+
+        saveUserLoginAndUniversum();
+    }
+
+    private void saveUserLoginAndUniversum() {
+        Login.Data loginData = getLoginData();
+        SharedPreferences.Editor editor =
+                PreferenceManager.getDefaultSharedPreferences(this).edit();
+
+        editor.putString("last_login.login", loginData.login);
+        editor.putString("last_login.uniId", loginData.uniId);
+        editor.apply();
+
+        Log.d("Login", "Saved as last login: login="
+                + loginData.login + ", uniId=" +loginData.uniId);
+    }
+
+    private void restoreLastLoginAndUniversum() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String login = preferences.getString("last_login.login", null);
+        String uniId = preferences.getString("last_login.uniId", null);
+        Log.d("Login", "Restore from last: login="
+                + login + ", uniId=" + uniId);
+
+        if (login != null) {
+            loginEdit.setText(login);
+            if (!login.isEmpty())
+                passwordEdit.requestFocus();
+        }
+
+        if (uniId != null) {
+            int universumIndex = getIndexUniversumById(uniId);
+            universumSpinner.setSelection(universumIndex, false);
+        }
+    }
+
+    private Login.Data getLoginData() {
         Login.Data loginData = new Login.Data();
         loginData.server = serverHost;
 
@@ -100,10 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginData.password = passwordEdit.getText().toString();
         String universumName = universumSpinner.getSelectedItem().toString();
         loginData.uniId = getUniversumIdByName(universumName);
-
-        Log.d("Login", "login=" + loginData.login + ", uniId=" + loginData.uniId);
-
-        new LoginTask(this, loginData).execute();
+        return loginData;
     }
 
     public boolean saveUniversumList() {
@@ -173,5 +216,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return null;
     }
 
+    /**
+     * Pobiera numer indeksu universum o danym id
+     * @return Numer indeksu lub -1 jeśli nie znaleziono id
+     */
+    public int getIndexUniversumById(String uniId) {
+        if (universumList != null) {
+            int index = 0;
+            for (String key : universumList.keySet()) {
+                if (key.equals(uniId))
+                    return index;
+                index++;
+            }
+        }
+        return -1;
+    }
 
 }
