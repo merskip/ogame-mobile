@@ -9,4 +9,6 @@
     <string name="try_again">Spróbuj ponownie</string>
     <string name="refresh">Odśwież</string>
     <string name="downloading">Pobieranie</string>
+    <string name="login_in_progress">Logowanie</string>
+    <string name="login_failed">Twój login lub hasło jest nieprawidłowe</string>
 </resources>

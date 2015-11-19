@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
+import pl.merskip.ogamemobile.adapter.Login;
 import pl.merskip.ogamemobile.adapter.ServerHost;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -92,12 +93,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void singIn() {
-        String login = loginEdit.getText().toString();
-        String password = passwordEdit.getText().toString();
-        String universumName = universumSpinner.getSelectedItem().toString();
-        String uniId = getUniversumIdByName(universumName);
+        Login.Data loginData = new Login.Data();
+        loginData.server = serverHost;
 
-        Log.d("Login", "login=" + login + ", uniId=" + uniId);
+        loginData.login = loginEdit.getText().toString();
+        loginData.password = passwordEdit.getText().toString();
+        String universumName = universumSpinner.getSelectedItem().toString();
+        loginData.uniId = getUniversumIdByName(universumName);
+
+        Log.d("Login", "login=" + loginData.login + ", uniId=" + loginData.uniId);
+
+        new LoginTask(this, loginData).execute();
     }
 
     public boolean saveUniversumList() {
