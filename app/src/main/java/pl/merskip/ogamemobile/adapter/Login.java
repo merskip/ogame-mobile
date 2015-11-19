@@ -4,6 +4,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
@@ -16,7 +17,7 @@ public class Login {
     /**
      * Przechowuje dane niezbędne do logowania
      */
-    public static class Data {
+    public static class Data implements Serializable {
         public ServerHost server = new ServerHost();
         public String uniId;
         public String login;

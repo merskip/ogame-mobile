@@ -1,9 +1,11 @@
 package pl.merskip.ogamemobile.adapter;
 
+import java.io.Serializable;
+
 /**
  * Przechowuje host adresu gry
  */
-public class ServerHost {
+public class ServerHost implements Serializable {
 
     public String host = "ogame.gameforge.com";
     public String lang;
