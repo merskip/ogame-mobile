@@ -2,6 +2,7 @@ package pl.merskip.ogamemobile.adapter.pages;
 
 import org.jsoup.nodes.Document;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,7 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
  */
 public class Overview extends AbstractPage<Overview.Data> {
 
-    public class Data {
+    public class Data implements Serializable {
         public PlanetInfo planetInfo;
         public PlayerScore playerScore;
     }

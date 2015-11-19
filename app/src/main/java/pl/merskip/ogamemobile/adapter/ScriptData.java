@@ -1,7 +1,5 @@
 package pl.merskip.ogamemobile.adapter;
 
-import android.text.Html;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +24,7 @@ public class ScriptData {
     public String getTextValue(String key) {
         String value = getValue(key);
         value = StringEscapeUtils.unescapeJson(value);
-        return Jsoup.clean(value, Whitelist.simpleText());
+        return Jsoup.clean(value, Whitelist.simpleText()).trim();
     }
 
     public String getValue(String key) {
