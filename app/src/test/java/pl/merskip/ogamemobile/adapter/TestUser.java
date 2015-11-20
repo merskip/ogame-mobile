@@ -8,7 +8,7 @@ public class TestUser {
     private static final String LANG = "pl";
     private static final String UNI_ID = "136"; // Japetus
     private static final String LOGIN = "dev_test";
-    private static final String PASSWORD = "qwerty1234";
+    private static final String PASSWORD = "qwertyaz";
 
     private TestUser() {} // Zablokowanie tworzenia instancji
 
