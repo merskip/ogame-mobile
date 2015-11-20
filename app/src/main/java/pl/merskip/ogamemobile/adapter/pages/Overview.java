@@ -13,18 +13,18 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
  */
 public class Overview extends AbstractPage<Overview.Data> {
 
-    public class Data implements Serializable {
+    static public class Data implements Serializable {
         public PlanetInfo planetInfo;
         public PlayerScore playerScore;
     }
 
-    public class PlanetInfo {
+    static public class PlanetInfo implements Serializable {
         public String diameter;
         public String temperature;
         public String coordinate;
     }
 
-    public class PlayerScore {
+    static public class PlayerScore implements Serializable {
         public String score;
         public String position;
         public String honor;

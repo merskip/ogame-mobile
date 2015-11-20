@@ -9,12 +9,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <fragment
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/content"
-            tools:layout="@layout/fragment_overview"
-            class="pl.merskip.ogamemobile.game.pages.overview.OverviewFragment" />
+            android:id="@+id/content" />
 
     </ScrollView>
 

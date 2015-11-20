@@ -1,14 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/content_padding"
+    android:orientation="vertical"
     tools:context="pl.merskip.ogamemobile.game.pages.overview.OverviewFragment">
 
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/informations"
+        android:choiceMode="none" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello world" />
-
-</FrameLayout>
+</LinearLayout>
