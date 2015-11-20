@@ -3,6 +3,7 @@ package pl.merskip.ogamemobile.adapter;
 import org.junit.Test;
 
 import pl.merskip.ogamemobile.adapter.pages.Overview;
+import pl.merskip.ogamemobile.adapter.pages.OverviewData;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -15,33 +16,31 @@ public class OverviewTest extends PageTest {
     public void testPage() throws Exception {
         Overview page = new Overview(auth);
 
-        Overview.Data result = page.download();
+        OverviewData result = page.download();
 
         testPlanetInfo(result);
         testPlayerScore(result);
     }
 
-    private void testPlanetInfo(Overview.Data result) {
-        Overview.PlanetInfo planetInfo = result.planetInfo;
-        assertNotEquals(null, planetInfo.diameter);
-        assertNotEquals(null, planetInfo.temperature);
-        assertNotEquals(null, planetInfo.coordinate);
+    private void testPlanetInfo(OverviewData result) {
+        assertNotEquals(null, result.planetDiameter);
+        assertNotEquals(null, result.planetTemperature);
+        assertNotEquals(null, result.planetCoordinate);
 
         System.out.println("Planet info:");
-        System.out.println("\tdiameter=" + planetInfo.diameter);
-        System.out.println("\ttemperature=" + planetInfo.temperature);
-        System.out.println("\tcoordinate=" + planetInfo.coordinate);
+        System.out.println("\tdiameter=" + result.planetDiameter);
+        System.out.println("\ttemperature=" + result.planetTemperature);
+        System.out.println("\tcoordinate=" + result.planetCoordinate);
     }
 
-    private void testPlayerScore(Overview.Data result) {
-        Overview.PlayerScore playerScore = result.playerScore;
-        assertNotEquals(null, playerScore.score);
-        assertNotEquals(null, playerScore.position);
-        assertNotEquals(null, playerScore.honor);
+    private void testPlayerScore(OverviewData result) {
+        assertNotEquals(null, result.playerScore);
+        assertNotEquals(null, result.playerPosition);
+        assertNotEquals(null, result.playerHonor);
 
         System.out.println("Player score:");
-        System.out.println("\tscore=" + playerScore.score);
-        System.out.println("\tposition=" + playerScore.position);
-        System.out.println("\thonor=" + playerScore.honor);
+        System.out.println("\tscore=" + result.playerScore);
+        System.out.println("\tposition=" + result.playerPosition);
+        System.out.println("\thonor=" + result.playerHonor);
     }
 }

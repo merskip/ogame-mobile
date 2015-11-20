@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.pages.Overview;
+import pl.merskip.ogamemobile.adapter.pages.OverviewData;
 import pl.merskip.ogamemobile.game.Utils;
 
 
@@ -29,19 +29,18 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
         Bundle args = getArguments();
+        OverviewData data = (OverviewData) args.getSerializable("data");
+
         InformationsAdapter adapter = new InformationsAdapter(context);
 
-        if (args != null) {
-            Overview.Data data = (Overview.Data) args.getSerializable("data");
-            if (data != null) {
-                adapter.addInformation("Średnica:", data.planetInfo.diameter);
-                adapter.addInformation("Temperatura:", data.planetInfo.temperature);
-                adapter.addInformation("Koordynaty:", data.planetInfo.coordinate);
+        if (data != null) {
+            adapter.addInformation("Średnica:", data.planetDiameter);
+            adapter.addInformation("Temperatura:", data.planetTemperature);
+            adapter.addInformation("Koordynaty:", data.planetCoordinate);
 
-                adapter.addInformation("Punkty:", data.playerScore.score);
-                adapter.addInformation("Miejsce:", data.playerScore.position);
-                adapter.addInformation("Punkty honoru:", data.playerScore.honor);
-            }
+            adapter.addInformation("Punkty:", data.playerScore);
+            adapter.addInformation("Miejsce:", data.playerPosition);
+            adapter.addInformation("Punkty honoru:", data.playerHonor);
         }
 
         ListView informationsList = (ListView) view.findViewById(R.id.informations);

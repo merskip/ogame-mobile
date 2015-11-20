@@ -2,7 +2,6 @@ package pl.merskip.ogamemobile.adapter.pages;
 
 import org.jsoup.nodes.Document;
 
-import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,56 +10,35 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
 /**
  * Strona podglądu planety
  */
-public class Overview extends AbstractPage<Overview.Data> {
-
-    static public class Data implements Serializable {
-        public PlanetInfo planetInfo;
-        public PlayerScore playerScore;
-    }
-
-    static public class PlanetInfo implements Serializable {
-        public String diameter;
-        public String temperature;
-        public String coordinate;
-    }
-
-    static public class PlayerScore implements Serializable {
-        public String score;
-        public String position;
-        public String honor;
-    }
+public class Overview extends AbstractPage<OverviewData> {
 
     public Overview(AuthorizationData auth) {
         super(auth, "overview");
     }
 
     @Override
-    public Data createResult(Document document) {
-        Data data = new Data();
-        data.planetInfo = getPlanetInfo();
-        data.playerScore = getPlayerScore();
+    public OverviewData createResult(Document document) {
+        OverviewData data = new OverviewData();
+        appendPlanetInfo(data);
+        appendPlayerScore(data);
         return data;
     }
 
-    private PlanetInfo getPlanetInfo() {
-        PlanetInfo planetInfo = new PlanetInfo();
-        planetInfo.diameter = scriptData.getTextValue("textContent[1]");
-        planetInfo.temperature = scriptData.getTextValue("textContent[3]");
-        planetInfo.coordinate = scriptData.getTextValue("textContent[5]");
-        return planetInfo;
+    private void appendPlanetInfo(OverviewData data) {
+        data.planetDiameter = scriptData.getTextValue("textContent[1]");
+        data.planetTemperature = scriptData.getTextValue("textContent[3]");
+        data.planetCoordinate = scriptData.getTextValue("textContent[5]");
     }
 
-    private PlayerScore getPlayerScore() {
+    private void appendPlayerScore(OverviewData data) {
 
         String[] scoreAndPosition = getPlayerScoreAndPosition();
         if (scoreAndPosition == null)
-            return null;
+            return;
 
-        PlayerScore playerScore = new PlayerScore();
-        playerScore.score = scoreAndPosition[0];
-        playerScore.position = scoreAndPosition[1];
-        playerScore.honor = scriptData.getTextValue("textContent[9]");
-        return playerScore;
+        data.playerScore = scoreAndPosition[0];
+        data.playerPosition = scoreAndPosition[1];
+        data.playerHonor = scriptData.getTextValue("textContent[9]");
     }
 
     private String[] getPlayerScoreAndPosition() {
