@@ -11,4 +11,7 @@
     <string name="downloading">Pobieranie</string>
     <string name="login_in_progress">Logowanie</string>
     <string name="login_failed">Twój login lub hasło jest nieprawidłowe</string>
+    <string name="drawer_open" >Otwórz nawigację</string>
+    <string name="drawer_close" >Zamknij nawigację</string>
+    <string name="overview">Podgląd</string>
 </resources>

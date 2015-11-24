@@ -11,4 +11,7 @@
     <string name="refresh">Refresh</string>
     <string name="login_in_progress">Login in progress</string>
     <string name="login_failed">Your login or password is incorrect</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="overview">Overview</string>
 </resources>
