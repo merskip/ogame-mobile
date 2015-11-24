@@ -52,6 +52,7 @@ public abstract class AbstractPage<Result> {
         timer.started();
         connection = createConnection();
         response = connection.execute();
+        auth.updatePrsess(response);
         timer.downloaded();
 
         if (!isSuccessResponse(response))
