@@ -1,5 +1,7 @@
 package pl.merskip.ogamemobile.adapter.pages;
 
+import android.util.Log;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,14 +47,20 @@ public abstract class AbstractPage<Result> {
      * @return Przetworzone dane
      */
     public Result download() throws IOException, UnexpectedLogoutException {
+        DownloadTimer timer = new DownloadTimer();
+
+        timer.started();
         connection = createConnection();
         response = connection.execute();
+        timer.downloaded();
 
         if (!isSuccessResponse(response))
             throw new UnexpectedLogoutException();
 
         document = response.parse();
         scriptData = new ScriptData(document);
+        timer.parsed();
+
         return createResult(document);
     }
 
@@ -96,4 +104,34 @@ public abstract class AbstractPage<Result> {
     }
 
     public static class UnexpectedLogoutException extends Exception {}
+
+    /**
+     * Dostarcza narzędzi do pomiaru czasu pobierania i parsowania
+     * oraz automatycznie generuje logi
+     */
+    private class DownloadTimer {
+        private long startedTime;
+        private long downloadedTime;
+        private long parsedTime;
+
+        public void started() {
+            startedTime = System.currentTimeMillis();
+        }
+
+        public void downloaded() {
+            downloadedTime = System.currentTimeMillis();
+
+            float downloadSecs = (downloadedTime - startedTime) / 1000.0f;
+            Log.w("DownloadTimer", "Downloaded in " + downloadSecs + "s");
+        }
+
+        public void parsed() {
+            parsedTime = System.currentTimeMillis();
+
+            float totalDownloadSecs = (parsedTime - startedTime) / 1000.0f;
+            float parsedSecs = (parsedTime - downloadedTime) / 1000.0f;
+            Log.w("DownloadTimer", "Parsed in " + parsedSecs + "s"
+                    + ", total downloaded in " + totalDownloadSecs + "s");
+        }
+    }
 }
