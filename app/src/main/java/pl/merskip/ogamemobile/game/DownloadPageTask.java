@@ -22,6 +22,8 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     protected AuthorizationData auth;
     private String pageName;
 
+    private AbstractPage<Result> downloadPage;
+
     private ProgressDialog progressDialog;
     private Exception exception = null;
 
@@ -53,7 +55,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     @Override
     protected Result doInBackground(Void... params) {
         try {
-            AbstractPage<Result> downloadPage = createDownloadPage();
+            downloadPage = createDownloadPage();
             return downloadPage.download();
         } catch (UnknownHostException e) {
             exception = e;
@@ -75,6 +77,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         }
 
         if (result != null) {
+            activity.notifyDownloadPage(downloadPage);
             afterDownload(result);
         }
 

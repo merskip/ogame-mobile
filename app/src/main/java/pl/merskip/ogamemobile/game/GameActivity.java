@@ -13,17 +13,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.jsoup.nodes.Document;
+
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.ScriptData;
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
 
 public class GameActivity
         extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DownloadPageListener {
 
     private AuthorizationData auth;
     private DownloadPageFactory downloadPageFactory;
     private String currentPage;
+
+    private DownloadPageNotifier downloadPageNotifier;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigation;
@@ -31,6 +38,9 @@ public class GameActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        downloadPageNotifier = new DownloadPageNotifier();
+        downloadPageNotifier.addListener(this);
+
         setContentView(R.layout.activity_game);
 
         setupToolbarAndNavigationDrawer();
@@ -141,6 +151,33 @@ public class GameActivity
                 .commit();
 
         Log.d("GameActivity", "Shown content of page: " + pageName);
+    }
+
+    public void addDownloadPageListener(DownloadPageListener listener) {
+        downloadPageNotifier.addListener(listener);
+    }
+
+    public void notifyDownloadPage(AbstractPage<?> downloadPage) {
+        downloadPageNotifier.notifyListeners(downloadPage);
+    }
+
+    @Override
+    public void onDownloadPage(Document document, ScriptData scriptData) {
+        updatePlanetName(document);
+    }
+
+    private void updatePlanetName(Document document) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            String planetName = getPlanetName(document);
+            actionBar.setTitle(planetName);
+        }
+    }
+
+    private static String getPlanetName(Document document) {
+        return document.head()
+                .getElementsByAttributeValue("name", "ogame-planet-name")
+                .attr("content");
     }
 
     public AuthorizationData getAuthorizationData() {

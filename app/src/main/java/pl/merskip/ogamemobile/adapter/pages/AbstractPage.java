@@ -104,6 +104,14 @@ public abstract class AbstractPage<Result> {
         return response.url().getPath().equals("/game/index.php");
     }
 
+    public Document getDocument() {
+        return document;
+    }
+
+    public ScriptData getScriptData() {
+        return scriptData;
+    }
+
     public static class UnexpectedLogoutException extends Exception {}
 
     /**
