@@ -23,6 +23,10 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     private ProgressDialog progressDialog;
     private Exception exception = null;
 
+    public DownloadPageTask(GameActivity activity) {
+        this(activity, activity.getAuthorizationData());
+    }
+
     public DownloadPageTask(GameActivity activity, AuthorizationData auth) {
         this.activity = activity;
         this.auth = auth;

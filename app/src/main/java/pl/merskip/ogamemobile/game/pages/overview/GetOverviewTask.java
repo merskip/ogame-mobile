@@ -13,8 +13,8 @@ import pl.merskip.ogamemobile.game.GameActivity;
  */
 public class GetOverviewTask extends DownloadPageTask<OverviewData> {
 
-    public GetOverviewTask(GameActivity activity, AuthorizationData auth) {
-        super(activity, auth);
+    public GetOverviewTask(GameActivity activity) {
+        super(activity);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class GameActivity
             finish();
         }
 
-        new GetOverviewTask(this, auth).execute();
+        new GetOverviewTask(this).execute();
     }
 
     private void setupToolbarAndNavigationDrawer() {
@@ -85,7 +85,7 @@ public class GameActivity
 
         switch (item.getItemId()) {
             case R.id.overview:
-                new GetOverviewTask(this, auth).execute();
+                new GetOverviewTask(this).execute();
                 return true;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
@@ -97,7 +97,7 @@ public class GameActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                new GetOverviewTask(this, auth).execute();
+                new GetOverviewTask(this).execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
