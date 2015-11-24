@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 
 /**
  * Asynchroniczne pobieranie i pokazanie strony
@@ -18,7 +19,7 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
 abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Result> {
 
     protected GameActivity activity;
-    private AuthorizationData auth;
+    protected AuthorizationData auth;
     private String pageName;
 
     private ProgressDialog progressDialog;
@@ -52,7 +53,8 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     @Override
     protected Result doInBackground(Void... params) {
         try {
-            return getResult(auth);
+            AbstractPage<Result> downloadPage = createDownloadPage();
+            return downloadPage.download();
         } catch (UnknownHostException e) {
             exception = e;
             return null;
@@ -63,7 +65,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         }
     }
 
-    protected abstract Result getResult(AuthorizationData auth) throws Exception;
+    protected abstract AbstractPage<Result> createDownloadPage();
 
     @Override
     protected void onPostExecute(Result result) {

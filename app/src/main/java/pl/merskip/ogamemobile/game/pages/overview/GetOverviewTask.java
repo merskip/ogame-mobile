@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.game.pages.overview;
 
 import android.os.Bundle;
 
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.Overview;
 import pl.merskip.ogamemobile.adapter.pages.OverviewData;
 import pl.merskip.ogamemobile.game.DownloadPageTask;
@@ -18,8 +18,8 @@ public class GetOverviewTask extends DownloadPageTask<OverviewData> {
     }
 
     @Override
-    protected OverviewData getResult(AuthorizationData auth) throws Exception {
-        return new Overview(auth).download();
+    protected AbstractPage<OverviewData> createDownloadPage() {
+        return new Overview(auth);
     }
 
     @Override
