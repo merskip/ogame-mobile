@@ -19,6 +19,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     protected GameActivity activity;
     private AuthorizationData auth;
+    private String pageName;
 
     private ProgressDialog progressDialog;
     private Exception exception = null;
@@ -30,6 +31,10 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     public DownloadPageTask(GameActivity activity, AuthorizationData auth) {
         this.activity = activity;
         this.auth = auth;
+    }
+
+    public void setPageName(String pageName) {
+        this.pageName = pageName;
     }
 
     @Override
@@ -77,9 +82,6 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     protected abstract void afterDownload(Result result);
 
     protected void showFragment(Fragment fragment) {
-        activity.getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();
+        activity.showContentPage(pageName, fragment);
     }
 }

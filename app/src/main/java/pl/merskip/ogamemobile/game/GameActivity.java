@@ -2,6 +2,7 @@ package pl.merskip.ogamemobile.game;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,13 +16,14 @@ import android.view.MenuItem;
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.game.pages.overview.GetOverviewTask;
 
 public class GameActivity
         extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private AuthorizationData auth;
+    private DownloadPageFactory downloadPageFactory;
+    private String currentPage;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigation;
@@ -46,7 +48,8 @@ public class GameActivity
             finish();
         }
 
-        new GetOverviewTask(this).execute();
+        downloadPageFactory = new DownloadPageFactory(this);
+        openPage("overview");
     }
 
     private void setupToolbarAndNavigationDrawer() {
@@ -85,7 +88,7 @@ public class GameActivity
 
         switch (item.getItemId()) {
             case R.id.overview:
-                new GetOverviewTask(this).execute();
+                openPage("overview");
                 return true;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
@@ -97,11 +100,47 @@ public class GameActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                new GetOverviewTask(this).execute();
+                refreshPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void refreshPage() {
+        openPage(currentPage);
+    }
+
+    /**
+     * Pobiera i otwiera asynchronicznie stronę o podanej nazwie.
+     */
+    public void openPage(String pageName){
+        DownloadPageTask<?> downloadPageTask =
+                downloadPageFactory.getDownloadPageTask(pageName);
+
+        if (downloadPageTask == null)
+            throw new IllegalArgumentException("Unknown page name: " + pageName);
+
+        downloadPageTask.setPageName(pageName);
+        downloadPageTask.execute();
+        Log.d("GameActivity", "Started opening page: " + pageName);
+    }
+
+    /**
+     * Wyświetla treść strony i ustawia ją na aktualnie otwartą
+     */
+    public void showContentPage(String pageName, Fragment fragment) {
+        if (pageName == null)
+            Log.e("GameActivity", "showContentPage: pageName is null!");
+
+        this.currentPage = pageName;
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit();
+
+        Log.d("GameActivity", "Shown content of page: " + pageName);
     }
 
     public AuthorizationData getAuthorizationData() {
