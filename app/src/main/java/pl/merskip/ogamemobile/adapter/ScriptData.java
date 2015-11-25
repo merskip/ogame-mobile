@@ -21,6 +21,10 @@ public class ScriptData {
         content = lastScript.html();
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public String getTextValue(String key) {
         String value = getValue(key);
         value = StringEscapeUtils.unescapeJson(value);
