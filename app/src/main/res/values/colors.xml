@@ -5,4 +5,8 @@
     <color name="colorAccent">#536DFE</color>
 
     <color name="drawerTextColor">#FFFFFF</color>
+
+    <color name="resource_normal">#CAC6C2</color>
+    <color name="resource_middle">#FFA20A</color>
+    <color name="resource_overflow">#FF0000</color>
 </resources>

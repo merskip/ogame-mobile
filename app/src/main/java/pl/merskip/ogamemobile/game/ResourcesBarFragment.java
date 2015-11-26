@@ -2,6 +2,7 @@ package pl.merskip.ogamemobile.game;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import org.jsoup.nodes.Document;
 
 import pl.merskip.ogamemobile.R;
+import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
 
@@ -65,11 +67,29 @@ public class ResourcesBarFragment
         deuteriumView.setText(deuterium);
         energyView.setText(energy);
 
+        metalView.setTextColor(getColorOfResource(resources.metal));
+        crystalView.setTextColor(getColorOfResource(resources.crystal));
+        deuteriumView.setTextColor(getColorOfResource(resources.deuterium));
+        energyView.setTextColor(getColorOfResource(resources.energy));
+
         Log.d("ResourcesBar", "Set resources: "
                 + "metal=" + metal
                 + ", crystal=" + crystal
                 + ", deuterium=" + deuterium
                 + ", energy=" + energy);
+    }
+
+    private int getColorOfResource(ResourceItem resource) {
+        int colorId = R.color.resource_normal;
+        switch (resource.fillState) {
+            case Normal: colorId = R.color.resource_normal;
+                break;
+            case Middle: colorId = R.color.resource_middle;
+                break;
+            case Overflow: colorId = R.color.resource_overflow;
+                break;
+        }
+        return ContextCompat.getColor(activity, colorId);
     }
 
 }
