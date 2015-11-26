@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.jsoup.nodes.Document;
 
 import pl.merskip.ogamemobile.R;
+import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
 
 /**
@@ -49,10 +50,15 @@ public class ResourcesBarFragment
 
     @Override
     public void onDownloadPage(Document document, ScriptData scriptData) {
-        String metal = document.getElementById("resources_metal").text();
-        String crystal = document.getElementById("resources_crystal").text();
-        String deuterium = document.getElementById("resources_deuterium").text();
-        String energy = document.getElementById("resources_energy").text();
+        ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
+        setResources(resources);
+    }
+
+    public void setResources(ResourcesSummary resources) {
+        String metal = Utils.toPrettyText(resources.metal.actual);
+        String crystal = Utils.toPrettyText(resources.crystal.actual);
+        String deuterium = Utils.toPrettyText(resources.deuterium.actual);
+        String energy = Utils.toPrettyText(resources.energy.actual);
 
         metalView.setText(metal);
         crystalView.setText(crystal);
@@ -65,6 +71,5 @@ public class ResourcesBarFragment
                 + ", deuterium=" + deuterium
                 + ", energy=" + energy);
     }
-
 
 }
