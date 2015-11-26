@@ -100,6 +100,9 @@ public class GameActivity
             case R.id.overview:
                 openPage("overview");
                 return true;
+            case R.id.resources:
+                openPage("resources");
+                return true;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
                 return false;
