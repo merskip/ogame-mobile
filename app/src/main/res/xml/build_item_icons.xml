@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map>
+    <entry key="1">metal_mine</entry>
+    <entry key="2">crystal_mine</entry>
+    <entry key="3">deuterium_synthesizer</entry>
+    <entry key="4">solar_plant</entry>
+    <entry key="12">fusion_reactor</entry>
+    <entry key="212">solar_satellite</entry>
+    <entry key="22">metal_storage</entry>
+    <entry key="23">crystal_storage</entry>
+    <entry key="24">deuterium_tank</entry>
+</map>

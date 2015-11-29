@@ -24,12 +24,13 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
 
             <FrameLayout
                 android:id="@+id/content"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </ScrollView>
 

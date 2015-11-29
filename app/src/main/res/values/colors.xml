@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3949AB</color>
     <color name="colorPrimaryDark">#283593</color>
     <color name="colorAccent">#536DFE</color>
+    <color name="cardBackground">#3d3d3d</color>
 
     <color name="drawerTextColor">#FFFFFF</color>
 

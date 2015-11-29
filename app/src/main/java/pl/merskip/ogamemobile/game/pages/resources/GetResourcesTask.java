@@ -2,6 +2,7 @@ package pl.merskip.ogamemobile.game.pages.resources;
 
 import android.os.Bundle;
 
+import java.io.Serializable;
 import java.util.List;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
@@ -29,6 +30,7 @@ public class GetResourcesTask extends DownloadPageTask<List<BuildItem>> {
         Bundle args = new Bundle();
 
         ResourcesFragment fragment = new ResourcesFragment();
+        args.putSerializable("build-items", (Serializable) buildItems);
         fragment.setArguments(args);
 
         showFragment(fragment);
