@@ -1,7 +1,10 @@
 package pl.merskip.ogamemobile.game;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -16,25 +19,37 @@ public class Utils {
         if (adapter == null)
             return;
 
-        int numberOfItems = adapter.getCount();
+        int screenWidth = getScreenWidthInPixels(listView.getContext());
 
-        // Get total height of all items.
-        int totalItemsHeight = 0;
-        for (int position = 0; position < numberOfItems; position++){
-            View item = adapter.getView(position, null, listView);
-            item.measure(0, 0);
-            totalItemsHeight += item.getMeasuredHeight();
+        int numberOfItems = adapter.getCount();
+        int totalHeight = 0;
+        for (int i = 0; i < numberOfItems; i++) {
+            View listItem = adapter.getView(i, null, listView);
+
+            int listViewWidth = screenWidth - listItem.getPaddingLeft() - listItem.getPaddingRight();
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(listViewWidth, View.MeasureSpec.AT_MOST);
+            listItem.measure(widthSpec, 0);
+
+            totalHeight += listItem.getMeasuredHeight();
         }
 
-        // Get total height of all item dividers.
-        int totalDividersHeight = listView.getDividerHeight()
-                * (numberOfItems - 1);
-
-        // Set list height.
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalItemsHeight + totalDividersHeight;
+        if (params == null) {
+            params = new ViewGroup.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private static int getScreenWidthInPixels(Context context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)
+                context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
     }
 
     public static String toPrettyText(int value) {
