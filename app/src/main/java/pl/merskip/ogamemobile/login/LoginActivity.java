@@ -98,8 +98,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void singIn() {
         Login.Data loginData = getLoginData();
-        new LoginTask(this, loginData).execute();
+        singIn(loginData);
+    }
 
+    public void singIn(Login.Data loginData) {
+        new LoginTask(this, loginData).execute();
         Log.d("Login", "login=" + loginData.login + ", uniId=" + loginData.uniId);
 
         saveUserLoginAndUniversum();
