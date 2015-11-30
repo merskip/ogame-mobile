@@ -15,4 +15,9 @@
     <string name="drawer_close" >Zamknij nawigację</string>
     <string name="overview">Podgląd</string>
     <string name="resources">Surowce</string>
+    <string name="building">Budowanie…</string>
+    <string name="ready_to_build">Gotowy do wybudowania</string>
+    <string name="ready_to_upgrade">Gotowy do rozbudowy</string>
+    <string name="too_few_resources">Brak surowców</string>
+    <string name="unmet_requirements">Wymagania nie zostały spełnione</string>
 </resources>

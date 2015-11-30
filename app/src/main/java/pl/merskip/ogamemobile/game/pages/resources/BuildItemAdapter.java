@@ -2,6 +2,8 @@ package pl.merskip.ogamemobile.game.pages.resources;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
+import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
 import pl.merskip.ogamemobile.game.Utils;
 
 /**
@@ -26,6 +29,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         public ImageView iconView;
         public TextView nameView;
         public TextView levelView;
+        public TextView buildStateView;
 
         public ViewHolder(View view) {
             super(view);
@@ -33,13 +37,49 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             iconView = (ImageView) view.findViewById(R.id.icon);
             nameView = (TextView) view.findViewById(R.id.name);
             levelView = (TextView) view.findViewById(R.id.level);
+            buildStateView = (TextView) view.findViewById(R.id.build_state);
         }
 
         public void set(BuildItem buildItem) {
             int iconId = getBuildItemIconId(buildItem);
             iconView.setImageResource(iconId);
+            setGrayImageIfUnmetRequirements(buildItem);
+
             nameView.setText(buildItem.name);
             levelView.setText(Utils.toPrettyText(buildItem.level));
+
+            buildStateView.setText(getBuildStateText(buildItem));
+        }
+
+        private void setGrayImageIfUnmetRequirements(BuildItem buildItem) {
+            if (buildItem.buildState == BuildState.UnmetRequirements) {
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+                iconView.setColorFilter(new ColorMatrixColorFilter(matrix));
+                iconView.setAlpha(0.5f);
+                levelView.setAlpha(0.5f);
+            } else {
+                iconView.clearColorFilter();
+                iconView.setAlpha(1.0f);
+                levelView.setAlpha(1.0f);
+            }
+        }
+
+        private String getBuildStateText(BuildItem buildItem) {
+            switch (buildItem.buildState) {
+                case Upgrading:
+                    return context.getString(R.string.building);
+                case ReadyToBuild:
+                    return (buildItem.level == 0)
+                            ?  context.getString(R.string.ready_to_build)
+                            : context.getString(R.string.ready_to_upgrade);
+                case TooFewResources:
+                    return context.getString(R.string.too_few_resources);
+                case UnmetRequirements:
+                    return context.getString(R.string.unmet_requirements);
+                default:
+                    throw new IllegalStateException("Unknown state: " + buildItem.buildState);
+            }
         }
 
     }

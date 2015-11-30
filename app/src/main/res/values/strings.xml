@@ -15,4 +15,9 @@
     <string name="drawer_close">Close drawer</string>
     <string name="overview">Overview</string>
     <string name="resources">Resources</string>
+    <string name="building">Building…</string>
+    <string name="ready_to_build">Ready to build</string>
+    <string name="ready_to_upgrade">Ready to upgrade</string>
+    <string name="too_few_resources">To few resources</string>
+    <string name="unmet_requirements">Requirement is not met</string>
 </resources>
