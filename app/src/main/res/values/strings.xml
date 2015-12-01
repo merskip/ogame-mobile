@@ -18,6 +18,6 @@
     <string name="building">Building…</string>
     <string name="ready_to_build">Ready to build</string>
     <string name="ready_to_upgrade">Ready to upgrade</string>
-    <string name="too_few_resources">To few resources</string>
+    <string name="too_few_resources">Too few resources or queue is full</string>
     <string name="unmet_requirements">Requirement is not met</string>
 </resources>

@@ -20,6 +20,7 @@ import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
 
 public class GameActivity
@@ -118,6 +119,20 @@ public class GameActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void build(BuildItem buildItem) {
+        if (buildItem.buildRequestUrl == null)
+            throw new IllegalArgumentException("Build request url is null, " +
+                    "maybe is not ready to build or is ship?");
+
+        DownloadPageTask<?> downloadPageTask =
+                downloadPageFactory.getDownloadPageTask(currentPage);
+
+        downloadPageTask.setPageName(currentPage);
+        downloadPageTask.setCustomUrl(buildItem.buildRequestUrl);
+        downloadPageTask.execute();
+        Log.d("GameActivity", "Request to build " + buildItem.id + " on page: " + currentPage);
     }
 
     public void refreshPage() {

@@ -21,6 +21,7 @@ public abstract class AbstractPage<Result> {
     private AuthorizationData auth;
     private String page;
     private String planetId;
+    private String customUrl;
 
     protected Connection connection;
     protected Connection.Response response;
@@ -40,6 +41,10 @@ public abstract class AbstractPage<Result> {
 
     public void setPlanetId(String planetId) {
         this.planetId = planetId;
+    }
+
+    public void setCustomUrl(String customUrl) {
+        this.customUrl = customUrl;
     }
 
     /**
@@ -76,9 +81,9 @@ public abstract class AbstractPage<Result> {
      * @return Połączenie dla strony z parametrami page i cp (planeta)
      */
     protected Connection createConnection() {
-        String gameUrl = getGameIndexUrl();
+        String requestUrl = getRequestUrl();
         Connection connection =
-                Jsoup.connect(gameUrl)
+                Jsoup.connect(requestUrl)
                         .cookies(auth.toCookiesMap())
                         .method(Connection.Method.GET);
 
@@ -89,6 +94,12 @@ public abstract class AbstractPage<Result> {
             connection.data("cp", planetId);
 
         return connection;
+    }
+
+    public String getRequestUrl() {
+        if (customUrl != null)
+            return customUrl;
+        return getGameIndexUrl();
     }
 
     public String getGameIndexUrl() {

@@ -21,6 +21,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     protected GameActivity activity;
     protected AuthorizationData auth;
     private String pageName;
+    private String customUrl;
 
     private AbstractPage<Result> downloadPage;
 
@@ -40,6 +41,10 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         this.pageName = pageName;
     }
 
+    public void setCustomUrl(String customUrl) {
+        this.customUrl = customUrl;
+    }
+
     @Override
     protected void onPreExecute() {
         createAndShowProgressDialog();
@@ -56,6 +61,9 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     protected Result doInBackground(Void... params) {
         try {
             downloadPage = createDownloadPage();
+            if (customUrl != null)
+                downloadPage.setCustomUrl(customUrl);
+
             return downloadPage.download();
         } catch (UnknownHostException e) {
             exception = e;

@@ -18,6 +18,6 @@
     <string name="building">Budowanie…</string>
     <string name="ready_to_build">Gotowy do wybudowania</string>
     <string name="ready_to_upgrade">Gotowy do rozbudowy</string>
-    <string name="too_few_resources">Brak surowców</string>
+    <string name="too_few_resources">Zbyt mało surowców lub kolejka jest pełna</string>
     <string name="unmet_requirements">Wymagania nie zostały spełnione</string>
 </resources>

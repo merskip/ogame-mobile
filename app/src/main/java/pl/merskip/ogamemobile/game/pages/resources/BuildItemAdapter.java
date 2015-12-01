@@ -18,6 +18,7 @@ import java.util.Map;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
+import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.Utils;
 
 /**
@@ -25,44 +26,51 @@ import pl.merskip.ogamemobile.game.Utils;
  */
 public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.ViewHolder> {
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private Context context;
+        private BuildItem buildItem;
 
         public ImageView iconView;
         public TextView nameView;
         public TextView levelView;
         public TextView buildStateView;
-        public ImageButton buildView;
+        public ImageButton buildButton;
 
         public ViewHolder(View view) {
             super(view);
+            this.context = view.getContext();
 
             iconView = (ImageView) view.findViewById(R.id.icon);
             nameView = (TextView) view.findViewById(R.id.name);
             levelView = (TextView) view.findViewById(R.id.level);
             buildStateView = (TextView) view.findViewById(R.id.build_state);
-            buildView = (ImageButton) view.findViewById(R.id.build);
+            buildButton = (ImageButton) view.findViewById(R.id.build);
+
+            buildButton.setOnClickListener(this);
         }
 
         public void set(BuildItem buildItem) {
+            this.buildItem = buildItem;
             int iconId = getBuildItemIconId(buildItem);
             iconView.setImageResource(iconId);
-            setGrayImageIfUnmetRequirements(buildItem);
+            setGrayImageIfUnmetRequirements();
 
             nameView.setText(buildItem.name);
             levelView.setText(Utils.toPrettyText(buildItem.level));
 
-            buildStateView.setText(getBuildStateText(buildItem));
+            buildStateView.setText(getBuildStateText());
 
-            if (buildItem.buildState == BuildState.ReadyToBuild) {
+            if (isCanBuild()) {
                 buildStateView.setVisibility(View.GONE);
-                buildView.setVisibility(View.VISIBLE);
+                buildButton.setVisibility(View.VISIBLE);
             } else {
                 buildStateView.setVisibility(View.VISIBLE);
-                buildView.setVisibility(View.GONE);
+                buildButton.setVisibility(View.GONE);
             }
         }
 
-        private void setGrayImageIfUnmetRequirements(BuildItem buildItem) {
+        private void setGrayImageIfUnmetRequirements() {
             if (buildItem.buildState == BuildState.UnmetRequirements) {
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation(0);
@@ -76,7 +84,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             }
         }
 
-        private String getBuildStateText(BuildItem buildItem) {
+        private String getBuildStateText() {
             switch (buildItem.buildState) {
                 case Upgrading:
                     return context.getString(R.string.building);
@@ -89,6 +97,24 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             }
         }
 
+        private boolean isCanBuild() {
+            return buildItem.buildState == BuildState.ReadyToBuild
+                    && buildItem.buildRequestUrl != null;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == buildButton) {
+                build();
+            }
+        }
+
+        private void build() {
+            if (buildItem.buildState == BuildState.ReadyToBuild) {
+                GameActivity activity = (GameActivity) context;
+                activity.build(buildItem);
+            }
+        }
     }
 
     private static Map<String, String> iconsMap;
