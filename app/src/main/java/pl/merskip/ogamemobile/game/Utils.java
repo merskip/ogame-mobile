@@ -177,6 +177,6 @@ public class Utils {
                     .append("s");
         }
 
-        return time.toString();
+        return time.toString().trim();
     }
 }

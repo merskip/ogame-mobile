@@ -30,4 +30,24 @@ public class UtilsTest {
         Assert.assertEquals(excepted, text);
         System.out.printf("%10d: %7s\n", value, text);
     }
+
+    @Test
+    public void testTimeCountdown() {
+        testTime("1s", 1);
+        testTime("15s", 15);
+        testTime("59s", 59);
+        testTime("1m 01s", 60 + 1);
+        testTime("1m 13s", 60 + 13);
+        testTime("1h 1m", 3600 + 61 + 1);
+        testTime("1d 1h", 24 * 3600 + 3600 + 61 + 1);
+        testTime("1d 1h", 24 * 3600 + 3600 + 61 + 1);
+        testTime("31d 12h", 31 * 24 * 3600 + 12 * 3600 + 61 + 1);
+    }
+
+    private void testTime(String excepted, int seconds) {
+        String time = Utils.timeCountdownConvert(seconds);
+
+        Assert.assertEquals(excepted, time);
+        System.out.printf("%d -> %s\n", seconds, time);
+    }
 }
