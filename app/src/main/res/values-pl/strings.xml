@@ -24,4 +24,5 @@
     <string name="unmet_requirements">Wymagania nie zostały spełnione</string>
     <string name="remaining">Pozostało:</string>
     <string name="done">Zakończono</string>
+    <string name="shipyard">Stocznia</string>
 </resources>

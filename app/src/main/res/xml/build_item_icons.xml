@@ -6,7 +6,6 @@
     <entry key="3">deuterium_synthesizer</entry>
     <entry key="4">solar_plant</entry>
     <entry key="12">fusion_reactor</entry>
-    <entry key="212">solar_satellite</entry>
     <entry key="22">metal_storage</entry>
     <entry key="23">crystal_storage</entry>
     <entry key="24">deuterium_tank</entry>
@@ -40,4 +39,20 @@
     <entry key="109">weapons_technology</entry>
     <entry key="110">shielding_technology</entry>
     <entry key="111">armour_technology</entry>
+
+    <!-- shipyard -->
+    <entry key="204">light_fighter</entry>
+    <entry key="205">heavy_fighter</entry>
+    <entry key="206">cruiser</entry>
+    <entry key="207">battle_ship</entry>
+    <entry key="202">small_cargo</entry>
+    <entry key="203">large_cargo</entry>
+    <entry key="208">colony_ship</entry>
+    <entry key="215">battlecruiser</entry>
+    <entry key="211">bomber</entry>
+    <entry key="213">destroyer</entry>
+    <entry key="214">death_star</entry>
+    <entry key="209">recycler</entry>
+    <entry key="210">espionage_probe</entry>
+    <entry key="212">solar_satellite</entry>
 </map>

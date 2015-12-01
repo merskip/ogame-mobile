@@ -3,6 +3,7 @@ package pl.merskip.ogamemobile.game;
 import pl.merskip.ogamemobile.game.pages.overview.GetOverviewTask;
 import pl.merskip.ogamemobile.game.pages.research.GetResearchTask;
 import pl.merskip.ogamemobile.game.pages.resources.GetResourcesTask;
+import pl.merskip.ogamemobile.game.pages.shipyard.GetShipyardTask;
 import pl.merskip.ogamemobile.game.pages.station.GetStationTask;
 
 /**
@@ -30,6 +31,8 @@ public class DownloadPageFactory {
                 return new GetStationTask(activity);
             case "research":
                 return new GetResearchTask(activity);
+            case "shipyard":
+                return new GetShipyardTask(activity);
             default:
                 return null;
         }
