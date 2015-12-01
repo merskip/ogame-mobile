@@ -113,6 +113,9 @@ public class GameActivity
             case R.id.shipyard:
                 openPage("shipyard");
                 return true;
+            case R.id.defense:
+                openPage("defense");
+                return true;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
                 return false;

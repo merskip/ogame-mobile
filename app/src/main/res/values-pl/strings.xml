@@ -17,6 +17,8 @@
     <string name="resources">Surowce</string>
     <string name="station">Stacja</string>
     <string name="research">Badania</string>
+    <string name="shipyard">Stocznia</string>
+    <string name="defense">Obrona</string>
     <string name="building">Budowanie…</string>
     <string name="ready_to_build">Gotowy do wybudowania</string>
     <string name="ready_to_upgrade">Gotowy do rozbudowy</string>
@@ -24,5 +26,4 @@
     <string name="unmet_requirements">Wymagania nie zostały spełnione</string>
     <string name="remaining">Pozostało:</string>
     <string name="done">Zakończono</string>
-    <string name="shipyard">Stocznia</string>
 </resources>

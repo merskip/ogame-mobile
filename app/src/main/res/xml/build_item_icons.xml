@@ -40,7 +40,7 @@
     <entry key="110">shielding_technology</entry>
     <entry key="111">armour_technology</entry>
 
-    <!-- shipyard -->
+    <!-- Shipyard -->
     <entry key="204">light_fighter</entry>
     <entry key="205">heavy_fighter</entry>
     <entry key="206">cruiser</entry>
@@ -55,4 +55,16 @@
     <entry key="209">recycler</entry>
     <entry key="210">espionage_probe</entry>
     <entry key="212">solar_satellite</entry>
+
+    <!-- Defense -->
+    <entry key="401">rocket_launcher</entry>
+    <entry key="402">light_laser</entry>
+    <entry key="403">heavy_laser</entry>
+    <entry key="404">gauss_cannon</entry>
+    <entry key="405">ion_cannon</entry>
+    <entry key="406">plasma_turret</entry>
+    <entry key="407">small_shield_dome</entry>
+    <entry key="408">large_shield_dome</entry>
+    <entry key="502">anti_ballistic_missile</entry>
+    <entry key="503">interplanetary_missile</entry>
 </map>

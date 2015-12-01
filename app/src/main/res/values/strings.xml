@@ -18,6 +18,7 @@
     <string name="station">Station</string>
     <string name="research">Research</string>
     <string name="shipyard">Shipyard</string>
+    <string name="defense">Defense</string>
     <string name="building">Building…</string>
     <string name="ready_to_build">Ready to build</string>
     <string name="ready_to_upgrade">Ready to upgrade</string>
