@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -135,5 +136,47 @@ public class Utils {
         }
 
         return map;
+    }
+
+    public static int SECONDS_IN_MINUTE = 60;
+    public static int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60;
+    public static int SECONDS_IN_DAY = 24 * SECONDS_IN_HOUR;
+
+    public static String timeCountdownConvert(int seconds) {
+        int days = (int) TimeUnit.SECONDS.toDays(seconds);
+        int hours = (int) (TimeUnit.SECONDS.toHours(seconds) - (days * 24));
+        int totalMinutes = (int) TimeUnit.SECONDS.toMinutes(seconds);
+        int minutes = (int) (totalMinutes - (TimeUnit.SECONDS.toHours(seconds) * 60));
+        int secs = (int) (TimeUnit.SECONDS.toSeconds(seconds) - (totalMinutes * 60));
+
+        StringBuilder time = new StringBuilder();
+
+        if (days > 0) {
+            time.append(days)
+                    .append("d")
+                    .append(" ");
+        }
+
+        if (hours > 0 || days > 0) {
+            time.append(hours)
+                    .append("h")
+                    .append(" ");
+        }
+
+        if (seconds < SECONDS_IN_DAY - 1 && seconds >= SECONDS_IN_MINUTE) {
+            time.append(minutes)
+                    .append("m")
+                    .append(" ");
+        }
+
+        if (seconds < SECONDS_IN_HOUR - 1) {
+            if (secs < 10 && seconds >= 10)
+                time.append("0");
+
+            time.append(secs)
+                    .append("s");
+        }
+
+        return time.toString();
     }
 }

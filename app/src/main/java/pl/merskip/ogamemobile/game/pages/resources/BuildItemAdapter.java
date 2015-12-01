@@ -37,6 +37,9 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         public TextView buildStateView;
         public ImageButton buildButton;
 
+        public BuildProgressTimer timer;
+        public ViewGroup buildProgressLayout;
+
         public ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
@@ -46,11 +49,12 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             levelView = (TextView) view.findViewById(R.id.level);
             buildStateView = (TextView) view.findViewById(R.id.build_state);
             buildButton = (ImageButton) view.findViewById(R.id.build);
+            buildProgressLayout = (ViewGroup) view.findViewById(R.id.build_progress);
 
             buildButton.setOnClickListener(this);
         }
 
-        public void set(BuildItem buildItem) {
+        public void set(final BuildItem buildItem) {
             this.buildItem = buildItem;
             int iconId = getBuildItemIconId(buildItem);
             iconView.setImageResource(iconId);
@@ -60,13 +64,17 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             levelView.setText(Utils.toPrettyText(buildItem.level));
 
             buildStateView.setText(getBuildStateText());
+            buildButton.setVisibility(isCanBuild() ? View.VISIBLE : View.GONE);
 
-            if (isCanBuild()) {
-                buildStateView.setVisibility(View.GONE);
-                buildButton.setVisibility(View.VISIBLE);
-            } else {
-                buildStateView.setVisibility(View.VISIBLE);
-                buildButton.setVisibility(View.GONE);
+            if (timer != null)
+                timer.cancel();
+            buildProgressLayout.setVisibility(View.GONE);
+
+            if (buildItem.buildProgress != null) {
+                buildProgressLayout.setVisibility(View.VISIBLE);
+
+                timer = new BuildProgressTimer(buildItem.buildProgress, buildProgressLayout);
+                timer.start();
             }
         }
 
@@ -86,8 +94,6 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
         private String getBuildStateText() {
             switch (buildItem.buildState) {
-                case Upgrading:
-                    return context.getString(R.string.building);
                 case TooFewResources:
                     return context.getString(R.string.too_few_resources);
                 case UnmetRequirements:

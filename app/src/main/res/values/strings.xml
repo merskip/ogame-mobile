@@ -20,4 +20,6 @@
     <string name="ready_to_upgrade">Ready to upgrade</string>
     <string name="too_few_resources">Too few resources or queue is full</string>
     <string name="unmet_requirements">Requirement is not met</string>
+    <string name="remaining">Remaining:</string>
+    <string name="done">Done</string>
 </resources>
