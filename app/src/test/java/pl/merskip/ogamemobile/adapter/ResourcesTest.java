@@ -31,11 +31,16 @@ public class ResourcesTest extends PageTest {
             Assert.assertNotNull(buildItem.buildState);
             if (buildItem.buildState != BuildItem.BuildState.ReadyToBuild)
                 Assert.assertNull(buildItem.buildRequestUrl);
+            if (buildItem.buildState == BuildItem.BuildState.Upgrading)
+                Assert.assertNotNull(buildItem.buildProgress);
 
             System.out.printf("\n * %s (%d)\n", buildItem.name, buildItem.level);
             System.out.printf("\t- id: %s\n", buildItem.id);
             System.out.printf("\t- build state: %s\n", buildItem.buildState);
             System.out.printf("\t- fast build: %s\n", buildItem.buildRequestUrl);
+            if (buildItem.buildProgress != null)
+                System.out.printf("\t- build progress: totalSeconds=%d, finishTime=%d\n",
+                        buildItem.buildProgress.totalSeconds, buildItem.buildProgress.finishTime);
         }
     }
 }

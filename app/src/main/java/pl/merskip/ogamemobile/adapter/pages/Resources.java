@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
 
 /**
@@ -61,6 +62,8 @@ public class Resources extends AbstractPage<List<BuildItem>> {
 
         if (buildItem.buildState == BuildState.ReadyToBuild)
             buildItem.buildRequestUrl = getBuildRequestUrl(li);
+        if (buildItem.buildState == BuildState.Upgrading)
+            buildItem.buildProgress = getBuildingUpgrading(li, scriptData);
 
         return buildItem;
     }
@@ -95,4 +98,24 @@ public class Resources extends AbstractPage<List<BuildItem>> {
         return null;
     }
 
+    private BuildItem.BuildProgress getBuildingUpgrading(Element li,
+                                                      ScriptData scriptData) {
+        Element pusherElement = li.select(".pusher").first();
+        if (pusherElement == null)
+            return null;
+
+        String buildId = pusherElement.attr("id");
+        String regex = "new bauCountdown\\(.*?\\('" + buildId + "'\\),(.*?),(.*?),.*?\\);";
+        Matcher matcher = Pattern.compile(regex).matcher(scriptData.getContent());
+
+        if (matcher.find()) {
+            BuildItem.BuildProgress buildProgress = new BuildItem.BuildProgress();
+            int remainingSeconds = Integer.parseInt(matcher.group(1));
+            buildProgress.finishTime = System.currentTimeMillis() + remainingSeconds * 1000;
+            buildProgress.totalSeconds = Integer.parseInt(matcher.group(2));
+            return buildProgress;
+        }
+
+        return  null;
+    }
 }
