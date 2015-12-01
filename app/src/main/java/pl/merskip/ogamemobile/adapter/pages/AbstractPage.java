@@ -26,6 +26,7 @@ public abstract class AbstractPage<Result> {
     protected Connection connection;
     protected Connection.Response response;
 
+    protected DownloadTimer timer;
     protected Document document;
     protected ScriptData scriptData;
 
@@ -52,7 +53,7 @@ public abstract class AbstractPage<Result> {
      * @return Przetworzone dane
      */
     public Result download() throws IOException, UnexpectedLogoutException {
-        DownloadTimer timer = new DownloadTimer();
+        timer = new DownloadTimer();
 
         timer.started();
         connection = createConnection();
@@ -129,7 +130,7 @@ public abstract class AbstractPage<Result> {
      * Dostarcza narzędzi do pomiaru czasu pobierania i parsowania
      * oraz automatycznie generuje logi
      */
-    private class DownloadTimer {
+    protected class DownloadTimer {
         private long startedTime;
         private long downloadedTime;
         private long parsedTime;
@@ -152,6 +153,10 @@ public abstract class AbstractPage<Result> {
             float parsedSecs = (parsedTime - downloadedTime) / 1000.0f;
             Log.w("DownloadTimer", "Parsed in " + parsedSecs + "s"
                     + ", total downloaded in " + totalDownloadSecs + "s");
+        }
+
+        public float getTotalDownloadSecs() {
+            return (parsedTime - startedTime) / 1000.0f;
         }
     }
 }

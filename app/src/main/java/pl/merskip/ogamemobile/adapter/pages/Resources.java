@@ -100,6 +100,7 @@ public class Resources extends AbstractPage<List<BuildItem>> {
 
     private BuildItem.BuildProgress getBuildingUpgrading(Element li,
                                                       ScriptData scriptData) {
+
         Element pusherElement = li.select(".pusher").first();
         if (pusherElement == null)
             return null;
@@ -109,13 +110,20 @@ public class Resources extends AbstractPage<List<BuildItem>> {
         Matcher matcher = Pattern.compile(regex).matcher(scriptData.getContent());
 
         if (matcher.find()) {
-            BuildItem.BuildProgress buildProgress = new BuildItem.BuildProgress();
             int remainingSeconds = Integer.parseInt(matcher.group(1));
-            buildProgress.finishTime = System.currentTimeMillis() + remainingSeconds * 1000;
+            BuildItem.BuildProgress buildProgress = new BuildItem.BuildProgress();
+            buildProgress.finishTime = getFinishTime(remainingSeconds);
             buildProgress.totalSeconds = Integer.parseInt(matcher.group(2));
             return buildProgress;
         }
 
         return  null;
+    }
+
+    private long getFinishTime(int remainingSeconds) {
+        long currentTime = System.currentTimeMillis();
+        long remainingMillis = remainingSeconds * 1000;
+        long totalDownloadMillis = (long) (timer.getTotalDownloadSecs() * 1000);
+        return currentTime + remainingMillis - totalDownloadMillis;
     }
 }
