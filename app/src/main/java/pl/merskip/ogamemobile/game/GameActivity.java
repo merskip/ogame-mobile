@@ -166,7 +166,7 @@ public class GameActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content, fragment)
-                .commit();
+                .commitAllowingStateLoss();
 
         Log.d("GameActivity", "Shown content of page: " + pageName);
     }
