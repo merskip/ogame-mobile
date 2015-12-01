@@ -9,4 +9,14 @@
     <entry key="22">metal_storage</entry>
     <entry key="23">crystal_storage</entry>
     <entry key="24">deuterium_tank</entry>
+    <entry key="14">robotics_factory</entry>
+    <entry key="21">shipyard</entry>
+    <entry key="31">research_lab</entry>
+    <entry key="34">alliance_depot</entry>
+    <entry key="44">missile_silo</entry>
+    <entry key="15">nanite_factory</entry>
+    <entry key="33">terraformer</entry>
+    <entry key="41">lunar_base</entry>
+    <entry key="42">sensor_phalanx</entry>
+    <entry key="43">jump_gate</entry>
 </map>

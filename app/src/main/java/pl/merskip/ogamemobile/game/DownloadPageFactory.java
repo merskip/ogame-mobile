@@ -2,6 +2,7 @@ package pl.merskip.ogamemobile.game;
 
 import pl.merskip.ogamemobile.game.pages.overview.GetOverviewTask;
 import pl.merskip.ogamemobile.game.pages.resources.GetResourcesTask;
+import pl.merskip.ogamemobile.game.pages.station.GetStationTask;
 
 /**
  * Fabryka asynchronicznego pobierania stron
@@ -24,6 +25,8 @@ public class DownloadPageFactory {
                 return new GetOverviewTask(activity);
             case "resources":
                 return new GetResourcesTask(activity);
+            case "station":
+                return new GetStationTask(activity);
             default:
                 return null;
         }

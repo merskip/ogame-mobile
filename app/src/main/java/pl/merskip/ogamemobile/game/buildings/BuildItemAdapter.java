@@ -157,6 +157,8 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
     public int getBuildItemIconId(BuildItem buildItem) {
         String drawableName = iconsMap.get(buildItem.id);
+        if (drawableName == null)
+            return R.drawable.metal_mine;
         String packageName = context.getPackageName();
         Resources resources  = context.getResources();
         return resources.getIdentifier(drawableName, "drawable", packageName);
