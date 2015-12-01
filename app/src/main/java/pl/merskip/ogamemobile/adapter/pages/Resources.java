@@ -42,7 +42,7 @@ public class Resources extends AbstractPage<List<BuildItem>> {
     }
 
     private BuildItem createFromLi(Element li) {
-        String id = li.select(".tooltip").attr("ref");
+        String id = li.select("a[ref]").attr("ref");
         String name = li.select(".textlabel").text().trim();
         String levelWithNameAndDots = li.select(".level").text();
         String level = levelWithNameAndDots.replace(name, "").replace(".", "").trim();
