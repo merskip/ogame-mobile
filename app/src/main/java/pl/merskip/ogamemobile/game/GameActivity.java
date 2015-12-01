@@ -107,6 +107,9 @@ public class GameActivity
             case R.id.station:
                 openPage("station");
                 return true;
+            case R.id.research:
+                openPage("research");
+                return true;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
                 return false;

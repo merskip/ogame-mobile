@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <map>
+    <!-- Resources -->
     <entry key="1">metal_mine</entry>
     <entry key="2">crystal_mine</entry>
     <entry key="3">deuterium_synthesizer</entry>
@@ -9,6 +10,8 @@
     <entry key="22">metal_storage</entry>
     <entry key="23">crystal_storage</entry>
     <entry key="24">deuterium_tank</entry>
+
+    <!-- Station -->
     <entry key="14">robotics_factory</entry>
     <entry key="21">shipyard</entry>
     <entry key="31">research_lab</entry>
@@ -19,4 +22,22 @@
     <entry key="41">lunar_base</entry>
     <entry key="42">sensor_phalanx</entry>
     <entry key="43">jump_gate</entry>
+
+    <!-- Research -->
+    <entry key="113">energy_technology</entry>
+    <entry key="120">laser_technology</entry>
+    <entry key="121">ion_technology</entry>
+    <entry key="114">hyperspace_technology</entry>
+    <entry key="122">plasma_technology</entry>
+    <entry key="115">combustion_drive</entry>
+    <entry key="117">impulse_drive</entry>
+    <entry key="118">hyperspace_drive</entry>
+    <entry key="106">espionage_technology</entry>
+    <entry key="108">computer_technology</entry>
+    <entry key="124">astrophysics_and_expedition_technologies</entry>
+    <entry key="123">intergalactic_research_network</entry>
+    <entry key="199">graviton_technology</entry>
+    <entry key="109">weapons_technology</entry>
+    <entry key="110">shielding_technology</entry>
+    <entry key="111">armour_technology</entry>
 </map>
