@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.resources;
+package pl.merskip.ogamemobile.game.buildings;
 
 import android.os.CountDownTimer;
 import android.view.View;

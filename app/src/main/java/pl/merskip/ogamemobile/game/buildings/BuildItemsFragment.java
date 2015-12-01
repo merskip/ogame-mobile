@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.resources;
+package pl.merskip.ogamemobile.game.buildings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import java.util.List;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 
-public class ResourcesFragment extends Fragment {
+public class BuildItemsFragment extends Fragment {
 
     private Context context;
 
@@ -27,7 +27,7 @@ public class ResourcesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_resources, container, false);
+        View view = inflater.inflate(R.layout.fragment_build_items, container, false);
 
         Bundle args = getArguments();
         @SuppressWarnings("unchecked")

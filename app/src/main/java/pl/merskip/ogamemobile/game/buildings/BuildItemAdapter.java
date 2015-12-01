@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.resources;
+package pl.merskip.ogamemobile.game.buildings;
 
 import android.content.Context;
 import android.content.res.Resources;

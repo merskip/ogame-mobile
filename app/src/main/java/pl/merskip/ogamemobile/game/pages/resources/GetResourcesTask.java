@@ -1,20 +1,17 @@
 package pl.merskip.ogamemobile.game.pages.resources;
 
-import android.os.Bundle;
-
-import java.io.Serializable;
 import java.util.List;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.Resources;
-import pl.merskip.ogamemobile.game.DownloadPageTask;
 import pl.merskip.ogamemobile.game.GameActivity;
+import pl.merskip.ogamemobile.game.buildings.GetBuildItemsPageTask;
 
 /**
  * Pobieranie strony zasobów
  */
-public class GetResourcesTask extends DownloadPageTask<List<BuildItem>> {
+public class GetResourcesTask extends GetBuildItemsPageTask {
 
     public GetResourcesTask(GameActivity activity) {
         super(activity);
@@ -23,16 +20,5 @@ public class GetResourcesTask extends DownloadPageTask<List<BuildItem>> {
     @Override
     protected AbstractPage<List<BuildItem>> createDownloadPage() {
         return new Resources(auth);
-    }
-
-    @Override
-    protected void afterDownload(List<BuildItem> buildItems) {
-        Bundle args = new Bundle();
-
-        ResourcesFragment fragment = new ResourcesFragment();
-        args.putSerializable("build-items", (Serializable) buildItems);
-        fragment.setArguments(args);
-
-        showFragment(fragment);
     }
 }
