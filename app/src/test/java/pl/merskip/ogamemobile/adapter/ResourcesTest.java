@@ -29,10 +29,13 @@ public class ResourcesTest extends PageTest {
             Assert.assertNotEquals("", buildItem.id);
             Assert.assertNotEquals("", buildItem.name);
             Assert.assertNotNull(buildItem.buildState);
+            if (buildItem.buildState != BuildItem.BuildState.ReadyToBuild)
+                Assert.assertNull(buildItem.buildRequestUrl);
 
             System.out.printf("\n * %s (%d)\n", buildItem.name, buildItem.level);
             System.out.printf("\t- id: %s\n", buildItem.id);
             System.out.printf("\t- build state: %s\n", buildItem.buildState);
+            System.out.printf("\t- fast build: %s\n", buildItem.buildRequestUrl);
         }
     }
 }

@@ -8,6 +8,8 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
@@ -57,6 +59,9 @@ public class Resources extends AbstractPage<List<BuildItem>> {
             buildItem.level = Integer.parseInt(level);
         }
 
+        if (buildItem.buildState == BuildState.ReadyToBuild)
+            buildItem.buildRequestUrl = getBuildRequestUrl(li);
+
         return buildItem;
     }
 
@@ -72,6 +77,21 @@ public class Resources extends AbstractPage<List<BuildItem>> {
             return BuildState.UnmetRequirements;
         else
             Log.e("BuildItem", "Unknown building state: " + li.className());
+        return null;
+    }
+
+    private static String getBuildRequestUrl(Element li) {
+        Element aFastBuild = li.select("a.fastBuild").first();
+        if (aFastBuild == null)
+            return null;
+
+        String clickAttr = aFastBuild.attr("onclick");
+
+        String regex = "^sendBuildRequest\\('(.*)',.*\\)";
+        Matcher matcher = Pattern.compile(regex, Pattern.DOTALL).matcher(clickAttr);
+
+        if (matcher.find())
+            return matcher.group(1);
         return null;
     }
 

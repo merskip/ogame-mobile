@@ -12,6 +12,7 @@ public class BuildItem implements Serializable {
     public int level;
 
     public BuildState buildState;
+    public String buildRequestUrl;
 
     public enum BuildState {
         Upgrading,
