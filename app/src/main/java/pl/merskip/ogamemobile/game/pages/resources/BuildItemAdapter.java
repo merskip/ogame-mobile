@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         public TextView nameView;
         public TextView levelView;
         public TextView buildStateView;
+        public ImageButton buildView;
 
         public ViewHolder(View view) {
             super(view);
@@ -38,6 +40,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             nameView = (TextView) view.findViewById(R.id.name);
             levelView = (TextView) view.findViewById(R.id.level);
             buildStateView = (TextView) view.findViewById(R.id.build_state);
+            buildView = (ImageButton) view.findViewById(R.id.build);
         }
 
         public void set(BuildItem buildItem) {
@@ -49,6 +52,14 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             levelView.setText(Utils.toPrettyText(buildItem.level));
 
             buildStateView.setText(getBuildStateText(buildItem));
+
+            if (buildItem.buildState == BuildState.ReadyToBuild) {
+                buildStateView.setVisibility(View.GONE);
+                buildView.setVisibility(View.VISIBLE);
+            } else {
+                buildStateView.setVisibility(View.VISIBLE);
+                buildView.setVisibility(View.GONE);
+            }
         }
 
         private void setGrayImageIfUnmetRequirements(BuildItem buildItem) {
@@ -69,16 +80,12 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             switch (buildItem.buildState) {
                 case Upgrading:
                     return context.getString(R.string.building);
-                case ReadyToBuild:
-                    return (buildItem.level == 0)
-                            ?  context.getString(R.string.ready_to_build)
-                            : context.getString(R.string.ready_to_upgrade);
                 case TooFewResources:
                     return context.getString(R.string.too_few_resources);
                 case UnmetRequirements:
                     return context.getString(R.string.unmet_requirements);
                 default:
-                    throw new IllegalStateException("Unknown state: " + buildItem.buildState);
+                    return "";
             }
         }
 
