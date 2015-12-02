@@ -4,28 +4,28 @@ import java.util.List;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.Resources;
+import pl.merskip.ogamemobile.adapter.pages.Station;
 
 /**
- * Test strony zasobów
+ * Test strony stacji
  */
-public class ResourcesTest extends BuildItemsPage {
+public class StationTest extends BuildItemsPage {
 
     @Override
     protected AbstractPage<List<BuildItem>> createDownloadPage() {
-        return new Resources(auth);
+        return new Station(auth);
     }
 
     @Override
     protected boolean testItemsCount(int count) {
-        return count == 9;
+        return count == 7 || count == 5; // Planeta lub księżyc
     }
 
     @Override
     protected String[] getAllowedIds() {
         return new String[] {
-                "1", "2", "3", "4", "12",
-                "212", "22", "23", "24"
+                "14", "21", "31", "34", "44",
+                "15", "33", "41", "42", "43"
         };
     }
 }

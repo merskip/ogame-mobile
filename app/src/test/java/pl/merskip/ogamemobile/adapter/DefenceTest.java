@@ -4,28 +4,28 @@ import java.util.List;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.Resources;
+import pl.merskip.ogamemobile.adapter.pages.Defense;
 
 /**
- * Test strony zasobów
+ * Test strony obrony
  */
-public class ResourcesTest extends BuildItemsPage {
+public class DefenceTest extends BuildItemsPage {
 
     @Override
     protected AbstractPage<List<BuildItem>> createDownloadPage() {
-        return new Resources(auth);
+        return new Defense(auth);
     }
 
     @Override
     protected boolean testItemsCount(int count) {
-        return count == 9;
+        return count == 10;
     }
 
     @Override
     protected String[] getAllowedIds() {
-        return new String[] {
-                "1", "2", "3", "4", "12",
-                "212", "22", "23", "24"
+        return new String[]{
+                "401", "402", "403", "404", "405",
+                "406", "407", "408", "502", "503"
         };
     }
 }
