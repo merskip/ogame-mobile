@@ -1,11 +1,8 @@
 package pl.merskip.ogamemobile.game;
 
-import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 
 public class DownloadPageNotifier {
@@ -18,7 +15,7 @@ public class DownloadPageNotifier {
         /**
          * Zdarzenie wywoływane po pobraniu strony
          */
-        void onDownloadPage(Document document, ScriptData scriptData);
+        void onDownloadPage(AbstractPage<?> downloadPage);
     }
 
     private List<DownloadPageListener> listeners;
@@ -32,10 +29,7 @@ public class DownloadPageNotifier {
     }
 
     public void notifyListeners(AbstractPage<?> downloadPage) {
-        Document document = downloadPage.getDocument();
-        ScriptData scriptData = downloadPage.getScriptData();
-
         for (DownloadPageListener listener : listeners)
-            listener.onDownloadPage(document, scriptData);
+            listener.onDownloadPage(downloadPage);
     }
 }

@@ -1,5 +1,6 @@
 package pl.merskip.ogamemobile.game;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,6 @@ import org.jsoup.nodes.Document;
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
@@ -83,7 +83,6 @@ public class GameActivity
         drawerLayout.setDrawerListener(toggle);
 
         navigation.setNavigationItemSelectedListener(this);
-        navigation.setCheckedItem(R.id.overview);
 
         toggle.syncState();
     }
@@ -102,22 +101,22 @@ public class GameActivity
         switch (item.getItemId()) {
             case R.id.overview:
                 openPage("overview");
-                return true;
+                return false;
             case R.id.resources:
                 openPage("resources");
-                return true;
+                return false;
             case R.id.station:
                 openPage("station");
-                return true;
+                return false;
             case R.id.research:
                 openPage("research");
-                return true;
+                return false;
             case R.id.shipyard:
                 openPage("shipyard");
-                return true;
+                return false;
             case R.id.defense:
                 openPage("defense");
-                return true;
+                return false;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
                 return false;
@@ -194,8 +193,20 @@ public class GameActivity
     }
 
     @Override
-    public void onDownloadPage(Document document, ScriptData scriptData) {
+    public void onDownloadPage(AbstractPage<?> downloadPage) {
+        String pageName = downloadPage.getPageName();
+        int pageMenuId = getMenuIdFromPageName(pageName);
+        navigation.setCheckedItem(pageMenuId);
+
+        Document document = downloadPage.getDocument();
         updatePlanetName(document);
+    }
+
+
+    private int getMenuIdFromPageName(String pageName) {
+        String packageName = getPackageName();
+        Resources resources  = getResources();
+        return resources.getIdentifier(pageName, "id", packageName);
     }
 
     private void updatePlanetName(Document document) {

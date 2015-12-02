@@ -116,6 +116,10 @@ public abstract class AbstractPage<Result> {
         return response.url().getPath().equals("/game/index.php");
     }
 
+    public String getPageName() {
+        return page;
+    }
+
     public Document getDocument() {
         return document;
     }

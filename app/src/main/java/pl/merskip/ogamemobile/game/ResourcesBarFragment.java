@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.jsoup.nodes.Document;
-
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 
 /**
  * Obsługa pasku z zasobami
@@ -51,7 +50,8 @@ public class ResourcesBarFragment
     }
 
     @Override
-    public void onDownloadPage(Document document, ScriptData scriptData) {
+    public void onDownloadPage(AbstractPage<?> downloadPage) {
+        ScriptData scriptData = downloadPage.getScriptData();
         ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
         setResources(resources);
     }
