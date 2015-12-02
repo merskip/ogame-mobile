@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -68,10 +67,11 @@ public class LoginTask extends AsyncTask<Void, Void, AuthorizationData> {
 
         if (auth != null) {
             Intent intent = new Intent(activity, GameActivity.class);
+            intent.putExtra("auth", auth);
 
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("auth", auth);
-            intent.putExtras(bundle);
+            String startPage = activity.getIntent().getStringExtra("start-page");
+            if (startPage != null)
+                intent.putExtra("start-page", startPage);
 
             activity.startActivity(intent);
             activity.finish();

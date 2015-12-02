@@ -60,7 +60,9 @@ public class GameActivity
         }
 
         downloadPageFactory = new DownloadPageFactory(this);
-        openPage("overview");
+
+        String startPage = getIntent().getStringExtra("start-page");
+        openPage(startPage != null ? startPage : "overview");
     }
 
     private void setupToolbarAndNavigationDrawer() {

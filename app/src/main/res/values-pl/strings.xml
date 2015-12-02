@@ -28,4 +28,6 @@
     <string name="done">Zakończono</string>
     <string name="retry">Ponów próbę</string>
     <string name="no_internet_connection">Brak połączenia</string>
+    <string name="unexpected_logout">Zostałeś wylogoway</string>
+    <string name="login_retry">Zaloguj ponownie</string>
 </resources>

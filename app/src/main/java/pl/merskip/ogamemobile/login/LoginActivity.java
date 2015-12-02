@@ -61,6 +61,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             downloadUniversumList();
 
         restoreLastLoginAndUniversum();
+
+        if (isLoginDataInIntent())
+            loginFromIntent();
+    }
+
+    private boolean isLoginDataInIntent() {
+        return getIntent().hasExtra("login-data");
+    }
+
+    private void loginFromIntent() {
+        Login.Data loginData = (Login.Data)
+                getIntent().getSerializableExtra("login-data");
+
+        singIn(loginData);
     }
 
     @Override

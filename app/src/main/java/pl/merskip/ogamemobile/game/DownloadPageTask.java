@@ -1,10 +1,12 @@
 package pl.merskip.ogamemobile.game;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -12,6 +14,8 @@ import java.net.UnknownHostException;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.AbstractPage.UnexpectedLogoutException;
+import pl.merskip.ogamemobile.login.LoginActivity;
 
 /**
  * Asynchroniczne pobieranie i pokazanie strony
@@ -79,10 +83,11 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     @Override
     protected void onPostExecute(Result result) {
-        if (exception instanceof IOException) {
-            Toast.makeText(activity, R.string.connection_error, Toast.LENGTH_LONG)
-                    .show();
-        }
+        if (exception instanceof IOException)
+            showNoInternetConnection();
+
+        if (exception instanceof UnexpectedLogoutException)
+            showUnexpectedLogout();
 
         if (result != null) {
             activity.notifyDownloadPage(downloadPage);
@@ -96,5 +101,50 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     protected void showFragment(Fragment fragment) {
         activity.showContentPage(pageName, fragment);
+    }
+
+    private void showNoInternetConnection() {
+        final Class<?> taskClass = getClass();
+
+        Snackbar
+                .make(activity.findViewById(android.R.id.content),
+                R.string.no_internet_connection,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            DownloadPageTask<?> downloadTask = (DownloadPageTask<?>)
+                                    taskClass.getConstructor(GameActivity.class)
+                                    .newInstance(activity);
+                            downloadTask.execute();
+                        } catch (Exception e) {
+                            Log.e("DownloadPageTask", "Error create new instance: ", e);
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void showUnexpectedLogout() {
+        Snackbar
+                .make(activity.findViewById(android.R.id.content),
+                        R.string.unexpected_logout,
+                        Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.login_retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        retrySignIn();
+                    }
+                })
+                .show();
+    }
+
+    private void retrySignIn() {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.putExtra("login-data", auth.loginData);
+        intent.putExtra("start-page", pageName);
+        activity.startActivity(intent);
+        activity.finish();
     }
 }
