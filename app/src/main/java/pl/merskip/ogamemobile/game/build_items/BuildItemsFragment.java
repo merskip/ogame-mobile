@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.buildings;
+package pl.merskip.ogamemobile.game.build_items;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -6,7 +6,7 @@ import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.Shipyard;
 import pl.merskip.ogamemobile.game.GameActivity;
-import pl.merskip.ogamemobile.game.buildings.GetBuildItemsPageTask;
+import pl.merskip.ogamemobile.game.build_items.GetBuildItemsPageTask;
 
 /**
  * Pobieranie strony stoczni
