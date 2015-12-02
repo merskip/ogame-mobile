@@ -18,7 +18,8 @@ public class ScriptData {
 
     public ScriptData(Document document) {
         Element lastScript = document.select("#boxBG script").last();
-        content = lastScript.html();
+        if (lastScript != null)
+            content = lastScript.html();
     }
 
     public String getContent() {

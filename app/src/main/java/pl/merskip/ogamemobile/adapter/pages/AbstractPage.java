@@ -66,6 +66,8 @@ public abstract class AbstractPage<Result> {
 
         document = response.parse();
         scriptData = new ScriptData(document);
+        if (scriptData.getContent() == null)
+            scriptData = null;
         timer.parsed();
 
         return createResult(document);
