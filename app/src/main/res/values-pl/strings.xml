@@ -10,7 +10,7 @@
     <string name="refresh">Odśwież</string>
     <string name="downloading">Pobieranie</string>
     <string name="login_in_progress">Logowanie</string>
-    <string name="login_failed">Twój login lub hasło jest nieprawidłowe</string>
+    <string name="login_failed">Login lub hasło jest nieprawidłowe</string>
     <string name="drawer_open" >Otwórz nawigację</string>
     <string name="drawer_close" >Zamknij nawigację</string>
     <string name="overview">Podgląd</string>
@@ -26,4 +26,6 @@
     <string name="unmet_requirements">Wymagania nie zostały spełnione</string>
     <string name="remaining">Pozostało:</string>
     <string name="done">Zakończono</string>
+    <string name="retry">Ponów próbę</string>
+    <string name="no_internet_connection">Brak połączenia</string>
 </resources>

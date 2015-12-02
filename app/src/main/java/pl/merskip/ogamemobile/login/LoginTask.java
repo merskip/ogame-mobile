@@ -5,8 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -58,13 +59,11 @@ public class LoginTask extends AsyncTask<Void, Void, AuthorizationData> {
     protected void onPostExecute(AuthorizationData auth) {
 
         if (exception instanceof IOException) {
-            Toast.makeText(activity, R.string.connection_error, Toast.LENGTH_LONG)
-                    .show();
+            showNoInternetConnection();
         }
 
         if (exception instanceof Login.FailedLoginException) {
-            Toast.makeText(activity, R.string.login_failed, Toast.LENGTH_SHORT)
-                    .show();
+            showFailedLogin();
         }
 
         if (auth != null) {
@@ -79,5 +78,27 @@ public class LoginTask extends AsyncTask<Void, Void, AuthorizationData> {
         }
 
         progressDialog.dismiss();
+    }
+
+    private void showNoInternetConnection() {
+        Snackbar
+                .make(activity.findViewById(android.R.id.content),
+                        R.string.no_internet_connection,
+                        Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new LoginTask(activity, loginData).execute();
+                    }
+                })
+                .show();
+    }
+
+    private void showFailedLogin() {
+        Snackbar
+                .make(activity.findViewById(android.R.id.content),
+                        R.string.login_failed,
+                        Snackbar.LENGTH_INDEFINITE)
+                .show();
     }
 }

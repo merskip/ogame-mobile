@@ -10,7 +10,7 @@
     <string name="try_again">Try again</string>
     <string name="refresh">Refresh</string>
     <string name="login_in_progress">Login in progress</string>
-    <string name="login_failed">Your login or password is incorrect</string>
+    <string name="login_failed">Login or password is incorrect</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="overview">Overview</string>
@@ -26,4 +26,6 @@
     <string name="unmet_requirements">Requirement is not met</string>
     <string name="remaining">Remaining:</string>
     <string name="done">Done</string>
+    <string name="retry">Retry</string>
+    <string name="no_internet_connection">No internet connection</string>
 </resources>
