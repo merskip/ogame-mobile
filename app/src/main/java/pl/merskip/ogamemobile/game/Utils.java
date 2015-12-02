@@ -1,13 +1,17 @@
 package pl.merskip.ogamemobile.game;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -16,6 +20,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import pl.merskip.ogamemobile.R;
 
 public class Utils {
 
@@ -178,5 +184,29 @@ public class Utils {
         }
 
         return time.toString().trim();
+    }
+
+    public static Snackbar createSnackbar(Activity activity, int messageId) {
+        String message = activity.getString(messageId);
+        return createSnackbar(activity, message);
+    }
+
+    public static Snackbar createSnackbar(Activity activity, String message) {
+        View content = activity.findViewById(android.R.id.content);
+        int backgroundColor = ContextCompat.getColor(activity, R.color.snackbarBackground);
+        int textColor = ContextCompat.getColor(activity, R.color.snackbarTextColor);
+        int actionColor = ContextCompat.getColor(activity, R.color.colorAccent);
+
+        Snackbar snackbar = Snackbar.make(content, message, Snackbar.LENGTH_INDEFINITE);
+
+        View view = snackbar.getView();
+        view.setBackgroundColor(backgroundColor);
+
+        TextView textView = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(textColor);
+
+        snackbar.setActionTextColor(actionColor);
+
+        return snackbar;
     }
 }

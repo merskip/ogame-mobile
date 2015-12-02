@@ -15,6 +15,7 @@ import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.Login;
 import pl.merskip.ogamemobile.game.GameActivity;
+import pl.merskip.ogamemobile.game.Utils;
 
 /**
  * Asynchroniczne logowanie
@@ -81,24 +82,18 @@ public class LoginTask extends AsyncTask<Void, Void, AuthorizationData> {
     }
 
     private void showNoInternetConnection() {
-        Snackbar
-                .make(activity.findViewById(android.R.id.content),
-                        R.string.no_internet_connection,
-                        Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new LoginTask(activity, loginData).execute();
-                    }
-                })
-                .show();
+        Snackbar snackbar = Utils.createSnackbar(activity, R.string.no_internet_connection);
+        snackbar.setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new LoginTask(activity, loginData).execute();
+            }
+        });
+        snackbar.show();
     }
 
     private void showFailedLogin() {
-        Snackbar
-                .make(activity.findViewById(android.R.id.content),
-                        R.string.login_failed,
-                        Snackbar.LENGTH_INDEFINITE)
-                .show();
+        Snackbar snackbar = Utils.createSnackbar(activity, R.string.login_failed);
+        snackbar.show();
     }
 }

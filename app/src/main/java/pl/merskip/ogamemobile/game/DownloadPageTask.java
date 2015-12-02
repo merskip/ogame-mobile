@@ -104,40 +104,37 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     }
 
     private void showNoInternetConnection() {
-        final Class<?> taskClass = getClass();
-
-        Snackbar
-                .make(activity.findViewById(android.R.id.content),
-                R.string.no_internet_connection,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            DownloadPageTask<?> downloadTask = (DownloadPageTask<?>)
-                                    taskClass.getConstructor(GameActivity.class)
-                                    .newInstance(activity);
-                            downloadTask.execute();
-                        } catch (Exception e) {
-                            Log.e("DownloadPageTask", "Error create new instance: ", e);
-                        }
-                    }
-                })
-                .show();
+        Snackbar snackbar = Utils.createSnackbar(activity, R.string.no_internet_connection);
+        snackbar.setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retryDownloadPage();
+            }
+        });
+        snackbar.show();
     }
 
     private void showUnexpectedLogout() {
-        Snackbar
-                .make(activity.findViewById(android.R.id.content),
-                        R.string.unexpected_logout,
-                        Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.login_retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        retrySignIn();
-                    }
-                })
-                .show();
+        Snackbar snackbar = Utils.createSnackbar(activity, R.string.unexpected_logout);
+        snackbar.setAction(R.string.login_retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retrySignIn();
+            }
+        });
+        snackbar.show();
+    }
+
+    private void retryDownloadPage() {
+        try {
+            DownloadPageTask<?> downloadTask = (DownloadPageTask<?>)
+                    getClass()
+                            .getConstructor(GameActivity.class)
+                            .newInstance(activity);
+            downloadTask.execute();
+        } catch (Exception e) {
+            Log.e("DownloadPageTask", "Error create new instance: ", e);
+        }
     }
 
     private void retrySignIn() {

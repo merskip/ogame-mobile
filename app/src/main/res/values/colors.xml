@@ -6,6 +6,8 @@
     <color name="cardBackground">#3d3d3d</color>
 
     <color name="drawerTextColor">#FFFFFF</color>
+    <color name="snackbarBackground">#fff</color>
+    <color name="snackbarTextColor">#333</color>
 
     <color name="resource_normal">#CAC6C2</color>
     <color name="resource_middle">#FFA20A</color>
