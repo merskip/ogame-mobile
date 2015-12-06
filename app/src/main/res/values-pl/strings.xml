@@ -30,4 +30,6 @@
     <string name="no_internet_connection">Brak połączenia</string>
     <string name="unexpected_logout">Zostałeś wylogoway</string>
     <string name="login_retry">Zaloguj ponownie</string>
+    <string name="level">Poziom: %1$s</string>
+    <string name="requirements_to_next_level">Wymagania do następnego poziomu:</string>
 </resources>

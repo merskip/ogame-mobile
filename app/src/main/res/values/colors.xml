@@ -12,4 +12,7 @@
     <color name="resource_normal">#CAC6C2</color>
     <color name="resource_middle">#FFA20A</color>
     <color name="resource_overflow">#FF0000</color>
+    
+    <color name="cost_enough">#00D100</color>
+    <color name="cost_not_enough">#ff0000</color>
 </resources>

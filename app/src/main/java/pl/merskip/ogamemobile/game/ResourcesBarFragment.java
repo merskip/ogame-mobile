@@ -24,6 +24,8 @@ public class ResourcesBarFragment
 
     private GameActivity activity;
 
+    private ResourcesSummary resourcesSummary;
+
     private TextView metalView;
     private TextView crystalView;
     private TextView deuteriumView;
@@ -49,14 +51,22 @@ public class ResourcesBarFragment
         return view;
     }
 
+    public ResourcesSummary getResourcesSummary() {
+        return resourcesSummary;
+    }
+
     @Override
     public void onDownloadPage(AbstractPage<?> downloadPage) {
         ScriptData scriptData = downloadPage.getScriptData();
-        ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
-        setResources(resources);
+        if (scriptData != null) {
+            ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
+            setResources(resources);
+        }
     }
 
     public void setResources(ResourcesSummary resources) {
+        this.resourcesSummary = resources;
+
         String metal = Utils.toPrettyText(resources.metal.actual);
         String crystal = Utils.toPrettyText(resources.crystal.actual);
         String deuterium = Utils.toPrettyText(resources.deuterium.actual);
