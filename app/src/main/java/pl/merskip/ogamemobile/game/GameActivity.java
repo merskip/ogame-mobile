@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +20,7 @@ import org.jsoup.nodes.Document;
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
@@ -62,7 +64,7 @@ public class GameActivity
         downloadPageFactory = new DownloadPageFactory(this);
 
         String startPage = getIntent().getStringExtra("start-page");
-        openPage(startPage != null ? startPage : "overview");
+        openPage(startPage != null ? startPage : "resources");
     }
 
     private void setupToolbarAndNavigationDrawer() {
@@ -223,7 +225,19 @@ public class GameActivity
                 .attr("content");
     }
 
+    public ResourcesSummary getActualResources() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ResourcesBarFragment resourcesBarFragment = (ResourcesBarFragment)
+                fragmentManager.findFragmentById(R.id.resources_bar);
+
+        return resourcesBarFragment.getResourcesSummary();
+    }
+
     public AuthorizationData getAuthorizationData() {
         return auth;
+    }
+
+    public String getCurrentPage() {
+        return currentPage;
     }
 }

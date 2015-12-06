@@ -52,6 +52,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             buildProgressLayout = (ViewGroup) view.findViewById(R.id.build_progress);
 
             buildButton.setOnClickListener(this);
+            view.setOnClickListener(this);
         }
 
         public void set(final BuildItem buildItem) {
@@ -112,6 +113,8 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         public void onClick(View v) {
             if (v == buildButton) {
                 build();
+            } else {
+                showDetails();
             }
         }
 
@@ -120,6 +123,11 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
                 GameActivity activity = (GameActivity) context;
                 activity.build(buildItem);
             }
+        }
+
+        private void showDetails() {
+            GameActivity activity = (GameActivity) context;
+            new GetBuildItemDetailsTask(activity, buildItem).execute();
         }
     }
 

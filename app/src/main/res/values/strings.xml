@@ -30,4 +30,6 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="unexpected_logout">Unexpected logout</string>
     <string name="login_retry">Login retry</string>
+    <string name="level">Level: %1$s</string>
+    <string name="requirements_to_next_level">Requirements to next level:</string>
 </resources>
