@@ -4,20 +4,38 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/status_bar_size"
     android:gravity="bottom"
     android:background="@mipmap/drawer_bg">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="@drawable/drawer_shadow">
+        android:padding="8dp">
+
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="pl.merskip.ogamemobile.game.ResourcesBarFragment"
             android:id="@+id/resources_bar"
             tools:layout="@layout/fragment_resources_bar" />
+    </FrameLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawer_shadow">
+
+        <Spinner
+            android:id="@+id/planet_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp" />
     </FrameLayout>
 
 </LinearLayout>
