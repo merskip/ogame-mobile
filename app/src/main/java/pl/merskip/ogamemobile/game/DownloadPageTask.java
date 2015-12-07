@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.UnknownHostException;
 
 import pl.merskip.ogamemobile.R;
@@ -105,12 +106,18 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     private void showNoInternetConnection() {
         Snackbar snackbar = Utils.createSnackbar(activity, R.string.no_internet_connection);
-        snackbar.setAction(R.string.retry, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retryDownloadPage();
-            }
-        });
+
+        final DownloadPageTask<?> copyTask = getCopyTaskOrNull();
+        if (copyTask != null ) {
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    retryDownloadPage(copyTask);
+                }
+            });
+        } else {
+            snackbar.setDuration(Snackbar.LENGTH_LONG);
+        }
         snackbar.show();
     }
 
@@ -125,15 +132,11 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         snackbar.show();
     }
 
-    private void retryDownloadPage() {
+    private void retryDownloadPage(DownloadPageTask<?> downloadTask) {
         try {
-            DownloadPageTask<?> downloadTask = (DownloadPageTask<?>)
-                    getClass()
-                            .getConstructor(GameActivity.class)
-                            .newInstance(activity);
             downloadTask.execute();
         } catch (Exception e) {
-            Log.e("DownloadPageTask", "Error create new instance: ", e);
+            Log.e("DownloadPageTask", "Error while create copy: ", e);
         }
     }
 
@@ -143,5 +146,19 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         intent.putExtra("start-page", pageName);
         activity.startActivity(intent);
         activity.finish();
+    }
+
+    protected DownloadPageTask<?> getCopyTaskOrNull() {
+        try {
+            return createCopyTask();
+        } catch (Exception e) {
+            Log.e("DownloadPageTask", "Error while create copy: ", e);
+            return null;
+        }
+    }
+
+    protected DownloadPageTask<?> createCopyTask() throws Exception {
+        Constructor<?> defaultConstructor = getClass().getConstructor(GameActivity.class);
+        return (DownloadPageTask<?>) defaultConstructor.newInstance(activity);
     }
 }
