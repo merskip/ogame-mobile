@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
@@ -35,6 +36,7 @@ public class GameActivity
 
     private DownloadPageNotifier downloadPageNotifier;
 
+    private ActionBar actionBar;
     private DrawerLayout drawerLayout;
     private NavigationView navigation;
 
@@ -73,7 +75,7 @@ public class GameActivity
         navigation = (NavigationView) findViewById(R.id.navigation);
 
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
@@ -201,6 +203,7 @@ public class GameActivity
         navigation.setCheckedItem(pageMenuId);
 
         Document document = downloadPage.getDocument();
+
         updatePlanetName(document);
     }
 
@@ -212,17 +215,18 @@ public class GameActivity
     }
 
     private void updatePlanetName(Document document) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            String planetName = getPlanetName(document);
+        String planetName = getPlanetName(document);
+        if (actionBar != null && planetName != null)
             actionBar.setTitle(planetName);
-        }
     }
 
     private static String getPlanetName(Document document) {
-        return document.head()
-                .getElementsByAttributeValue("name", "ogame-planet-name")
-                .attr("content");
+        Elements metaPlanet = document.head()
+                .getElementsByAttributeValue("name", "ogame-planet-name");
+
+        if (metaPlanet.size() > 0)
+            return metaPlanet.attr("content");
+        return null;
     }
 
     public ResourcesSummary getActualResources() {
