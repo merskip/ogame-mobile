@@ -14,13 +14,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Spinner;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.util.List;
+
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.Planet;
+import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
@@ -39,6 +45,7 @@ public class GameActivity
     private ActionBar actionBar;
     private DrawerLayout drawerLayout;
     private NavigationView navigation;
+    private PlanetListAdapter planetListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +92,13 @@ public class GameActivity
                 new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                         R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(toggle);
-
         navigation.setNavigationItemSelectedListener(this);
-
         toggle.syncState();
+
+        View headerView = navigation.getHeaderView(0);
+        Spinner planetSelect = (Spinner) headerView.findViewById(R.id.planet_select);
+        planetListAdapter = new PlanetListAdapter(this);
+        planetSelect.setAdapter(planetListAdapter);
     }
 
     @Override
@@ -198,15 +208,17 @@ public class GameActivity
 
     @Override
     public void onDownloadPage(AbstractPage<?> downloadPage) {
+        Document document = downloadPage.getDocument();
+        updateSelectedMenuItem(downloadPage);
+        updatePlanetName(document);
+        updatePlanetList(document);
+    }
+
+    private void updateSelectedMenuItem(AbstractPage<?> downloadPage) {
         String pageName = downloadPage.getPageName();
         int pageMenuId = getMenuIdFromPageName(pageName);
         navigation.setCheckedItem(pageMenuId);
-
-        Document document = downloadPage.getDocument();
-
-        updatePlanetName(document);
     }
-
 
     private int getMenuIdFromPageName(String pageName) {
         String packageName = getPackageName();
@@ -227,6 +239,12 @@ public class GameActivity
         if (metaPlanet.size() > 0)
             return metaPlanet.attr("content");
         return null;
+    }
+
+    private void updatePlanetList(Document document) {
+        List<Planet> planetList = PlanetList.fromDocument(document);
+        if (planetList != null)
+            planetListAdapter.setPlanetList(planetList);
     }
 
     public ResourcesSummary getActualResources() {
