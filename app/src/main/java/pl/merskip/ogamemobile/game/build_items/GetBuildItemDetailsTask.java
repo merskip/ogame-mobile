@@ -31,6 +31,11 @@ public class GetBuildItemDetailsTask
     }
 
     @Override
+    protected DownloadPageTask<?> createCopyTask() throws Exception {
+        return new GetBuildItemDetailsTask(activity, buildItem);
+    }
+
+    @Override
     protected void afterDownload(BuildItemDetailsData result) {
 
         Bundle args = new Bundle();
