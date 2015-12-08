@@ -70,7 +70,8 @@ public class LoginTask extends AsyncTask<Void, Void, AuthorizationData> {
             Intent intent = new Intent(activity, GameActivity.class);
             intent.putExtra("auth", auth);
 
-            String startPage = activity.getIntent().getStringExtra("start-page");
+            Intent activityIntent = activity.getIntent();
+            String startPage = activityIntent.getStringExtra("start-page");
             if (startPage != null)
                 intent.putExtra("start-page", startPage);
 

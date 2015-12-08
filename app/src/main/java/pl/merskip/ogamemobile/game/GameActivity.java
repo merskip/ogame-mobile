@@ -1,5 +1,6 @@
 package pl.merskip.ogamemobile.game;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,10 +12,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import org.jsoup.nodes.Document;
@@ -34,11 +37,14 @@ import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
 
 public class GameActivity
         extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DownloadPageListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        DownloadPageListener, AdapterView.OnItemSelectedListener {
 
     private AuthorizationData auth;
     private DownloadPageFactory downloadPageFactory;
+
     private String currentPage;
+    private Planet currentPlanet;
 
     private DownloadPageNotifier downloadPageNotifier;
 
@@ -72,7 +78,8 @@ public class GameActivity
 
         downloadPageFactory = new DownloadPageFactory(this);
 
-        String startPage = getIntent().getStringExtra("start-page");
+        Intent intent = getIntent();
+        String startPage = intent.getStringExtra("start-page");
         openPage(startPage != null ? startPage : "resources");
     }
 
@@ -99,6 +106,7 @@ public class GameActivity
         Spinner planetSelect = (Spinner) headerView.findViewById(R.id.planet_select);
         planetListAdapter = new PlanetListAdapter(this);
         planetSelect.setAdapter(planetListAdapter);
+        planetSelect.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -148,6 +156,25 @@ public class GameActivity
         }
     }
 
+    private boolean ignoreFirstPlanetSelect = true;
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (ignoreFirstPlanetSelect) {
+            ignoreFirstPlanetSelect = false;
+            return;
+        }
+
+        currentPlanet = (Planet) planetListAdapter.getItem(position);
+        refreshPage();
+        drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.d("GameActivity", "No planet select");
+    }
+
     public void build(BuildItem buildItem) {
         if (buildItem.buildRequestUrl == null)
             throw new IllegalArgumentException("Build request url is null, " +
@@ -158,8 +185,13 @@ public class GameActivity
 
         downloadPageTask.setPageName(currentPage);
         downloadPageTask.setCustomUrl(buildItem.buildRequestUrl);
+        if (currentPlanet != null)
+            downloadPageTask.setPlanetId(currentPlanet.id);
+
         downloadPageTask.execute();
-        Log.d("GameActivity", "Request to build " + buildItem.id + " on page: " + currentPage);
+        Log.d("GameActivity", "Request to build=" + buildItem.id
+                + ", page=" + currentPage
+                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
     }
 
     public void refreshPage() {
@@ -169,7 +201,7 @@ public class GameActivity
     /**
      * Pobiera i otwiera asynchronicznie stronę o podanej nazwie.
      */
-    public void openPage(String pageName){
+    public void openPage(String pageName) {
         DownloadPageTask<?> downloadPageTask =
                 downloadPageFactory.getDownloadPageTask(pageName);
 
@@ -177,8 +209,12 @@ public class GameActivity
             throw new IllegalArgumentException("Unknown page name: " + pageName);
 
         downloadPageTask.setPageName(pageName);
+        if (currentPlanet != null)
+            downloadPageTask.setPlanetId(currentPlanet.id);
+
         downloadPageTask.execute();
-        Log.d("GameActivity", "Started opening page: " + pageName);
+        Log.d("GameActivity", "Started opening page=" + pageName
+                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
     }
 
     /**
@@ -212,6 +248,7 @@ public class GameActivity
         updateSelectedMenuItem(downloadPage);
         updatePlanetName(document);
         updatePlanetList(document);
+        updateCurrentPlanet(document);
     }
 
     private void updateSelectedMenuItem(AbstractPage<?> downloadPage) {
@@ -243,8 +280,23 @@ public class GameActivity
 
     private void updatePlanetList(Document document) {
         List<Planet> planetList = PlanetList.fromDocument(document);
-        if (planetList != null)
+        if (planetList != null) {
             planetListAdapter.setPlanetList(planetList);
+        }
+    }
+
+    private void updateCurrentPlanet(Document document) {
+        Elements metaPlanetId = document.head()
+                .getElementsByAttributeValue("name", "ogame-planet-id");
+
+        if (metaPlanetId.size() == 0)
+            return;
+
+        String currentPlanetId = metaPlanetId.attr("content");
+        for (Planet planet : planetListAdapter.getPlanetList()) {
+            if (planet.id.equals(currentPlanetId))
+                currentPlanet = planet;
+        }
     }
 
     public ResourcesSummary getActualResources() {

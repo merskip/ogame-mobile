@@ -43,6 +43,10 @@ public class PlanetListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<Planet> getPlanetList() {
+        return planetList;
+    }
+
     @Override
     public int getCount() {
         return planetList.size();
