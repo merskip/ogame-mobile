@@ -26,6 +26,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     protected GameActivity activity;
     protected AuthorizationData auth;
     private String pageName;
+    private String planetId;
     private String customUrl;
 
     private AbstractPage<Result> downloadPage;
@@ -44,6 +45,10 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     public void setPageName(String pageName) {
         this.pageName = pageName;
+    }
+
+    public void setPlanetId(String planetId) {
+        this.planetId = planetId;
     }
 
     public void setCustomUrl(String customUrl) {
@@ -68,6 +73,8 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
             downloadPage = createDownloadPage();
             if (customUrl != null)
                 downloadPage.setCustomUrl(customUrl);
+            if (planetId != null)
+                downloadPage.setPlanetId(planetId);
 
             return downloadPage.download();
         } catch (UnknownHostException e) {
@@ -144,6 +151,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.putExtra("login-data", auth.loginData);
         intent.putExtra("start-page", pageName);
+        intent.putExtra("planet-id", planetId);
         activity.startActivity(intent);
         activity.finish();
     }
