@@ -11,6 +11,7 @@
         android:id="@+id/metal"
         android:drawableTop="@mipmap/ic_resource_metal"
         android:textAlignment="center"
+        android:gravity="center"
         android:layout_weight="1" />
 
     <TextView
@@ -18,8 +19,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/crystal"
         android:drawableTop="@mipmap/ic_resource_crystal"
-        android:layout_weight="1"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_weight="1" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,6 +29,7 @@
         android:id="@+id/deuterium"
         android:drawableTop="@mipmap/ic_resource_deuterium"
         android:textAlignment="center"
+        android:gravity="center"
         android:layout_weight="1" />
 
     <TextView
@@ -35,5 +38,6 @@
         android:id="@+id/energy"
         android:drawableTop="@mipmap/ic_resource_energy"
         android:textAlignment="center"
+        android:gravity="center"
         android:layout_weight="1" />
 </LinearLayout>
