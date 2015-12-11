@@ -1,6 +1,12 @@
 package pl.merskip.ogamemobile.adapter;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.BeforeClass;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.Overview;
@@ -29,5 +35,16 @@ abstract public class PageTest {
         AbstractPage<?> downloadPage = new Overview(auth);
         downloadPage.download();
         return downloadPage;
+    }
+
+    protected Document getExampleDocumentFromAssets() {
+        try {
+            String absUrl = "http://s136-pl.ogame.gameforge.com/game/index.php?page=station";
+            InputStream in = new FileInputStream("src/test/assets/station.html");
+            return Jsoup.parse(in, "UTF-8", absUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

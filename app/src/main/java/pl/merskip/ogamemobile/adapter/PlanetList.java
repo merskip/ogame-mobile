@@ -19,7 +19,9 @@ public class PlanetList {
 
         List<Planet> planetList = new LinkedList<>();
         for (Element div : planetsDiv) {
-            planetList.add(fromPlanetDiv(div));
+            Planet planet = fromPlanetDiv(div);
+            appendMoonIfExists(div, planet);
+            planetList.add(planet);
         }
 
         return planetList;
@@ -38,6 +40,18 @@ public class PlanetList {
         planet.iconUrl = planetDiv.select("img.planetPic").attr("src");
 
         return planet;
+    }
+
+    private static void appendMoonIfExists(Element planetDiv, Planet planet) {
+        Element moonLink = planetDiv.select(".moonLink").first();
+        if (moonLink != null) {
+            String href = moonLink.attr("href");
+            int startId = href.lastIndexOf("cp=") + 3;
+            String id = href.substring(startId);
+
+            planet.moon = planet. new Moon(id);
+            planet.moon.iconUrl = moonLink.select("img.icon-moon").attr("src");
+        }
     }
 
 }

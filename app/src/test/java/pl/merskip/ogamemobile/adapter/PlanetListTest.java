@@ -15,11 +15,21 @@ import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 public class PlanetListTest extends PageTest {
 
     @Test
-    public void testPlanetList() throws Exception {
+    public void testPlanetListOnline() throws Exception {
         AbstractPage<?> examplePage = getExamplePage();
         Document document = examplePage.getDocument();
-        Assert.assertNotNull(document);
+        testFromDocument(document);
+    }
 
+    @Test
+    public void testPlanetListWithMoons() throws Exception {
+        Document document = getExampleDocumentFromAssets();
+        Assert.assertNotNull(document);
+        testFromDocument(document);
+    }
+
+    private void testFromDocument(Document document) throws Exception {
+        Assert.assertNotNull(document);
         List<Planet> planetList = PlanetList.fromDocument(document);
 
         Assert.assertNotNull(planetList);
@@ -39,6 +49,19 @@ public class PlanetListTest extends PageTest {
             Assert.assertNotEquals("", planet.name);
             Assert.assertTrue(planet.coordinate.matches("^\\[\\d+:\\d+:\\d+\\]$"));
             Assert.assertNotEquals("", planet.iconUrl);
+
+            if (planet.moon != null) {
+                System.out.printf("\t * moon: id=%s, coords=%s\n",
+                        planet.moon.id, planet.moon.coordinate);
+
+                Assert.assertNotNull(planet.moon.id);
+                Assert.assertNotNull(planet.moon.coordinate);
+                Assert.assertNotNull(planet.moon.iconUrl);
+
+                Assert.assertNotEquals("", planet.moon.id);
+                Assert.assertEquals(planet.moon.coordinate, planet.moon.coordinate);
+                Assert.assertNotEquals("", planet.moon.iconUrl);
+            }
         }
     }
 
