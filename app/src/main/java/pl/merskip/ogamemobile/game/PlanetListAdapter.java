@@ -39,7 +39,12 @@ public class PlanetListAdapter extends BaseAdapter {
     }
 
     public void setPlanetList(List<Planet> planetList) {
-        this.planetList = planetList;
+        this.planetList = new LinkedList<>();
+        for (Planet planet : planetList) {
+            this.planetList.add(planet);
+            if (planet.moon != null)
+                this.planetList.add(planet.moon);
+        }
         notifyDataSetChanged();
     }
 
@@ -77,7 +82,16 @@ public class PlanetListAdapter extends BaseAdapter {
 
         nameView.setText(planet.name);
         coordinateView.setText(planet.coordinate);
-        loadIcon(iconView, planet);
+
+        if (planet instanceof Planet.Moon) {
+            nameView.setText(context.getString(R.string.moon_item, planet.coordinate));
+            coordinateView.setVisibility(View.GONE);
+            iconView.setVisibility(View.GONE);
+        } else {
+            iconView.setVisibility(View.VISIBLE);
+            coordinateView.setVisibility(View.VISIBLE);
+            loadIcon(iconView, planet);
+        }
 
         return view;
     }

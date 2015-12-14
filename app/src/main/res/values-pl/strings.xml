@@ -32,4 +32,5 @@
     <string name="login_retry">Zaloguj ponownie</string>
     <string name="level">Poziom: %1$s</string>
     <string name="requirements_to_next_level">Wymagania do następnego poziomu:</string>
+    <string name="moon_item">Księżyc na %1$s</string>
 </resources>
