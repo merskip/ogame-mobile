@@ -31,6 +31,7 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.Planet;
 import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
+import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
@@ -45,7 +46,9 @@ public class GameActivity
 
     private String currentPage;
     private Planet currentPlanet;
+
     private Document mainDocument;
+    private ScriptData scriptData;
 
     private DownloadPageNotifier downloadPageNotifier;
 
@@ -246,8 +249,10 @@ public class GameActivity
     @Override
     public void onDownloadPage(AbstractPage<?> downloadPage) {
         Document document = downloadPage.getDocument();
-        if (document.body().hasClass("ogame"))
+        if (document.body().hasClass("ogame")) {
             this.mainDocument = document;
+            this.scriptData = downloadPage.getScriptData();
+        }
 
         updateSelectedMenuItem(downloadPage);
         updatePlanetName(document);
@@ -321,5 +326,9 @@ public class GameActivity
 
     public Document getMainDocument() {
         return mainDocument;
+    }
+
+    public ScriptData getScriptData() {
+        return scriptData;
     }
 }
