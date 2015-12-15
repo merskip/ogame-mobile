@@ -103,15 +103,17 @@ public class PlanetListAdapter extends BaseAdapter {
             @Override
             public void run() {
                 final Bitmap icon = downloadIcon(planet);
-                icons.put(planet.iconUrl, icon);
-                Log.d("PlanetList", "Download icon fot planet: " + planet.name);
+                if (icon != null) {
+                    icons.put(planet.iconUrl, icon);
+                    Log.d("PlanetList", "Download icon fot planet: " + planet.name);
 
-                iconView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        iconView.setImageBitmap(icon);
-                    }
-                });
+                    iconView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            iconView.setImageBitmap(icon);
+                        }
+                    });
+                }
             }
         }).start();
     }
