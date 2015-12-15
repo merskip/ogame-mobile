@@ -1,10 +1,11 @@
 package pl.merskip.ogamemobile.game.build_items;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +60,8 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
         public void set(final BuildItem buildItem) {
             this.buildItem = buildItem;
-            int iconId = getBuildItemIconId(buildItem);
-            iconView.setImageResource(iconId);
+            Drawable icon = getBuildItemIcon(buildItem);
+            iconView.setImageDrawable(icon);
             setGrayImageIfUnmetRequirements();
 
             nameView.setText(buildItem.name);
@@ -163,13 +166,16 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         return buildItems.size();
     }
 
-    public int getBuildItemIconId(BuildItem buildItem) {
-        String drawableName = iconsMap.get(buildItem.id);
-        if (drawableName == null)
-            return R.drawable.metal_mine;
-        String packageName = context.getPackageName();
-        Resources resources  = context.getResources();
-        return resources.getIdentifier(drawableName, "drawable", packageName);
+    public Drawable getBuildItemIcon(BuildItem buildItem) {
+        String drawableFilename = iconsMap.get(buildItem.id);
+
+        try {
+            InputStream stream = context.getAssets().open(drawableFilename);
+            return Drawable.createFromStream(stream, null);
+        } catch (IOException e) {
+            Log.e("BuildItem", "Failed load build item icon: ", e);
+            return null;
+        }
     }
 
 }
