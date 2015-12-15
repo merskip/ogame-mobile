@@ -84,12 +84,9 @@ public class PlanetListAdapter extends BaseAdapter {
         coordinateView.setText(planet.coordinate);
 
         if (planet instanceof Planet.Moon) {
-            nameView.setText(context.getString(R.string.moon_item, planet.coordinate));
-            coordinateView.setVisibility(View.GONE);
-            iconView.setVisibility(View.GONE);
+            nameView.setText(R.string.moon);
+            iconView.setImageResource(R.drawable.ic_moon);
         } else {
-            iconView.setVisibility(View.VISIBLE);
-            coordinateView.setVisibility(View.VISIBLE);
             loadIcon(iconView, planet);
         }
 
