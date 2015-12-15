@@ -45,6 +45,7 @@ public class GameActivity
 
     private String currentPage;
     private Planet currentPlanet;
+    private Document mainDocument;
 
     private DownloadPageNotifier downloadPageNotifier;
 
@@ -245,6 +246,9 @@ public class GameActivity
     @Override
     public void onDownloadPage(AbstractPage<?> downloadPage) {
         Document document = downloadPage.getDocument();
+        if (document.body().hasClass("ogame"))
+            this.mainDocument = document;
+
         updateSelectedMenuItem(downloadPage);
         updatePlanetName(document);
         updatePlanetList(document);
@@ -313,5 +317,9 @@ public class GameActivity
 
     public String getCurrentPage() {
         return currentPage;
+    }
+
+    public Document getMainDocument() {
+        return mainDocument;
     }
 }
