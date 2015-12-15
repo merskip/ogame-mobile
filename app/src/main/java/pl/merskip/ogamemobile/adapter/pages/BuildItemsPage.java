@@ -42,7 +42,7 @@ public abstract class BuildItemsPage extends AbstractPage<List<BuildItem>> {
         /* Gdy budynek jest rozbudowywany,
          * nazwa budynku i poziom są napisane w innym miejscu */
         if (buildItem.buildState == BuildState.Upgrading) {
-            buildItem.name = li.select(".tooltip").attr("title");
+            buildItem.name = li.select(".tooltip").attr("title").replaceAll(" \\(.*?\\)", "");
             String levelWithDots = li.select(".ecke .level").text();
             level = levelWithDots.replace(".", "").trim();
             buildItem.level = Integer.parseInt(level);
