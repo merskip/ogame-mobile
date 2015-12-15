@@ -28,4 +28,7 @@ public class BuildItemDetailsData implements Serializable {
     public int actualCapacity;
     public int storageCapacity;
 
+    public boolean hasAmountBuild = false;
+    public boolean isActiveBuild = false;
+
 }

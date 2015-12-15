@@ -13,7 +13,7 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
 public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
 
     private BuildItem buildItem;
-    BuildItemDetailsData result;
+    private BuildItemDetailsData result;
 
     public BuildItemDetails(AuthorizationData auth, String page, BuildItem buildItem) {
         super(auth, page);
@@ -36,6 +36,7 @@ public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
         appendCosts();
         appendExtraInfo();
         appendCapacity();
+        appendHasAmountBuild();
 
         return result;
     }
@@ -95,5 +96,10 @@ public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
             result.actualCapacity = Integer.parseInt(capacityBar.attr("data-current-amount"));
             result.storageCapacity = Integer.parseInt(capacityBar.attr("data-capacity"));
         }
+    }
+
+    private void appendHasAmountBuild() {
+        result.hasAmountBuild = !document.select(".amount_input").isEmpty();
+        result.isActiveBuild = !document.select(".build-it").isEmpty();
     }
 }

@@ -3,6 +3,9 @@ package pl.merskip.ogamemobile.game.build_items;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -10,10 +13,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
@@ -25,7 +33,7 @@ import pl.merskip.ogamemobile.game.Utils;
 /**
  * Alert ze szczegółami budynku
  */
-public class BuildItemDetailsAlert extends DialogFragment {
+public class BuildItemDetailsAlert extends DialogFragment implements View.OnClickListener {
 
     private View view;
     private GameActivity activity;
@@ -79,6 +87,7 @@ public class BuildItemDetailsAlert extends DialogFragment {
         setResourceCost(R.id.cost_energy, data.costEnergy, actualResources.energy);
 
         setupCapacity();
+        setupAmountBuild();
     }
 
     private void setResourceCost(int viewId, int cost, ResourceItem resource) {
@@ -161,5 +170,74 @@ public class BuildItemDetailsAlert extends DialogFragment {
             case "24": return resources.deuterium;
             default: return null;
         }
+    }
+
+    private void setupAmountBuild() {
+        View amountBuildLayout = view.findViewById(R.id.amount_build_layout);
+        amountBuildLayout.setVisibility(data.hasAmountBuild ? View.VISIBLE : View.GONE);
+        if (data.hasAmountBuild) {
+            EditText amountEdit = (EditText) view.findViewById(R.id.amount);
+            int maxAmount = getMaxAmountBuild();
+            amountEdit.setHint(Utils.toPrettyText(maxAmount));
+
+            ImageButton buildButton = (ImageButton) view.findViewById(R.id.build);
+            buildButton.setEnabled(data.isActiveBuild);
+            amountEdit.setEnabled(data.isActiveBuild);
+
+            Drawable buildIcon = buildButton.getDrawable();
+            if (data.isActiveBuild)
+                buildIcon.clearColorFilter();
+            else
+                buildIcon.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            buildButton.setImageDrawable(buildIcon);
+
+            buildButton.setOnClickListener(this);
+        }
+    }
+
+    private int getMaxAmountBuild() {
+        List<Integer> maxAmount = new ArrayList<>(3);
+
+        if (data.costMetal != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.metal, data.costMetal));
+
+        if (data.costCrystal != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.crystal, data.costCrystal));
+
+        if (data.costDeuterium != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.deuterium, data.costDeuterium));
+
+        if (data.costEnergy != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.energy, data.costEnergy));
+
+        return Collections.min(maxAmount);
+    }
+
+    private int getMaxAmountForResource(ResourceItem resource, int cost) {
+        return (int) Math.floor(resource.actual / cost);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.build) {
+            EditText amountEdit = (EditText) view.findViewById(R.id.amount);
+            String userAmount = amountEdit.getText().toString();
+            if (userAmount.isEmpty())
+                userAmount = amountEdit.getHint().toString();
+            int amount = Integer.parseInt(userAmount);
+            buildAmount(amount);
+        }
+    }
+
+    private void buildAmount(int amount) {
+        new BuildAmountTask(activity, data.originBuildItem, amount) {
+            @Override
+            protected void afterDownload(Boolean result) {
+                if (result)
+                    dismiss();
+                activity.refreshPage();
+                super.afterDownload(result);
+            }
+        }.execute();
     }
 }

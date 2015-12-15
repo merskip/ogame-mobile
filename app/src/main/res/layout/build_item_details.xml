@@ -111,4 +111,26 @@
             android:textAlignment="center" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:id="@+id/amount_build_layout">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/amount"
+            android:inputType="number"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/ic_build"
+            android:id="@+id/build" />
+    </LinearLayout>
+
 </LinearLayout>
