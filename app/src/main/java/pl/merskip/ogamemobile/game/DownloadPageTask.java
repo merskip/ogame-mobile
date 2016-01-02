@@ -4,13 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
@@ -28,6 +32,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     private String pageName;
     private String planetId;
     private String customUrl;
+    private Map<String, String> customRequestData;
 
     private AbstractPage<Result> downloadPage;
 
@@ -41,6 +46,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     public DownloadPageTask(GameActivity activity, AuthorizationData auth) {
         this.activity = activity;
         this.auth = auth;
+        this.customRequestData = new HashMap<>();
     }
 
     public void setPageName(String pageName) {
@@ -53,6 +59,10 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
 
     public void setCustomUrl(String customUrl) {
         this.customUrl = customUrl;
+    }
+
+    public void addCustomData(String key, String value) {
+        customRequestData.put(key, value);
     }
 
     @Override
@@ -75,6 +85,7 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
                 downloadPage.setCustomUrl(customUrl);
             if (planetId != null)
                 downloadPage.setPlanetId(planetId);
+            downloadPage.setCustomRequestData(customRequestData);
 
             return downloadPage.download();
         } catch (UnknownHostException e) {
@@ -98,11 +109,21 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
             showUnexpectedLogout();
 
         if (result != null) {
+            dismissBuildItemDetails();
             activity.notifyDownloadPage(downloadPage);
             afterDownload(result);
         }
 
         progressDialog.dismiss();
+    }
+
+    private void dismissBuildItemDetails() {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag("build-item-details");
+        if (fragment != null && fragment instanceof DialogFragment) {
+            DialogFragment dialog = (DialogFragment) fragment;
+            dialog.dismiss();
+        }
     }
 
     protected abstract void afterDownload(Result result);

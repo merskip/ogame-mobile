@@ -13,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -46,7 +48,7 @@ public class BuildItemDetailsAlert extends DialogFragment implements View.OnClic
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -61,9 +63,51 @@ public class BuildItemDetailsAlert extends DialogFragment implements View.OnClic
         data = (BuildItemDetailsData) args.getSerializable("details-data");
         setupUI();
 
+        builder.setNeutralButton(R.string.more, null);
+
         builder.setTitle(data.name);
         builder.setView(view);
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog dialog = (AlertDialog) getDialog();
+        Button moreButton = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        if (moreButton != null) {
+            moreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showMoreOptionsDialog();
+                }
+            });
+        }
+    }
+
+    private void showMoreOptionsDialog() {
+        final ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1);
+
+        final String abortBuild = activity.getString(R.string.abort_build);
+
+        if (data.canAbort)
+            adapter.add(abortBuild);
+
+        if (adapter.isEmpty())
+            return;
+
+        new AlertDialog.Builder(activity)
+                .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String option = adapter.getItem(which);
+                        if (option.equals(abortBuild)) {
+                            activity.abortBuild(data.originBuildItem, data.abortListId);
+                        }
+
+                    }
+                }).show();
     }
 
     private void setupUI(){

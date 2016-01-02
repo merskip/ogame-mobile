@@ -5,6 +5,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 
 /**
@@ -37,6 +40,7 @@ public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
         appendExtraInfo();
         appendCapacity();
         appendHasAmountBuild();
+        appendAbort();
 
         return result;
     }
@@ -101,5 +105,18 @@ public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
     private void appendHasAmountBuild() {
         result.hasAmountBuild = !document.select(".amount_input").isEmpty();
         result.isActiveBuild = !document.select(".build-it").isEmpty();
+    }
+
+    private void appendAbort() {
+        Element abortLink = document.select(".abort_link").first();
+        if (abortLink != null) {
+            result.canAbort = true;
+
+            String onclick = abortLink.attr("onclick");
+            String regex = "cancel(Production|Research)\\(.*?,(.*?),.*\\)";
+            Matcher matcher = Pattern.compile(regex).matcher(onclick);
+            if (matcher.find())
+                result.abortListId = matcher.group(2);
+        }
     }
 }

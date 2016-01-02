@@ -33,4 +33,7 @@
     <string name="level">Level: %1$s</string>
     <string name="requirements_to_next_level">Requirements to next level:</string>
     <string name="moon">Moon</string>
+    <string name="close">Close</string>
+    <string name="more">More</string>
+    <string name="abort_build">Abort build</string>
 </resources>

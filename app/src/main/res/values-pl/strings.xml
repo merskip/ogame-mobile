@@ -33,4 +33,7 @@
     <string name="level">Poziom: %1$s</string>
     <string name="requirements_to_next_level">Wymagania do następnego poziomu:</string>
     <string name="moon">Księżyc</string>
+    <string name="close">Zamknij</string>
+    <string name="more">Wiecej</string>
+    <string name="abort_build">Zatrzymaj budowę</string>
 </resources>

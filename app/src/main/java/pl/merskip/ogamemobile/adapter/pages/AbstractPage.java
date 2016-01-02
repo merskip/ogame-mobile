@@ -7,6 +7,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.ScriptData;
@@ -22,6 +24,7 @@ public abstract class AbstractPage<Result> {
     private String page;
     private String planetId;
     private String customUrl;
+    private Map<String, String> customRequestData;
 
     protected Connection connection;
     protected Connection.Response response;
@@ -38,6 +41,7 @@ public abstract class AbstractPage<Result> {
         this.auth = auth;
         this.page = page;
         this.planetId = planetId;
+        this.customRequestData = new HashMap<>();
     }
 
     public void setPlanetId(String planetId) {
@@ -46,6 +50,10 @@ public abstract class AbstractPage<Result> {
 
     public void setCustomUrl(String customUrl) {
         this.customUrl = customUrl;
+    }
+
+    public void setCustomRequestData(Map<String, String> data) {
+        customRequestData = data;
     }
 
     /**
@@ -95,6 +103,8 @@ public abstract class AbstractPage<Result> {
 
         if (!planetId.isEmpty())
             connection.data("cp", planetId);
+
+        connection.data(customRequestData);
 
         return connection;
     }

@@ -15,7 +15,7 @@ public class BuildItemDetailsTest extends PageTest {
     @Test
     public void testDetails() throws Exception {
         testSimpleBuilding();
-        testBuildingThisCapacity();
+        testCapacityBuilding();
         testResearch();
         testResearchWithEnergy();
         testShip();
@@ -30,13 +30,13 @@ public class BuildItemDetailsTest extends PageTest {
         Assert.assertEquals(0, result.costEnergy);
     }
 
-    private void testBuildingThisCapacity() throws Exception {
+    private void testCapacityBuilding() throws Exception {
         BuildItemDetailsData result = testBuildItem(new BuildItem("22", "", 1));
         Assert.assertTrue(result.hasCapacity);
     }
 
     private void testResearch() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("113", "", 1));
+        BuildItemDetailsData result = testBuildItem(new BuildItem("113", "", 1), "research");
 
         Assert.assertEquals(0, result.costMetal);
         Assert.assertNotEquals(0, result.costCrystal);
@@ -60,11 +60,16 @@ public class BuildItemDetailsTest extends PageTest {
         Assert.assertNotEquals(0, result.costCrystal);
         Assert.assertEquals(0, result.costDeuterium);
         Assert.assertEquals(0, result.costEnergy);
+        Assert.assertTrue(result.hasAmountBuild);
     }
 
     private BuildItemDetailsData testBuildItem(BuildItem buildItem) throws Exception {
+        return testBuildItem(buildItem, "resources");
+    }
+
+    private BuildItemDetailsData testBuildItem(BuildItem buildItem, String page) throws Exception {
         BuildItemDetails buildItemDetails =
-                new BuildItemDetails(auth, "resources", buildItem);
+                new BuildItemDetails(auth, page, buildItem);
 
         BuildItemDetailsData result = buildItemDetails.download();
         boolean hasExtraInfo = hasExtraInfo(result);
@@ -84,7 +89,15 @@ public class BuildItemDetailsTest extends PageTest {
             System.out.printf(" - capacity: %s / %d\n",
                     result.actualCapacity, result.storageCapacity);
         }
+        if (result.hasAmountBuild) {
+            System.out.printf(" - build amount: %s\n",
+                    result.isActiveBuild ? "ready" : "disabled");
+        }
 
+        if (result.canAbort) {
+            System.out.printf(" - can abort, listId=%s\n",
+                    result.abortListId);
+        }
 
         Assert.assertNotNull(result.id);
         Assert.assertNotNull(result.name);

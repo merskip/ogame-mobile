@@ -179,6 +179,26 @@ public class GameActivity
         Log.d("GameActivity", "No planet select");
     }
 
+    public void abortBuild(BuildItem buildItem, String listId) {
+        DownloadPageTask<?> downloadPageTask =
+                downloadPageFactory.getDownloadPageTask(currentPage);
+
+        downloadPageTask.setPageName(currentPage);
+        if (currentPlanet != null)
+            downloadPageTask.setPlanetId(currentPlanet.id);
+
+        String abortToken = scriptData.getAbortToken();
+        downloadPageTask.addCustomData("token", abortToken);
+        downloadPageTask.addCustomData("modus", "2");
+        downloadPageTask.addCustomData("techid", buildItem.id);
+        downloadPageTask.addCustomData("listid", listId);
+
+        downloadPageTask.execute();
+        Log.d("GameActivity", "Request to abort build=" + buildItem.id
+                + ", page=" + currentPage
+                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
+    }
+
     public void build(BuildItem buildItem) {
         if (buildItem.buildRequestUrl == null)
             throw new IllegalArgumentException("Build request url is null, " +

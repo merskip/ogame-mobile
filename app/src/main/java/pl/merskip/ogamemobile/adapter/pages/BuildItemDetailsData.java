@@ -31,4 +31,7 @@ public class BuildItemDetailsData implements Serializable {
     public boolean hasAmountBuild = false;
     public boolean isActiveBuild = false;
 
+    public boolean canAbort = false;
+    public String abortListId;
+
 }

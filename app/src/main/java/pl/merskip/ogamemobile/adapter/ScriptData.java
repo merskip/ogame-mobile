@@ -41,4 +41,14 @@ public class ScriptData {
         }
         return null;
     }
+
+    public String getAbortToken() {
+        String regex = "modus=2&token=(.*?)(\"|&)";
+        Matcher matcher = Pattern.compile(regex, Pattern.DOTALL).matcher(content);
+
+        if (matcher.find())
+            return matcher.group(1);
+        else
+            return null;
+    }
 }
