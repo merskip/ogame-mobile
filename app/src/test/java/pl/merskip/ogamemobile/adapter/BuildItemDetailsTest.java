@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetails;
+import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsResult;
 import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsData;
 
 /**
@@ -68,8 +68,8 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private BuildItemDetailsData testBuildItem(BuildItem buildItem, String page) throws Exception {
-        BuildItemDetails buildItemDetails =
-                new BuildItemDetails(auth, page, buildItem);
+        BuildItemDetailsResult buildItemDetails =
+                new BuildItemDetailsResult(auth, page, buildItem);
 
         BuildItemDetailsData result = buildItemDetails.download();
         boolean hasExtraInfo = hasExtraInfo(result);

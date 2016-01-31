@@ -9,19 +9,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
 
 /**
  * Strona zawierająca pozycje do budowania
  */
-public abstract class BuildItemsPage extends AbstractPage<List<BuildItem>> {
-
-
-    protected BuildItemsPage(AuthorizationData auth, String page) {
-        super(auth, page);
-    }
+public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
 
     protected void appendFromListLi(List<BuildItem> buildItems, Elements elementsLi) {
         for (Element element : elementsLi) {
@@ -111,7 +105,10 @@ public abstract class BuildItemsPage extends AbstractPage<List<BuildItem>> {
     private long getFinishTime(int remainingSeconds) {
         long currentTime = System.currentTimeMillis();
         long remainingMillis = remainingSeconds * 1000;
-        long totalDownloadMillis = (long) (timer.getTotalDownloadSecs() * 1000);
+        long totalDownloadMillis = 0;
+        if (request != null)
+            totalDownloadMillis = (long) (request.timer.getTotalDownloadSecs() * 1000);
+
         return currentTime + remainingMillis - totalDownloadMillis;
     }
 }

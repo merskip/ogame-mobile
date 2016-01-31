@@ -1,9 +1,12 @@
-package pl.merskip.ogamemobile.game.build_items;
+package pl.merskip.ogamemobile.game.pages.build_items;
 
 import android.content.Context;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,14 +18,21 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
+import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsRequest;
+import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsResult;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.game.DownloadTask;
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.Utils;
+import pl.merskip.ogamemobile.game.pages.ViewerPage;
 
 /**
  * Adapter pozycji budowania
@@ -31,7 +41,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Context context;
+        private GameActivity activity;
         private BuildItem buildItem;
 
         public ImageView iconView;
@@ -45,7 +55,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
         public ViewHolder(View view) {
             super(view);
-            this.context = view.getContext();
+            this.activity = (GameActivity) view.getContext();
 
             iconView = (ImageView) view.findViewById(R.id.icon);
             nameView = (TextView) view.findViewById(R.id.name);
@@ -129,8 +139,22 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         }
 
         private void showDetails() {
-            GameActivity activity = (GameActivity) context;
-            new GetBuildItemDetailsTask(activity, buildItem).execute();
+            RequestPage requestPage = new BuildItemDetailsRequest(activity, buildItem);
+            ResultPage resultPage = new BuildItemDetailsResult();
+            ViewerPage viewerPage = new ViewerPage(activity) {
+                @Override
+                public void show(Object o) {
+                    DialogFragment dialog = new BuildItemDetailsDialog();
+
+                    Bundle args = new Bundle();
+                    args.putSerializable("details-data", (Serializable) o);
+                    dialog.setArguments(args);
+
+                    FragmentManager fm = activity.getSupportFragmentManager();
+                    dialog.show(fm, "build-item-details");
+                }
+            };
+            new DownloadTask(activity, requestPage, resultPage, viewerPage).execute();
         }
     }
 

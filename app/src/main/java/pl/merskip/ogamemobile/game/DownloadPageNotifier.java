@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 public class DownloadPageNotifier {
 
@@ -15,7 +15,7 @@ public class DownloadPageNotifier {
         /**
          * Zdarzenie wywoływane po pobraniu strony
          */
-        void onDownloadPage(AbstractPage<?> downloadPage);
+        void onDownloadPage(ResultPage resultPage);
     }
 
     private List<DownloadPageListener> listeners;
@@ -28,8 +28,8 @@ public class DownloadPageNotifier {
         listeners.add(listener);
     }
 
-    public void notifyListeners(AbstractPage<?> downloadPage) {
+    public void notifyListeners(ResultPage resultPage) {
         for (DownloadPageListener listener : listeners)
-            listener.onDownloadPage(downloadPage);
+            listener.onDownloadPage(resultPage);
     }
 }

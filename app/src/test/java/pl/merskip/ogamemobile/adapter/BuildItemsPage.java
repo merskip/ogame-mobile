@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 
 import static pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState.ReadyToBuild;
@@ -21,7 +21,7 @@ public abstract class BuildItemsPage extends PageTest {
 
     @Test
     public void testBuildItems() throws Exception {
-        AbstractPage<List<BuildItem>> downloadPage = createDownloadPage();
+        RequestPage<List<BuildItem>> downloadPage = createDownloadPage();
         buildItems = downloadPage.download();
 
         boolean isGoodCount = testItemsCount(buildItems.size());
@@ -39,7 +39,7 @@ public abstract class BuildItemsPage extends PageTest {
         }
     }
 
-    protected abstract AbstractPage<List<BuildItem>> createDownloadPage();
+    protected abstract RequestPage<List<BuildItem>> createDownloadPage();
 
     /**
      * Metoda sprawdzająca ilość pobranych budynków

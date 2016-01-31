@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.adapter;
 
 import org.junit.Test;
 
-import pl.merskip.ogamemobile.adapter.pages.Overview;
+import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
 import pl.merskip.ogamemobile.adapter.pages.OverviewData;
 
 import static org.junit.Assert.assertNotEquals;
@@ -14,7 +14,7 @@ public class OverviewTest extends PageTest {
 
     @Test
     public void testPage() throws Exception {
-        Overview page = new Overview(auth);
+        OverviewResult page = new OverviewResult(auth);
 
         OverviewData result = page.download();
 

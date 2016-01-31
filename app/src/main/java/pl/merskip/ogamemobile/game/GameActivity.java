@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -31,10 +32,14 @@ import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.Planet;
 import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
+import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
+import pl.merskip.ogamemobile.game.pages.ViewerPage;
+import pl.merskip.ogamemobile.game.pages.ViewerPageFactory;
 
 public class GameActivity
         extends AppCompatActivity
@@ -42,15 +47,14 @@ public class GameActivity
         DownloadPageListener, AdapterView.OnItemSelectedListener {
 
     private AuthorizationData auth;
-    private DownloadPageFactory downloadPageFactory;
 
     private String currentPage;
-    private Planet currentPlanet;
-
-    private Document mainDocument;
-    private ScriptData scriptData;
+    private Planet currentPlanet = new Planet("", "", "");
 
     private DownloadPageNotifier downloadPageNotifier;
+    private ResultPage lastResultPage;
+    private Document lastMainDocument;
+    private ScriptData lastScriptData;
 
     private ActionBar actionBar;
     private DrawerLayout drawerLayout;
@@ -79,8 +83,6 @@ public class GameActivity
 
             finish();
         }
-
-        downloadPageFactory = new DownloadPageFactory(this);
 
         Intent intent = getIntent();
         String startPage = intent.getStringExtra("start-page");
@@ -153,7 +155,7 @@ public class GameActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                refreshPage();
+                refreshCurrentPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -170,8 +172,8 @@ public class GameActivity
         }
 
         currentPlanet = (Planet) planetListAdapter.getItem(position);
-        refreshPage();
-        drawerLayout.closeDrawer(Gravity.LEFT);
+        openPage(currentPage, currentPlanet);
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -179,66 +181,100 @@ public class GameActivity
         Log.d("GameActivity", "No planet select");
     }
 
-    public void abortBuild(BuildItem buildItem, String listId) {
-        DownloadPageTask<?> downloadPageTask =
-                downloadPageFactory.getDownloadPageTask(currentPage);
-
-        downloadPageTask.setPageName(currentPage);
-        if (currentPlanet != null)
-            downloadPageTask.setPlanetId(currentPlanet.id);
-
-        String abortToken = scriptData.getAbortToken();
-        downloadPageTask.addCustomData("token", abortToken);
-        downloadPageTask.addCustomData("modus", "2");
-        downloadPageTask.addCustomData("techid", buildItem.id);
-        downloadPageTask.addCustomData("listid", listId);
-
-        downloadPageTask.execute();
-        Log.d("GameActivity", "Request to abort build=" + buildItem.id
-                + ", page=" + currentPage
-                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
+    public AuthorizationData getAuth() {
+        return auth;
     }
 
-    public void build(BuildItem buildItem) {
-        if (buildItem.buildRequestUrl == null)
-            throw new IllegalArgumentException("Build request url is null, " +
-                    "maybe is not ready to build or is ship?");
-
-        DownloadPageTask<?> downloadPageTask =
-                downloadPageFactory.getDownloadPageTask(currentPage);
-
-        downloadPageTask.setPageName(currentPage);
-        downloadPageTask.setCustomUrl(buildItem.buildRequestUrl);
-        if (currentPlanet != null)
-            downloadPageTask.setPlanetId(currentPlanet.id);
-
-        downloadPageTask.execute();
-        Log.d("GameActivity", "Request to build=" + buildItem.id
-                + ", page=" + currentPage
-                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
+    public String getCurrentPage() {
+        return currentPage;
     }
 
-    public void refreshPage() {
-        openPage(currentPage);
+    public Planet getCurrentPlanet() {
+        return currentPlanet;
     }
 
-    /**
-     * Pobiera i otwiera asynchronicznie stronę o podanej nazwie.
-     */
+    public void abortBuild(final BuildItem buildItem, final String listId) {
+        String pageName = currentPage;
+        final String abortToken = lastScriptData.getAbortToken();
+        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
+            @Override
+            protected Connection createConnection() {
+                return super.createConnection()
+                        .data("token", abortToken)
+                        .data("modus", "2")
+                        .data("techid", buildItem.id)
+                        .data("listid", listId);
+            }
+        };
+
+        ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
+        ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
+
+        new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
+
+        Log.d("GameActivity", "Request abort name=" + buildItem.name
+                + ", page=" + pageName
+                + ", planet=" + currentPlanet.name);
+    }
+
+    public void build(final BuildItem buildItem) {
+        String pageName = currentPage;
+        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
+            @Override
+            protected String getRequestUrl() {
+                return buildItem.buildRequestUrl;
+            }
+        };
+        ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
+        ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
+
+        new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
+
+        Log.d("GameActivity", "Request build name=" + buildItem.name
+                + ", page=" + pageName
+                + ", planet=" + currentPlanet.name);
+    }
+
+    public void buildAmount(final BuildItem buildItem, final int amount) {
+        String pageName = currentPage;
+        final String token = lastMainDocument.select("form[name=form] input[name=token]").attr("value");
+        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
+            @Override
+            protected Connection createConnection() {
+                return super.createConnection()
+                        .method(Connection.Method.POST)
+                        .data("token", token)
+                        .data("modus", "1")
+                        .data("type", buildItem.id)
+                        .data("menge", String.valueOf(amount));
+            }
+        };
+
+        new DownloadTask(this, requestPage, null, null).execute();
+
+        Log.d("GameActivity", "Request amount build name=" + buildItem.name
+                + ", amount=" + amount
+                + ", page=" + pageName
+                + ", planet=" + currentPlanet.name);
+    }
+
+    public void refreshCurrentPage() {
+        openPage(currentPage, currentPlanet);
+    }
+
     public void openPage(String pageName) {
-        DownloadPageTask<?> downloadPageTask =
-                downloadPageFactory.getDownloadPageTask(pageName);
+        openPage(pageName, currentPlanet);
+    }
 
-        if (downloadPageTask == null)
-            throw new IllegalArgumentException("Unknown page name: " + pageName);
+    public void openPage(String pageName, Planet planet) {
+        RequestPage requestPage = new RequestPage(auth, pageName, planet.id);
+        ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
+        ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
 
-        downloadPageTask.setPageName(pageName);
-        if (currentPlanet != null)
-            downloadPageTask.setPlanetId(currentPlanet.id);
+        new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
 
-        downloadPageTask.execute();
         Log.d("GameActivity", "Started opening page=" + pageName
-                + ", planet=" + (currentPlanet != null ? currentPlanet.name : ""));
+                + ", planet=" + planet.name);
     }
 
     /**
@@ -262,26 +298,32 @@ public class GameActivity
         downloadPageNotifier.addListener(listener);
     }
 
-    public void notifyDownloadPage(AbstractPage<?> downloadPage) {
-        downloadPageNotifier.notifyListeners(downloadPage);
+    public void notifyDownloadPage(ResultPage resultPage) {
+        downloadPageNotifier.notifyListeners(resultPage);
     }
 
     @Override
-    public void onDownloadPage(AbstractPage<?> downloadPage) {
-        Document document = downloadPage.getDocument();
-        if (document.body().hasClass("ogame")) {
-            this.mainDocument = document;
-            this.scriptData = downloadPage.getScriptData();
+    public void onDownloadPage(ResultPage resultPage) {
+        lastResultPage = resultPage;
+        Document document = resultPage.getDocument();
+
+        if (isMainDocument(document)) {
+            this.lastMainDocument = document;
+            this.lastScriptData = resultPage.getScriptData();
         }
 
-        updateSelectedMenuItem(downloadPage);
+        updateSelectedMenuItem(resultPage);
         updatePlanetName(document);
         updatePlanetList(document);
         updateCurrentPlanet(document);
     }
 
-    private void updateSelectedMenuItem(AbstractPage<?> downloadPage) {
-        String pageName = downloadPage.getPageName();
+    private boolean isMainDocument(Document document) {
+        return document.body().hasClass("ogame");
+    }
+
+    private void updateSelectedMenuItem(ResultPage resultPage) {
+        String pageName = resultPage.getRequest().getPageName();
         int pageMenuId = getMenuIdFromPageName(pageName);
         navigation.setCheckedItem(pageMenuId);
     }
@@ -334,21 +376,5 @@ public class GameActivity
                 fragmentManager.findFragmentById(R.id.resources_bar);
 
         return resourcesBarFragment.getResourcesSummary();
-    }
-
-    public AuthorizationData getAuthorizationData() {
-        return auth;
-    }
-
-    public String getCurrentPage() {
-        return currentPage;
-    }
-
-    public Document getMainDocument() {
-        return mainDocument;
-    }
-
-    public ScriptData getScriptData() {
-        return scriptData;
     }
 }

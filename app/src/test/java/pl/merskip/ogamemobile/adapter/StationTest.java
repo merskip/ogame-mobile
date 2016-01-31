@@ -2,9 +2,9 @@ package pl.merskip.ogamemobile.adapter;
 
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.Station;
+import pl.merskip.ogamemobile.adapter.pages.StationResult;
 
 /**
  * Test strony stacji
@@ -12,8 +12,8 @@ import pl.merskip.ogamemobile.adapter.pages.Station;
 public class StationTest extends BuildItemsPage {
 
     @Override
-    protected AbstractPage<List<BuildItem>> createDownloadPage() {
-        return new Station(auth);
+    protected RequestPage<List<BuildItem>> createDownloadPage() {
+        return new StationResult(auth);
     }
 
     @Override

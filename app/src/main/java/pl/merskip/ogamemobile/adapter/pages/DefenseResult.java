@@ -1,23 +1,15 @@
 package pl.merskip.ogamemobile.adapter.pages;
 
-import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
 
 /**
  * Strona obrony
  */
-public class Defense extends BuildItemsPage {
-
-    public Defense(AuthorizationData auth) {
-        super(auth, "defense");
-    }
+public class DefenseResult extends BuildItemsPage {
 
     @Override
-    public List<BuildItem> createResult(Document document) {
+    public List<BuildItem> onCreateResult() {
         List<BuildItem> buildItems = new ArrayList<>();
 
         appendFromListLi(buildItems, document.select("ul#defensebuilding li"));

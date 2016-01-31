@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 
 /**
  * Logowanie
@@ -43,7 +43,7 @@ public class Login {
 
         Connection.Response response = connection.execute();
 
-        if (AbstractPage.isSuccessResponse(response)) {
+        if (RequestPage.isSuccessResponse(response)) {
             Map<String, String> cookies = response.cookies();
             AuthorizationData auth = AuthorizationData.fromCookies(cookies);
             auth.loginData = loginData;

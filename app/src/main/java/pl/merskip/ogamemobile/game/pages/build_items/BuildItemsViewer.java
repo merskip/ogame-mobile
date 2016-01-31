@@ -1,25 +1,26 @@
-package pl.merskip.ogamemobile.game.build_items;
+package pl.merskip.ogamemobile.game.pages.build_items;
 
 import android.os.Bundle;
 
 import java.io.Serializable;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.game.DownloadPageTask;
 import pl.merskip.ogamemobile.game.GameActivity;
+import pl.merskip.ogamemobile.game.pages.ViewerPage;
 
 /**
  * Pobieranie strony z pozycjami budowania
  */
-public abstract class GetBuildItemsPageTask extends DownloadPageTask<List<BuildItem>> {
+public class BuildItemsViewer extends ViewerPage {
 
-    public GetBuildItemsPageTask(GameActivity activity) {
+    public BuildItemsViewer(GameActivity activity) {
         super(activity);
     }
 
     @Override
-    protected void afterDownload(List<BuildItem> buildItems) {
+    public void show(Object o) {
+        List buildItems = (List) o;
+
         Bundle args = new Bundle();
 
         BuildItemsFragment fragment = new BuildItemsFragment();

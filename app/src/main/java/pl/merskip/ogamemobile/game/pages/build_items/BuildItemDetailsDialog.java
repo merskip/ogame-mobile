@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.build_items;
+package pl.merskip.ogamemobile.game.pages.build_items;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -35,7 +35,7 @@ import pl.merskip.ogamemobile.game.Utils;
 /**
  * Alert ze szczegółami budynku
  */
-public class BuildItemDetailsAlert extends DialogFragment implements View.OnClickListener {
+public class BuildItemDetailsDialog extends DialogFragment implements View.OnClickListener {
 
     private View view;
     private GameActivity activity;
@@ -63,7 +63,8 @@ public class BuildItemDetailsAlert extends DialogFragment implements View.OnClic
         data = (BuildItemDetailsData) args.getSerializable("details-data");
         setupUI();
 
-        builder.setNeutralButton(R.string.more, null);
+        if (data.canAbort)
+            builder.setNeutralButton(R.string.more, null);
 
         builder.setTitle(data.name);
         builder.setView(view);
@@ -264,24 +265,18 @@ public class BuildItemDetailsAlert extends DialogFragment implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.build) {
-            EditText amountEdit = (EditText) view.findViewById(R.id.amount);
-            String userAmount = amountEdit.getText().toString();
-            if (userAmount.isEmpty())
-                userAmount = amountEdit.getHint().toString();
-            int amount = Integer.parseInt(userAmount);
-            buildAmount(amount);
+            buildAmount();
         }
     }
 
-    private void buildAmount(int amount) {
-        new BuildAmountTask(activity, data.originBuildItem, amount) {
-            @Override
-            protected void afterDownload(Boolean result) {
-                if (result)
-                    dismiss();
-                activity.refreshPage();
-                super.afterDownload(result);
-            }
-        }.execute();
+    private void buildAmount() {
+        EditText amountEdit = (EditText) view.findViewById(R.id.amount);
+        String userAmount = amountEdit.getText().toString();
+        if (userAmount.isEmpty())
+            userAmount = amountEdit.getHint().toString();
+        int amount = Integer.parseInt(userAmount);
+
+        activity.buildAmount(data.originBuildItem, amount);
     }
+
 }

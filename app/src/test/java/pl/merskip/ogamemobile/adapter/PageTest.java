@@ -8,8 +8,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
-import pl.merskip.ogamemobile.adapter.pages.Overview;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
 
 /**
  * Pomocnicza klasa testu strony
@@ -31,8 +31,8 @@ abstract public class PageTest {
         System.out.flush();
     }
 
-    protected AbstractPage<?> getExamplePage() throws Exception {
-        AbstractPage<?> downloadPage = new Overview(auth);
+    protected RequestPage<?> getExamplePage() throws Exception {
+        RequestPage<?> downloadPage = new OverviewResult(auth);
         downloadPage.download();
         return downloadPage;
     }

@@ -1,39 +1,24 @@
 package pl.merskip.ogamemobile.adapter.pages;
 
-import org.jsoup.Connection;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
-
 /**
  * Szczegółowe informacje o budowanej pozycji
  */
-public class BuildItemDetails extends AbstractPage<BuildItemDetailsData> {
+public class BuildItemDetailsResult extends ResultPage<BuildItemDetailsData> {
 
-    private BuildItem buildItem;
     private BuildItemDetailsData result;
 
-    public BuildItemDetails(AuthorizationData auth, String page, BuildItem buildItem) {
-        super(auth, page);
-        this.buildItem = buildItem;
-    }
-
     @Override
-    protected Connection createConnection() {
-        return super.createConnection()
-                .data("ajax", "1")
-                .data("type", buildItem.id);
-    }
+    protected BuildItemDetailsData onCreateResult() {
+        BuildItemDetailsRequest request = (BuildItemDetailsRequest) getRequest();
 
-    @Override
-    public BuildItemDetailsData createResult(Document document) {
         result = new BuildItemDetailsData();
-        result.originBuildItem = buildItem;
+        result.originBuildItem = request.buildItem;
 
         appendBaseAttributes();
         appendCosts();

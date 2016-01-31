@@ -2,28 +2,23 @@ package pl.merskip.ogamemobile.game.pages.overview;
 
 import android.os.Bundle;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
-import pl.merskip.ogamemobile.adapter.pages.Overview;
 import pl.merskip.ogamemobile.adapter.pages.OverviewData;
-import pl.merskip.ogamemobile.game.DownloadPageTask;
 import pl.merskip.ogamemobile.game.GameActivity;
+import pl.merskip.ogamemobile.game.pages.ViewerPage;
 
 /**
  * Pobieranie strony podglądu
  */
-public class GetOverviewTask extends DownloadPageTask<OverviewData> {
+public class OverviewViewer extends ViewerPage {
 
-    public GetOverviewTask(GameActivity activity) {
+    public OverviewViewer(GameActivity activity) {
         super(activity);
     }
 
     @Override
-    protected AbstractPage<OverviewData> createDownloadPage() {
-        return new Overview(auth);
-    }
+    public void show(Object o) {
+        OverviewData data = (OverviewData) o;
 
-    @Override
-    protected void afterDownload(OverviewData data) {
         Bundle args = new Bundle();
         args.putSerializable("data", data);
 

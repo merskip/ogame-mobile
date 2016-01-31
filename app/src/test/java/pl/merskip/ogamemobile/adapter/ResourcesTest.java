@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.adapter;
 
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.Resources;
 
@@ -12,7 +12,7 @@ import pl.merskip.ogamemobile.adapter.pages.Resources;
 public class ResourcesTest extends BuildItemsPage {
 
     @Override
-    protected AbstractPage<List<BuildItem>> createDownloadPage() {
+    protected RequestPage<List<BuildItem>> createDownloadPage() {
         return new Resources(auth);
     }
 

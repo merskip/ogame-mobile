@@ -13,7 +13,7 @@ import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 /**
  * Obsługa pasku z zasobami
@@ -56,8 +56,8 @@ public class ResourcesBarFragment
     }
 
     @Override
-    public void onDownloadPage(AbstractPage<?> downloadPage) {
-        ScriptData scriptData = downloadPage.getScriptData();
+    public void onDownloadPage(ResultPage resultPage) {
+        ScriptData scriptData = resultPage.getScriptData();
         if (scriptData != null) {
             ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
             setResources(resources);

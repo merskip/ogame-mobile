@@ -2,9 +2,9 @@ package pl.merskip.ogamemobile.adapter;
 
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.Defense;
+import pl.merskip.ogamemobile.adapter.pages.DefenseResult;
 
 /**
  * Test strony obrony
@@ -12,8 +12,8 @@ import pl.merskip.ogamemobile.adapter.pages.Defense;
 public class DefenceTest extends BuildItemsPage {
 
     @Override
-    protected AbstractPage<List<BuildItem>> createDownloadPage() {
-        return new Defense(auth);
+    protected RequestPage<List<BuildItem>> createDownloadPage() {
+        return new DefenseResult(auth);
     }
 
     @Override

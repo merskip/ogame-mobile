@@ -10,59 +10,39 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage;
-import pl.merskip.ogamemobile.adapter.pages.AbstractPage.UnexpectedLogoutException;
+import pl.merskip.ogamemobile.adapter.Login;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage.UnexpectedLogoutException;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.game.pages.ViewerPage;
 import pl.merskip.ogamemobile.login.LoginActivity;
 
 /**
  * Asynchroniczne pobieranie i pokazanie strony
  */
-abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Result> {
+public class DownloadTask extends AsyncTask<Void, Void, Object> {
 
     protected GameActivity activity;
-    protected AuthorizationData auth;
-    private String pageName;
-    private String planetId;
-    private String customUrl;
-    private Map<String, String> customRequestData;
 
-    private AbstractPage<Result> downloadPage;
+    private RequestPage requestPage;
+    private ResultPage resultPage;
+    private ViewerPage viewerPage;
 
     private ProgressDialog progressDialog;
     private Exception exception = null;
 
-    public DownloadPageTask(GameActivity activity) {
-        this(activity, activity.getAuthorizationData());
-    }
-
-    public DownloadPageTask(GameActivity activity, AuthorizationData auth) {
+    public DownloadTask(GameActivity activity, RequestPage requestPage,
+                        ResultPage resultPage, ViewerPage viewerPage) {
         this.activity = activity;
-        this.auth = auth;
-        this.customRequestData = new HashMap<>();
-    }
-
-    public void setPageName(String pageName) {
-        this.pageName = pageName;
-    }
-
-    public void setPlanetId(String planetId) {
-        this.planetId = planetId;
-    }
-
-    public void setCustomUrl(String customUrl) {
-        this.customUrl = customUrl;
-    }
-
-    public void addCustomData(String key, String value) {
-        customRequestData.put(key, value);
+        this.requestPage = requestPage;
+        this.resultPage = resultPage;
+        this.viewerPage = viewerPage;
     }
 
     @Override
@@ -78,30 +58,26 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
     }
 
     @Override
-    protected Result doInBackground(Void... params) {
+    protected Object doInBackground(Void... params) {
         try {
-            downloadPage = createDownloadPage();
-            if (customUrl != null)
-                downloadPage.setCustomUrl(customUrl);
-            if (planetId != null)
-                downloadPage.setPlanetId(planetId);
-            downloadPage.setCustomRequestData(customRequestData);
-
-            return downloadPage.download();
+            Document document = requestPage.download();
+            if (resultPage != null)
+                return resultPage.createResult(document, requestPage);
+            else
+                return null;
         } catch (UnknownHostException e) {
             exception = e;
             return null;
         } catch (Exception e) {
-            Log.e("DownloadPageTask", "Failed download page: ", e);
+            Log.e("DownloadTask", "Failed download page: ", e);
             exception = e;
             return null;
         }
     }
 
-    protected abstract AbstractPage<Result> createDownloadPage();
-
     @Override
-    protected void onPostExecute(Result result) {
+    @SuppressWarnings("unchecked")
+    protected void onPostExecute(Object result) {
         if (exception instanceof IOException)
             showNoInternetConnection();
 
@@ -109,11 +85,13 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
             showUnexpectedLogout();
 
         if (result != null) {
-            dismissBuildItemDetails();
-            activity.notifyDownloadPage(downloadPage);
-            afterDownload(result);
+            activity.notifyDownloadPage(resultPage);
+
+            viewerPage.setRequestAndResultPage(requestPage, resultPage);
+            viewerPage.show(result);
         }
 
+        dismissBuildItemDetails();
         progressDialog.dismiss();
     }
 
@@ -126,16 +104,11 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         }
     }
 
-    protected abstract void afterDownload(Result result);
-
-    protected void showFragment(Fragment fragment) {
-        activity.showContentPage(pageName, fragment);
-    }
 
     private void showNoInternetConnection() {
         Snackbar snackbar = Utils.createSnackbar(activity, R.string.no_internet_connection);
 
-        final DownloadPageTask<?> copyTask = getCopyTaskOrNull();
+        final DownloadTask copyTask = getCopyTask();
         if (copyTask != null ) {
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
@@ -160,34 +133,29 @@ abstract public class DownloadPageTask<Result> extends AsyncTask<Void, Void, Res
         snackbar.show();
     }
 
-    private void retryDownloadPage(DownloadPageTask<?> downloadTask) {
+    private void retryDownloadPage(DownloadTask downloadTask) {
         try {
             downloadTask.execute();
         } catch (Exception e) {
-            Log.e("DownloadPageTask", "Error while create copy: ", e);
+            Log.e("DownloadTask", "Error while create copy: ", e);
         }
     }
 
     private void retrySignIn() {
+        Login.Data loginData = requestPage.getAuthorizationData().loginData;
+        String pageName = requestPage.getPageName();
+        String planetId = requestPage.getPlanetId();
+
         Intent intent = new Intent(activity, LoginActivity.class);
-        intent.putExtra("login-data", auth.loginData);
+        intent.putExtra("login-data", loginData);
         intent.putExtra("start-page", pageName);
         intent.putExtra("planet-id", planetId);
         activity.startActivity(intent);
         activity.finish();
     }
 
-    protected DownloadPageTask<?> getCopyTaskOrNull() {
-        try {
-            return createCopyTask();
-        } catch (Exception e) {
-            Log.e("DownloadPageTask", "Error while create copy: ", e);
-            return null;
-        }
+    protected DownloadTask getCopyTask() {
+        return new DownloadTask(activity, requestPage, resultPage, viewerPage);
     }
 
-    protected DownloadPageTask<?> createCopyTask() throws Exception {
-        Constructor<?> defaultConstructor = getClass().getConstructor(GameActivity.class);
-        return (DownloadPageTask<?>) defaultConstructor.newInstance(activity);
-    }
 }

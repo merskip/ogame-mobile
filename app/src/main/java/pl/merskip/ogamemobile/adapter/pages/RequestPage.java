@@ -7,112 +7,98 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.adapter.ScriptData;
+import pl.merskip.ogamemobile.adapter.Planet;
+import pl.merskip.ogamemobile.game.GameActivity;
 
 /**
- * Abstrakcyjna strona
- *
- * Implementuje pobieranie strony
+ * Pobieranie standardowej strony
  */
-public abstract class AbstractPage<Result> {
+public class RequestPage {
 
     private AuthorizationData auth;
     private String page;
     private String planetId;
-    private String customUrl;
-    private Map<String, String> customRequestData;
 
     protected Connection connection;
     protected Connection.Response response;
 
     protected DownloadTimer timer;
     protected Document document;
-    protected ScriptData scriptData;
 
-    protected AbstractPage(AuthorizationData auth, String page) {
-        this(auth, page, "");
+    protected RequestPage(GameActivity activity) {
+        this.auth = activity.getAuth();
+        this.page = activity.getCurrentPage();
+        Planet currentPlanet = activity.getCurrentPlanet();
+        this.planetId = currentPlanet != null ? currentPlanet.id : "";
     }
 
-    protected AbstractPage(AuthorizationData auth, String page, String planetId) {
+    public RequestPage(AuthorizationData auth, String page, String planetId) {
         this.auth = auth;
         this.page = page;
         this.planetId = planetId;
-        this.customRequestData = new HashMap<>();
     }
 
-    public void setPlanetId(String planetId) {
-        this.planetId = planetId;
+    public AuthorizationData getAuthorizationData() {
+        return auth;
     }
 
-    public void setCustomUrl(String customUrl) {
-        this.customUrl = customUrl;
+    public String getPageName() {
+        return page;
     }
 
-    public void setCustomRequestData(Map<String, String> data) {
-        customRequestData = data;
+    public String getPlanetId() {
+        return planetId;
+    }
+
+    public Document getDownloadedDocument() {
+        return document;
     }
 
     /**
-     * Pobiera dokument, i jeśli nie wystąpił błąd, zwraca przetworzone dane
-     * @return Przetworzone dane
+     * Pobiera dokument, i jeśli nie wystąpił błąd, zwraca go
      */
-    public Result download() throws IOException, UnexpectedLogoutException {
+    public Document download() throws IOException, UnexpectedLogoutException {
         timer = new DownloadTimer();
-
         timer.started();
+
         connection = createConnection();
         response = connection.execute();
-        auth.updatePrsess(response);
         timer.downloaded();
 
         if (!isSuccessResponse(response))
             throw new UnexpectedLogoutException();
 
+        auth.updatePrsess(response);
         document = response.parse();
-        scriptData = new ScriptData(document);
-        if (scriptData.getContent() == null)
-            scriptData = null;
         timer.parsed();
 
-        return createResult(document);
+        return document;
     }
-
-    /**
-     * Miejsce na przetworzenie strony i zwrócenie wyników
-     * @param document Odebrany dokument
-     * @return Przetworzone dane ze strony
-     */
-    abstract public Result createResult(Document document);
 
     /**
      * @return Połączenie dla strony z parametrami page i cp (planeta)
      */
     protected Connection createConnection() {
         String requestUrl = getRequestUrl();
-        Connection connection =
-                Jsoup.connect(requestUrl)
-                        .cookies(auth.toCookiesMap())
-                        .method(Connection.Method.GET);
 
-        if (!page.isEmpty())
-            connection.data("page", page);
-
-        if (!planetId.isEmpty())
-            connection.data("cp", planetId);
-
-        connection.data(customRequestData);
-
-        return connection;
+        return Jsoup.connect(requestUrl)
+                .cookies(auth.toCookiesMap())
+                .method(Connection.Method.GET);
     }
 
-    public String getRequestUrl() {
-        if (customUrl != null)
-            return customUrl;
-        return getGameIndexUrl();
+    protected String getRequestUrl() {
+        String url = getGameIndexUrl();
+
+        if (!page.isEmpty()) {
+            url += "?page=" + page;
+
+            if (!planetId.isEmpty())
+                url += "&cp=" + planetId;
+        }
+
+        return url;
     }
 
     public String getGameIndexUrl() {
@@ -126,18 +112,6 @@ public abstract class AbstractPage<Result> {
 
     public static boolean isSuccessResponse(Connection.Response response) {
         return response.url().getPath().equals("/game/index.php");
-    }
-
-    public String getPageName() {
-        return page;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public ScriptData getScriptData() {
-        return scriptData;
     }
 
     public static class UnexpectedLogoutException extends Exception {}

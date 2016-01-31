@@ -1,23 +1,15 @@
 package pl.merskip.ogamemobile.adapter.pages;
 
-import org.jsoup.nodes.Document;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
 
 /**
  * Strona podglądu planety
  */
-public class Overview extends AbstractPage<OverviewData> {
-
-    public Overview(AuthorizationData auth) {
-        super(auth, "overview");
-    }
+public class OverviewResult extends ResultPage<OverviewData> {
 
     @Override
-    public OverviewData createResult(Document document) {
+    public OverviewData onCreateResult() {
         OverviewData data = new OverviewData();
         appendPlanetInfo(data);
         appendPlayerScore(data);
