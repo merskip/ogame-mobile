@@ -85,7 +85,7 @@ public class DownloadTask extends AsyncTask<Void, Void, Object> {
             showUnexpectedLogout();
 
         if (result != null) {
-            activity.notifyDownloadPage(resultPage);
+            activity.getDownloadPageNotifier().notifyListeners(resultPage);
 
             viewerPage.setRequestAndResultPage(requestPage, resultPage);
             viewerPage.show(result);

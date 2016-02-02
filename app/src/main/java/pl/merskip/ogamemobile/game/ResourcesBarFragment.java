@@ -35,7 +35,7 @@ public class ResourcesBarFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (GameActivity) getActivity();
-        activity.addDownloadPageListener(this);
+        activity.getDownloadPageNotifier().addListener(this);
     }
 
     @Override

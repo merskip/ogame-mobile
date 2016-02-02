@@ -1,34 +1,23 @@
 package pl.merskip.ogamemobile.game;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.util.List;
-
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.Planet;
-import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.ScriptData;
@@ -46,33 +35,30 @@ import pl.merskip.ogamemobile.game.pages.ViewerPageFactory;
 
 public class GameActivity
         extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        DownloadPageListener, AdapterView.OnItemSelectedListener {
+        implements DownloadPageListener {
 
     private AuthorizationData auth;
 
     private String currentPage;
     private Planet currentPlanet = new Planet("", "", "");
 
-    private DownloadPageNotifier downloadPageNotifier;
-    private ResultPage lastResultPage;
+    private DownloadPageNotifier downloadPageNotifier = new DownloadPageNotifier();
     private Document lastMainDocument;
     private ScriptData lastScriptData;
 
     private ActionBar actionBar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigation;
-    private PlanetListAdapter planetListAdapter;
+    private AppNavigation navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        downloadPageNotifier = new DownloadPageNotifier();
-        downloadPageNotifier.addListener(this);
-
         setContentView(R.layout.activity_game);
 
-        setupToolbarAndNavigationDrawer();
+        setupActionBar();
+        navigation = (AppNavigation) findViewById(R.id.navigation);
+        navigation.setup(this);
+
+        downloadPageNotifier.addListener(this);
 
         auth = (AuthorizationData) getIntent().getSerializableExtra("auth");
         if (auth == null) {
@@ -92,10 +78,8 @@ public class GameActivity
         openPage(startPage != null ? startPage : "resources");
     }
 
-    private void setupToolbarAndNavigationDrawer() {
+    private void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        navigation = (NavigationView) findViewById(R.id.navigation);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -103,19 +87,6 @@ public class GameActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
-
-        ActionBarDrawerToggle toggle =
-                new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                        R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.setDrawerListener(toggle);
-        navigation.setNavigationItemSelectedListener(this);
-        toggle.syncState();
-
-        View headerView = navigation.getHeaderView(0);
-        Spinner planetSelect = (Spinner) headerView.findViewById(R.id.planet_select);
-        planetListAdapter = new PlanetListAdapter(this);
-        planetSelect.setAdapter(planetListAdapter);
-        planetSelect.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -123,35 +94,6 @@ public class GameActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        drawerLayout.closeDrawer(navigation);
-
-        switch (item.getItemId()) {
-            case R.id.overview:
-                openPage("overview");
-                return false;
-            case R.id.resources:
-                openPage("resources");
-                return false;
-            case R.id.station:
-                openPage("station");
-                return false;
-            case R.id.research:
-                openPage("research");
-                return false;
-            case R.id.shipyard:
-                openPage("shipyard");
-                return false;
-            case R.id.defense:
-                openPage("defense");
-                return false;
-            default:
-                Log.w("GameActivity", "Selected unknown menu item: " + item);
-                return false;
-        }
     }
 
     @Override
@@ -163,25 +105,6 @@ public class GameActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private boolean ignoreFirstPlanetSelect = true;
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (ignoreFirstPlanetSelect) {
-            ignoreFirstPlanetSelect = false;
-            return;
-        }
-
-        currentPlanet = (Planet) planetListAdapter.getItem(position);
-        openPage(currentPage, currentPlanet);
-        drawerLayout.closeDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        Log.d("GameActivity", "No planet select");
     }
 
     public AuthorizationData getAuth() {
@@ -298,17 +221,12 @@ public class GameActivity
         Log.d("GameActivity", "Shown content of page: " + pageName);
     }
 
-    public void addDownloadPageListener(DownloadPageListener listener) {
-        downloadPageNotifier.addListener(listener);
-    }
-
-    public void notifyDownloadPage(ResultPage resultPage) {
-        downloadPageNotifier.notifyListeners(resultPage);
+    public DownloadPageNotifier getDownloadPageNotifier() {
+        return downloadPageNotifier;
     }
 
     @Override
     public void onDownloadPage(ResultPage resultPage) {
-        lastResultPage = resultPage;
         Document document = resultPage.getDocument();
 
         if (isMainDocument(document)) {
@@ -316,9 +234,6 @@ public class GameActivity
             this.lastScriptData = resultPage.getScriptData();
         }
 
-        updateSelectedMenuItem(resultPage);
-        updatePlanetName(document);
-        updatePlanetList(document);
         updateCurrentPlanet(document);
     }
 
@@ -326,56 +241,17 @@ public class GameActivity
         return document.body().hasClass("ogame");
     }
 
-    private void updateSelectedMenuItem(ResultPage resultPage) {
-        String pageName = resultPage.getRequest().getPageName();
-        int pageMenuId = getMenuIdFromPageName(pageName);
-        navigation.setCheckedItem(pageMenuId);
-    }
-
-    private int getMenuIdFromPageName(String pageName) {
-        String packageName = getPackageName();
-        Resources resources  = getResources();
-        return resources.getIdentifier(pageName, "id", packageName);
-    }
-
-    private void updatePlanetName(Document document) {
-        String planetName = getPlanetName(document);
-        if (actionBar != null && planetName != null)
-            actionBar.setTitle(planetName);
-    }
-
-    private static String getPlanetName(Document document) {
-        Elements metaPlanet = document.head()
-                .getElementsByAttributeValue("name", "ogame-planet-name");
-
-        if (metaPlanet.size() > 0)
-            return metaPlanet.attr("content");
-        return null;
-    }
-
-    private void updatePlanetList(Document document) {
-        List<Planet> planetList = PlanetList.fromDocument(document);
-        Planet superPlanet = new Planet("0", "Nazwa planety", "[0:0:0]");
-        superPlanet.moon = superPlanet. new Moon("0", "NAzwa księzyca");
-
-        if (planetList != null) {
-            planetList.add(superPlanet);
-            planetListAdapter.setPlanetList(planetList);
-        }
-
-    }
-
     private void updateCurrentPlanet(Document document) {
-        Elements metaPlanetId = document.head()
-                .getElementsByAttributeValue("name", "ogame-planet-id");
+        Elements metaPlanetId =
+                document.head()
+                        .getElementsByAttributeValue("name", "ogame-planet-id");
 
-        if (metaPlanetId.size() == 0)
-            return;
+        if (!metaPlanetId.isEmpty()) {
+            String currentPlanetId = metaPlanetId.attr("content");
+            currentPlanet = navigation.getPlanetById(currentPlanetId);
 
-        String currentPlanetId = metaPlanetId.attr("content");
-        for (Planet planet : planetListAdapter.getPlanetList()) {
-            if (planet.id.equals(currentPlanetId))
-                currentPlanet = planet;
+            if (actionBar != null)
+                actionBar.setTitle(currentPlanet.name);
         }
     }
 

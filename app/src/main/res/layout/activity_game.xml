@@ -28,7 +28,7 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.NavigationView
+    <pl.merskip.ogamemobile.game.AppNavigation
         android:id="@+id/navigation"
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
