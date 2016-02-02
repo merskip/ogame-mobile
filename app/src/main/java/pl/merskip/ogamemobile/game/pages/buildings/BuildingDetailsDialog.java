@@ -42,8 +42,6 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
     private GameActivity activity;
     private ResourcesSummary actualResources;
 
-    private List<String> moreOptions = new ArrayList<>(2);
-
     private BuildingDetails details;
 
     @NonNull
@@ -60,7 +58,7 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
 
         activity = (GameActivity) getActivity();
         actualResources = activity.getActualResources();
-        view = activity.getLayoutInflater().inflate(R.layout.build_item_details, null);
+        view = activity.getLayoutInflater().inflate(R.layout.buildings_details, null);
 
         Bundle args = getArguments();
         details = (BuildingDetails) args.getSerializable("details-data");

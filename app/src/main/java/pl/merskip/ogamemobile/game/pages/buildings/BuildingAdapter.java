@@ -176,13 +176,13 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         this.buildings = buildings;
 
         if (iconsMap == null)
-            iconsMap = Utils.getHashMapResource(context, R.xml.build_item_icons);
+            iconsMap = Utils.getHashMapResource(context, R.xml.buildings_icons);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.build_item_card, parent, false);
+                .inflate(R.layout.buildings_card, parent, false);
 
         return new ViewHolder(view);
     }
