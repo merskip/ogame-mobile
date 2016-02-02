@@ -10,6 +10,8 @@ public class Building implements Serializable {
     public String id;
     public String name;
     public int level;
+    public int nextLevel;
+    public boolean isNextLevelCount = false;
 
     public BuildState buildState;
     public String buildRequestUrl;

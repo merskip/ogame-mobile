@@ -5,6 +5,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,24 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
 
             nameView.setText(building.name);
             levelView.setText(Utils.toPrettyText(building.level));
+            if (building.buildState == BuildState.Upgrading) {
+                int textId;
+                if (building.isNextLevelCount)
+                    textId = R.string.level_build_count;
+                else if (building.nextLevel > building.level)
+                    textId = R.string.level_upgrade;
+                else if (building.nextLevel < building.level)
+                    textId = R.string.level_downgrade;
+                else
+                    textId = 0;
+
+                if (textId != 0) {
+                    String level = Utils.toPrettyText(building.level);
+                    String nextLevel = Utils.toPrettyText(building.nextLevel);
+                    String text = activity.getString(textId, level, nextLevel);
+                    levelView.setText(Html.fromHtml(text));
+                }
+            }
 
             buildStateView.setText(getBuildStateText());
             buildButton.setVisibility(isCanBuild() ? View.VISIBLE : View.GONE);

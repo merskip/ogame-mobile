@@ -37,4 +37,7 @@
     <string name="more">More</string>
     <string name="abort_build">Abort build</string>
     <string name="demolish">Demolish</string>
+    <string name="level_upgrade"><![CDATA[%1$s <small>%2$s</small>]]></string>
+    <string name="level_downgrade"><![CDATA[<small>%2$s</small> %1$s]]></string>
+    <string name="level_build_count"><![CDATA[%1$s <small>+ %2$s</small>]]></string>
 </resources>

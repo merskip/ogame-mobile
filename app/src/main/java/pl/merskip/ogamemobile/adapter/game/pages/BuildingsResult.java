@@ -40,9 +40,16 @@ public abstract class BuildingsResult extends ResultPage<List<Building>> {
          * nazwa budynku i poziom są napisane w innym miejscu */
         if (building.buildState == BuildState.Upgrading) {
             building.name = li.select(".tooltip").attr("title").replaceAll(" \\(.*?\\)", "");
+
             String levelWithDots = li.select(".ecke .level").text();
             level = levelWithDots.replace(".", "").trim();
             building.level = Integer.parseInt(level);
+
+            Element nextLevelElement = li.select(".eckeoben span").first();
+            String nextLevel = nextLevelElement.text();
+            nextLevel = nextLevel.replace(".", "").trim();
+            building.nextLevel = Integer.parseInt(nextLevel);
+            building.isNextLevelCount = nextLevelElement.hasClass("count");
         }
 
         if (building.buildState == BuildState.ReadyToBuild)
