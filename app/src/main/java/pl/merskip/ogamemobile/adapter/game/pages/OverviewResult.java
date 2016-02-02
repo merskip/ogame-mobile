@@ -1,7 +1,9 @@
-package pl.merskip.ogamemobile.adapter.pages;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 /**
  * Strona podglądu planety

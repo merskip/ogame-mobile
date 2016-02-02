@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.login;
 
 /**
  * Dane testowego użytkownika

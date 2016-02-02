@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,6 +7,10 @@ import org.junit.BeforeClass;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.login.Login;
+import pl.merskip.ogamemobile.adapter.login.TestUser;
 
 /**
  * Pomocnicza klasa testu strony

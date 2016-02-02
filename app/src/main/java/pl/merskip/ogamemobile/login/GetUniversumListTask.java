@@ -13,7 +13,7 @@ import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ServerHost;
-import pl.merskip.ogamemobile.adapter.UniversumList;
+import pl.merskip.ogamemobile.adapter.login.UniversumList;
 
 /**
  * Asynchroniczne pobieranie listy universum

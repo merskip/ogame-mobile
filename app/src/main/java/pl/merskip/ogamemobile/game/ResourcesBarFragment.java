@@ -13,7 +13,7 @@ import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 /**
  * Obsługa pasku z zasobami

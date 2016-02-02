@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.login;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.ServerHost;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
 
 /**
  * Logowanie

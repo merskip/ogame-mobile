@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter.pages;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 import android.util.Log;
 
@@ -10,7 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
+import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.BuildItem.BuildState;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 /**
  * Strona zawierająca pozycje do budowania

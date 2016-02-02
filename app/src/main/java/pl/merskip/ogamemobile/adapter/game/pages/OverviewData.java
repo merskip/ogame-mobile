@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter.pages;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 
 import java.io.Serializable;

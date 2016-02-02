@@ -1,7 +1,9 @@
-package pl.merskip.ogamemobile.adapter.pages;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.merskip.ogamemobile.adapter.game.BuildItem;
 
 /**
  * Strona obrony

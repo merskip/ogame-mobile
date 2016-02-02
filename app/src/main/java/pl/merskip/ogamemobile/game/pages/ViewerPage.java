@@ -2,8 +2,8 @@ package pl.merskip.ogamemobile.game.pages;
 
 import android.support.v4.app.Fragment;
 
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 import pl.merskip.ogamemobile.game.GameActivity;
 
 /**

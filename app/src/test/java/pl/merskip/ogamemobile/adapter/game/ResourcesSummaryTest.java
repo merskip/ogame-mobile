@@ -1,13 +1,13 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourceItem.FillState;
-import pl.merskip.ogamemobile.adapter.pages.EmptyResult;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.ResourcesSummary;
+import pl.merskip.ogamemobile.adapter.ScriptData;
 
 import static pl.merskip.ogamemobile.adapter.ResourceItem.calculateFillState;
 

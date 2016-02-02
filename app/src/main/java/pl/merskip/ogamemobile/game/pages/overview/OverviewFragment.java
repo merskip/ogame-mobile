@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.pages.OverviewData;
+import pl.merskip.ogamemobile.adapter.game.pages.OverviewData;
 import pl.merskip.ogamemobile.game.Utils;
 
 

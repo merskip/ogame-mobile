@@ -1,11 +1,10 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 import org.junit.Test;
 
-import pl.merskip.ogamemobile.adapter.pages.OverviewData;
-import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.PageTest;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 import static org.junit.Assert.assertNotEquals;
 

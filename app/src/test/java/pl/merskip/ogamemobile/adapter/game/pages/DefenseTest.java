@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 /**
  * Test strony obrony

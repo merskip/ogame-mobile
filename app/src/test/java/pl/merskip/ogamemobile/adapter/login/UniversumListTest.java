@@ -1,10 +1,12 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.login;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Map;
+
+import pl.merskip.ogamemobile.adapter.ServerHost;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;

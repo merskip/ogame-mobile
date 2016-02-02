@@ -1,12 +1,12 @@
 package pl.merskip.ogamemobile.adapter;
 
-import pl.merskip.ogamemobile.adapter.pages.DefenseResult;
-import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
-import pl.merskip.ogamemobile.adapter.pages.ResearchResult;
-import pl.merskip.ogamemobile.adapter.pages.ResourcesResult;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
-import pl.merskip.ogamemobile.adapter.pages.ShipyardResult;
-import pl.merskip.ogamemobile.adapter.pages.StationResult;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.pages.DefenseResult;
+import pl.merskip.ogamemobile.adapter.game.pages.OverviewResult;
+import pl.merskip.ogamemobile.adapter.game.pages.ResearchResult;
+import pl.merskip.ogamemobile.adapter.game.pages.ResourcesResult;
+import pl.merskip.ogamemobile.adapter.game.pages.ShipyardResult;
+import pl.merskip.ogamemobile.adapter.game.pages.StationResult;
 
 /**
  * Fabryka stron

@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.game.pages.overview;
 
 import android.os.Bundle;
 
-import pl.merskip.ogamemobile.adapter.pages.OverviewData;
+import pl.merskip.ogamemobile.adapter.game.pages.OverviewData;
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.pages.ViewerPage;
 

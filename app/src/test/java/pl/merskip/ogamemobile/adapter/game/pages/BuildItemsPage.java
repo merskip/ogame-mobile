@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game.pages;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,12 +6,15 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.ResultPageFactory;
+import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.PageTest;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
+import pl.merskip.ogamemobile.adapter.login.TestUser;
 
-import static pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState.ReadyToBuild;
-import static pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState.Upgrading;
+import static pl.merskip.ogamemobile.adapter.game.BuildItem.BuildState.ReadyToBuild;
+import static pl.merskip.ogamemobile.adapter.game.BuildItem.BuildState.Upgrading;
 
 /**
  * Pomocnicza klasa do testowania stron z budynkami

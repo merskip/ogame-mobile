@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.adapter.Login;
+import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
+import pl.merskip.ogamemobile.adapter.login.Login;
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.Utils;
 

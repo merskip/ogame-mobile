@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.BuildItem;
 
 public class BuildItemsFragment extends Fragment {
 

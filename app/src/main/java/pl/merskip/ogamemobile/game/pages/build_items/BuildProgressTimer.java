@@ -6,7 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.BuildItem;
 import pl.merskip.ogamemobile.game.Utils;
 
 /**

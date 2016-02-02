@@ -1,14 +1,7 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsData;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsRequest;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsResult;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 /**
  * Test szczegółowych informacji o budynku

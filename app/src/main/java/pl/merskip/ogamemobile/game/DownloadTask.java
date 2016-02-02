@@ -16,10 +16,10 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.Login;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage.UnexpectedLogoutException;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
+import pl.merskip.ogamemobile.adapter.game.RequestPage.UnexpectedLogoutException;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
+import pl.merskip.ogamemobile.adapter.login.Login;
 import pl.merskip.ogamemobile.game.pages.ViewerPage;
 import pl.merskip.ogamemobile.login.LoginActivity;
 

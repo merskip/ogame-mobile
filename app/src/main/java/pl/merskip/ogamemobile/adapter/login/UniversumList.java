@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.login;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,6 +8,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import pl.merskip.ogamemobile.adapter.ServerHost;
 
 /**
  * Pobieranie listy universum

@@ -26,8 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.Login;
 import pl.merskip.ogamemobile.adapter.ServerHost;
+import pl.merskip.ogamemobile.adapter.login.Login;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -28,7 +28,7 @@ import java.util.List;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsData;
+import pl.merskip.ogamemobile.adapter.game.BuildItemDetailsData;
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.Utils;
 

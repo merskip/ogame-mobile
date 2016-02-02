@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.adapter;
+package pl.merskip.ogamemobile.adapter.game;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.Planet;
+import pl.merskip.ogamemobile.adapter.PlanetList;
+import pl.merskip.ogamemobile.adapter.game.pages.OverviewResult;
 
 /**
  * Testowanie listy planet

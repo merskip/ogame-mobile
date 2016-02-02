@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 public class DownloadPageNotifier {
 
