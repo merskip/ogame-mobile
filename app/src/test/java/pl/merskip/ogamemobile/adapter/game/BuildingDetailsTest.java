@@ -64,7 +64,7 @@ public class BuildingDetailsTest extends PageTest {
     }
 
     private BuildingDetails testBuildItem(Building building, String page) throws Exception {
-        RequestPage request = new BuildingDetailsRequest(auth, page, building);
+        RequestPage request = new BuildingDetailsRequest(auth, page, "", building);
         ResultPage result = new BuildingDetailsResult().createFromRequest(request);
 
         BuildingDetails details = (BuildingDetails) result.getResult();

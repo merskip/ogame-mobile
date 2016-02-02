@@ -11,12 +11,8 @@ public class BuildingDetailsRequest extends RequestPage {
 
     protected Building building;
 
-    public BuildingDetailsRequest(AuthorizationData auth, String page, Building building) {
-        super(auth, page);
-        this.building = building;
-    }
-
-    public BuildingDetailsRequest(AuthorizationData auth, String page, String planetId, Building building) {
+    public BuildingDetailsRequest(AuthorizationData auth, String page, String planetId,
+                                  Building building) {
         super(auth, page, planetId);
         this.building = building;
     }

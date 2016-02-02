@@ -138,8 +138,9 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         private void showDetails() {
             AuthorizationData auth = activity.getAuth();
             String page = activity.getCurrentPage();
+            String planetId = activity.getCurrentPlanet().id;
 
-            RequestPage requestPage = new BuildingDetailsRequest(auth, page, building);
+            RequestPage requestPage = new BuildingDetailsRequest(auth, page, planetId, building);
             ResultPage resultPage = new BuildingDetailsResult();
             ViewerPage viewerPage = new BuildingDetailsViewer(activity);
             new DownloadTask(activity, requestPage, resultPage, viewerPage).execute();

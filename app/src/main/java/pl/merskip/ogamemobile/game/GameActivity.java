@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -33,6 +32,9 @@ import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.ScriptData;
+import pl.merskip.ogamemobile.adapter.game.AbortBuildRequest;
+import pl.merskip.ogamemobile.adapter.game.AmountBuildRequest;
+import pl.merskip.ogamemobile.adapter.game.BuildRequest;
 import pl.merskip.ogamemobile.adapter.game.Building;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
@@ -193,19 +195,12 @@ public class GameActivity
         return currentPlanet;
     }
 
-    public void abortBuild(final Building building, final String listId) {
+    public void abortBuild(Building building, String listId) {
         String pageName = currentPage;
-        final String abortToken = lastScriptData.getAbortToken();
-        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
-            @Override
-            protected Connection createConnection() {
-                return super.createConnection()
-                        .data("token", abortToken)
-                        .data("modus", "2")
-                        .data("techid", building.id)
-                        .data("listid", listId);
-            }
-        };
+        String planetId = currentPlanet.id;
+        String abortToken = lastScriptData.getAbortToken();
+        RequestPage requestPage =
+                new AbortBuildRequest(auth, pageName, planetId, building, abortToken, listId);
 
         ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
         ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
@@ -217,14 +212,9 @@ public class GameActivity
                 + ", planet=" + currentPlanet.name);
     }
 
-    public void build(final Building building) {
+    public void build(Building building) {
         String pageName = currentPage;
-        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
-            @Override
-            protected String getRequestUrl() {
-                return building.buildRequestUrl;
-            }
-        };
+        RequestPage requestPage = new BuildRequest(auth, building);
         ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
         ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
 
@@ -235,20 +225,12 @@ public class GameActivity
                 + ", planet=" + currentPlanet.name);
     }
 
-    public void buildAmount(final Building building, final int amount) {
+    public void buildAmount(Building building, int amount) {
         String pageName = currentPage;
-        final String token = lastMainDocument.select("form[name=form] input[name=token]").attr("value");
-        RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
-            @Override
-            protected Connection createConnection() {
-                return super.createConnection()
-                        .method(Connection.Method.POST)
-                        .data("token", token)
-                        .data("modus", "1")
-                        .data("type", building.id)
-                        .data("menge", String.valueOf(amount));
-            }
-        };
+        String planetId = currentPlanet.id;
+        String token = getBuildTokenFromDocument();
+        RequestPage requestPage =
+                new AmountBuildRequest(auth, pageName, planetId, building, token, amount);
 
         new DownloadTask(this, requestPage, null, null).execute();
 
@@ -256,6 +238,10 @@ public class GameActivity
                 + ", amount=" + amount
                 + ", page=" + pageName
                 + ", planet=" + currentPlanet.name);
+    }
+
+    private String getBuildTokenFromDocument() {
+        return lastMainDocument.select("form[name=form] input[name=token]").attr("value");
     }
 
     public void refreshCurrentPage() {
