@@ -9,8 +9,6 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 
 import pl.merskip.ogamemobile.adapter.AuthorizationData;
-import pl.merskip.ogamemobile.adapter.Planet;
-import pl.merskip.ogamemobile.game.GameActivity;
 
 /**
  * Pobieranie standardowej strony
@@ -27,11 +25,8 @@ public class RequestPage {
     protected DownloadTimer timer;
     protected Document document;
 
-    protected RequestPage(GameActivity activity) {
-        this.auth = activity.getAuth();
-        this.page = activity.getCurrentPage();
-        Planet currentPlanet = activity.getCurrentPlanet();
-        this.planetId = currentPlanet != null ? currentPlanet.id : "";
+    public RequestPage(AuthorizationData auth, String page) {
+        this(auth, page, "");
     }
 
     public RequestPage(AuthorizationData auth, String page, String planetId) {

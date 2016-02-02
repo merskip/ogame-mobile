@@ -8,9 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
-
 /**
  * Pomocnicza klasa testu strony
  *
@@ -29,12 +26,6 @@ abstract public class PageTest {
 
         System.out.println("Login as userId=" + auth.userId);
         System.out.flush();
-    }
-
-    protected RequestPage<?> getExamplePage() throws Exception {
-        RequestPage<?> downloadPage = new OverviewResult(auth);
-        downloadPage.download();
-        return downloadPage;
     }
 
     protected Document getExampleDocumentFromAssets() {

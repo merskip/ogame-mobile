@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
+import pl.merskip.ogamemobile.adapter.AuthorizationData;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState;
 import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsRequest;
@@ -139,7 +140,10 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         }
 
         private void showDetails() {
-            RequestPage requestPage = new BuildItemDetailsRequest(activity, buildItem);
+            AuthorizationData auth = activity.getAuth();
+            String page = activity.getCurrentPage();
+            RequestPage requestPage = new BuildItemDetailsRequest(auth, page, buildItem);
+
             ResultPage resultPage = new BuildItemDetailsResult();
             ViewerPage viewerPage = new ViewerPage(activity) {
                 @Override

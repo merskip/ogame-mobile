@@ -5,7 +5,9 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import pl.merskip.ogamemobile.adapter.ResourceItem.FillState;
+import pl.merskip.ogamemobile.adapter.pages.EmptyResult;
 import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 import static pl.merskip.ogamemobile.adapter.ResourceItem.calculateFillState;
 
@@ -16,8 +18,10 @@ public class ResourcesSummaryTest extends PageTest {
 
     @Test
     public void testResourcesTest() throws Exception {
-        RequestPage<?> examplePage = getExamplePage();
-        ScriptData scriptData = examplePage.getScriptData();
+
+        RequestPage request = new RequestPage(auth, "resources");
+        ResultPage result = new EmptyResult().createFromRequest(request);
+        ScriptData scriptData = result.getScriptData();
 
         ResourcesSummary resources = ResourcesSummary.fromScriptData(scriptData);
 

@@ -2,8 +2,10 @@ package pl.merskip.ogamemobile.adapter;
 
 import org.junit.Test;
 
-import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
 import pl.merskip.ogamemobile.adapter.pages.OverviewData;
+import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -14,12 +16,12 @@ public class OverviewTest extends PageTest {
 
     @Test
     public void testPage() throws Exception {
-        OverviewResult page = new OverviewResult(auth);
+        RequestPage request = new RequestPage(auth, "overview");
+        ResultPage result = new OverviewResult().createFromRequest(request);
+        OverviewData data = (OverviewData) result.getResult();
 
-        OverviewData result = page.download();
-
-        testPlanetInfo(result);
-        testPlayerScore(result);
+        testPlanetInfo(data);
+        testPlayerScore(data);
     }
 
     private void testPlanetInfo(OverviewData result) {

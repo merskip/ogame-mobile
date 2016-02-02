@@ -1,19 +1,13 @@
 package pl.merskip.ogamemobile.adapter;
 
-import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.DefenseResult;
-
 /**
  * Test strony obrony
  */
-public class DefenceTest extends BuildItemsPage {
+public class DefenseTest extends BuildItemsPage {
 
     @Override
-    protected RequestPage<List<BuildItem>> createDownloadPage() {
-        return new DefenseResult(auth);
+    protected String getPageName() {
+        return "defense";
     }
 
     @Override

@@ -1,19 +1,14 @@
 package pl.merskip.ogamemobile.adapter;
 
-import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.ShipyardResult;
-
 /**
  * Test strony stoczni
  */
 public class ShipyardTest extends BuildItemsPage {
 
+
     @Override
-    protected RequestPage<List<BuildItem>> createDownloadPage() {
-        return new ShipyardResult(auth);
+    protected String getPageName() {
+        return "shipyard";
     }
 
     @Override

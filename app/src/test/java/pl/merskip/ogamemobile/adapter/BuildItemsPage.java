@@ -6,8 +6,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 import static pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState.ReadyToBuild;
 import static pl.merskip.ogamemobile.adapter.pages.BuildItem.BuildState.Upgrading;
@@ -19,10 +20,12 @@ public abstract class BuildItemsPage extends PageTest {
 
     protected List<BuildItem> buildItems;
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBuildItems() throws Exception {
-        RequestPage<List<BuildItem>> downloadPage = createDownloadPage();
-        buildItems = downloadPage.download();
+        RequestPage request = new RequestPage(auth, getPageName(), TestUser.getPlanetId());
+        ResultPage result = createResultPage().createFromRequest(request);
+        buildItems = (List<BuildItem>) result.getResult();
 
         boolean isGoodCount = testItemsCount(buildItems.size());
         Assert.assertTrue(isGoodCount);
@@ -39,7 +42,11 @@ public abstract class BuildItemsPage extends PageTest {
         }
     }
 
-    protected abstract RequestPage<List<BuildItem>> createDownloadPage();
+    protected abstract String getPageName();
+
+    protected ResultPage createResultPage() {
+        return ResultPageFactory.getResultPage(getPageName());
+    }
 
     /**
      * Metoda sprawdzająca ilość pobranych budynków

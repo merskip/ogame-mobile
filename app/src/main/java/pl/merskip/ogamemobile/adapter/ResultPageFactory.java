@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.adapter;
 import pl.merskip.ogamemobile.adapter.pages.DefenseResult;
 import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
 import pl.merskip.ogamemobile.adapter.pages.ResearchResult;
-import pl.merskip.ogamemobile.adapter.pages.Resources;
+import pl.merskip.ogamemobile.adapter.pages.ResourcesResult;
 import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 import pl.merskip.ogamemobile.adapter.pages.ShipyardResult;
 import pl.merskip.ogamemobile.adapter.pages.StationResult;
@@ -20,7 +20,7 @@ public class ResultPageFactory {
             case "overview":
                 return new OverviewResult();
             case "resources":
-                return new Resources();
+                return new ResourcesResult();
             case "station":
                 return new StationResult();
             case "research":

@@ -1,19 +1,14 @@
 package pl.merskip.ogamemobile.adapter;
 
-import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.StationResult;
-
 /**
  * Test strony stacji
  */
 public class StationTest extends BuildItemsPage {
 
+
     @Override
-    protected RequestPage<List<BuildItem>> createDownloadPage() {
-        return new StationResult(auth);
+    protected String getPageName() {
+        return "station";
     }
 
     @Override

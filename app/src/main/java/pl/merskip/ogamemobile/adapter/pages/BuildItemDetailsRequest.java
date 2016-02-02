@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.adapter.pages;
 
 import org.jsoup.Connection;
 
-import pl.merskip.ogamemobile.game.GameActivity;
+import pl.merskip.ogamemobile.adapter.AuthorizationData;
 
 /**
  * Żądanie szczegółowych informacji o budynku
@@ -11,8 +11,13 @@ public class BuildItemDetailsRequest extends RequestPage {
 
     protected BuildItem buildItem;
 
-    public BuildItemDetailsRequest(GameActivity activity, BuildItem buildItem) {
-        super(activity);
+    public BuildItemDetailsRequest(AuthorizationData auth, String page, BuildItem buildItem) {
+        super(auth, page);
+        this.buildItem = buildItem;
+    }
+
+    public BuildItemDetailsRequest(AuthorizationData auth, String page, String planetId, BuildItem buildItem) {
+        super(auth, page, planetId);
         this.buildItem = buildItem;
     }
 

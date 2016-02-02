@@ -1,19 +1,14 @@
 package pl.merskip.ogamemobile.adapter;
 
-import java.util.List;
-
-import pl.merskip.ogamemobile.adapter.pages.RequestPage;
-import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.ResearchResult;
-
 /**
  * Test strony badań
  */
 public class ResearchTest extends BuildItemsPage {
 
+
     @Override
-    protected RequestPage<List<BuildItem>> createDownloadPage() {
-        return new ResearchResult(auth);
+    protected String getPageName() {
+        return "research";
     }
 
     @Override

@@ -7,7 +7,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import pl.merskip.ogamemobile.adapter.pages.OverviewResult;
 import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 /**
  * Testowanie listy planet
@@ -16,8 +18,10 @@ public class PlanetListTest extends PageTest {
 
     @Test
     public void testPlanetListOnline() throws Exception {
-        RequestPage<?> examplePage = getExamplePage();
-        Document document = examplePage.getDownloadedDocument();
+        RequestPage request = new RequestPage(auth, "overview");
+        ResultPage result = new OverviewResult().createFromRequest(request);
+
+        Document document = result.getDocument();
         testFromDocument(document);
     }
 

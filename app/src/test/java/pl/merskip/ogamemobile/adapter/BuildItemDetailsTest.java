@@ -4,8 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import pl.merskip.ogamemobile.adapter.pages.BuildItem;
-import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsResult;
 import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsData;
+import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsRequest;
+import pl.merskip.ogamemobile.adapter.pages.BuildItemDetailsResult;
+import pl.merskip.ogamemobile.adapter.pages.RequestPage;
+import pl.merskip.ogamemobile.adapter.pages.ResultPage;
 
 /**
  * Test szczegółowych informacji o budynku
@@ -68,55 +71,55 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private BuildItemDetailsData testBuildItem(BuildItem buildItem, String page) throws Exception {
-        BuildItemDetailsResult buildItemDetails =
-                new BuildItemDetailsResult(auth, page, buildItem);
+        RequestPage request = new BuildItemDetailsRequest(auth, page, buildItem);
+        ResultPage result = new BuildItemDetailsResult().createFromRequest(request);
 
-        BuildItemDetailsData result = buildItemDetails.download();
-        boolean hasExtraInfo = hasExtraInfo(result);
+        BuildItemDetailsData details = (BuildItemDetailsData) result.getResult();
+        boolean hasExtraInfo = hasExtraInfo(details);
 
-        System.out.printf("\n%s\n", result.name);
-        System.out.printf(" - id: %s\n", result.id);
-        System.out.printf(" - level: %s\n", result.level);
-        System.out.printf(" - description: %s...\n", result.description.substring(0, 32));
-        System.out.printf(" - buildTime: %s\n", result.buildTime);
+        System.out.printf("\n%s\n", details.name);
+        System.out.printf(" - id: %s\n", details.id);
+        System.out.printf(" - level: %s\n", details.level);
+        System.out.printf(" - description: %s...\n", details.description.substring(0, 32));
+        System.out.printf(" - buildTime: %s\n", details.buildTime);
         System.out.printf(" - cost: m=%d c=%d d=%d e=%d\n",
-                result.costMetal, result.costCrystal, result.costDeuterium, result.costEnergy);
+                details.costMetal, details.costCrystal, details.costDeuterium, details.costEnergy);
         if (hasExtraInfo) {
             System.out.printf(" - extraInfo: %s: %s\n",
-                    result.extraInfoLabel, result.extraInfoValue);
+                    details.extraInfoLabel, details.extraInfoValue);
         }
-        if (result.hasCapacity) {
+        if (details.hasCapacity) {
             System.out.printf(" - capacity: %s / %d\n",
-                    result.actualCapacity, result.storageCapacity);
+                    details.actualCapacity, details.storageCapacity);
         }
-        if (result.hasAmountBuild) {
+        if (details.hasAmountBuild) {
             System.out.printf(" - build amount: %s\n",
-                    result.isActiveBuild ? "ready" : "disabled");
+                    details.isActiveBuild ? "ready" : "disabled");
         }
 
-        if (result.canAbort) {
+        if (details.canAbort) {
             System.out.printf(" - can abort, listId=%s\n",
-                    result.abortListId);
+                    details.abortListId);
         }
 
-        Assert.assertNotNull(result.id);
-        Assert.assertNotNull(result.name);
-        Assert.assertNotNull(result.level);
-        Assert.assertNotNull(result.description);
-        Assert.assertNotNull(result.buildTime);
+        Assert.assertNotNull(details.id);
+        Assert.assertNotNull(details.name);
+        Assert.assertNotNull(details.level);
+        Assert.assertNotNull(details.description);
+        Assert.assertNotNull(details.buildTime);
 
-        Assert.assertNotEquals("", result.id);
-        Assert.assertNotEquals("", result.name);
-        Assert.assertNotEquals("", result.level);
-        Assert.assertNotEquals("", result.description);
-        Assert.assertNotEquals("", result.buildTime);
+        Assert.assertNotEquals("", details.id);
+        Assert.assertNotEquals("", details.name);
+        Assert.assertNotEquals("", details.level);
+        Assert.assertNotEquals("", details.description);
+        Assert.assertNotEquals("", details.buildTime);
 
         if (hasExtraInfo) {
-            Assert.assertNotNull(result.extraInfoLabel);
-            Assert.assertNotNull(result.extraInfoValue);
+            Assert.assertNotNull(details.extraInfoLabel);
+            Assert.assertNotNull(details.extraInfoValue);
         }
 
-        return result;
+        return details;
     }
 
     private static boolean hasExtraInfo(BuildItemDetailsData result) {

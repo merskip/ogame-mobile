@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Strona zasobów planety
  */
-public class Resources extends BuildItemsPage {
+public class ResourcesResult extends BuildItemsPage {
 
     @Override
     public List<BuildItem> onCreateResult() {
