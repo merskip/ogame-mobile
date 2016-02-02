@@ -7,24 +7,24 @@ import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
 /**
  * Żądanie szczegółowych informacji o budynku
  */
-public class BuildItemDetailsRequest extends RequestPage {
+public class BuildingDetailsRequest extends RequestPage {
 
-    protected BuildItem buildItem;
+    protected Building building;
 
-    public BuildItemDetailsRequest(AuthorizationData auth, String page, BuildItem buildItem) {
+    public BuildingDetailsRequest(AuthorizationData auth, String page, Building building) {
         super(auth, page);
-        this.buildItem = buildItem;
+        this.building = building;
     }
 
-    public BuildItemDetailsRequest(AuthorizationData auth, String page, String planetId, BuildItem buildItem) {
+    public BuildingDetailsRequest(AuthorizationData auth, String page, String planetId, Building building) {
         super(auth, page, planetId);
-        this.buildItem = buildItem;
+        this.building = building;
     }
 
     @Override
     protected Connection createConnection() {
         return super.createConnection()
                 .data("ajax", "1")
-                .data("type", buildItem.id);
+                .data("type", building.id);
     }
 }

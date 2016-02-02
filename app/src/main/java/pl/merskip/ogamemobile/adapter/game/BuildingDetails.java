@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * Dane szczegółowych informacji o budynku
  */
-public class BuildItemDetailsData implements Serializable {
+public class BuildingDetails implements Serializable {
 
-    public BuildItem originBuildItem;
+    public Building originBuilding;
 
     public String id;
     public String name;

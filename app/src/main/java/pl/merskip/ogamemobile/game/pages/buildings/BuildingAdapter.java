@@ -1,12 +1,9 @@
-package pl.merskip.ogamemobile.game.pages.build_items;
+package pl.merskip.ogamemobile.game.pages.buildings;
 
 import android.content.Context;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,15 +15,14 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
-import pl.merskip.ogamemobile.adapter.game.BuildItem.BuildState;
-import pl.merskip.ogamemobile.adapter.game.BuildItemDetailsRequest;
-import pl.merskip.ogamemobile.adapter.game.BuildItemDetailsResult;
+import pl.merskip.ogamemobile.adapter.game.Building;
+import pl.merskip.ogamemobile.adapter.game.Building.BuildState;
+import pl.merskip.ogamemobile.adapter.game.BuildingDetailsRequest;
+import pl.merskip.ogamemobile.adapter.game.BuildingDetailsResult;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
 import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
@@ -38,12 +34,12 @@ import pl.merskip.ogamemobile.game.pages.ViewerPage;
 /**
  * Adapter pozycji budowania
  */
-public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.ViewHolder> {
+public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private GameActivity activity;
-        private BuildItem buildItem;
+        private Building building;
 
         public ImageView iconView;
         public TextView nameView;
@@ -69,14 +65,14 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
             view.setOnClickListener(this);
         }
 
-        public void set(final BuildItem buildItem) {
-            this.buildItem = buildItem;
-            Drawable icon = getBuildItemIcon(buildItem);
+        public void set(final Building building) {
+            this.building = building;
+            Drawable icon = getBuildItemIcon(building);
             iconView.setImageDrawable(icon);
             setGrayImageIfUnmetRequirements();
 
-            nameView.setText(buildItem.name);
-            levelView.setText(Utils.toPrettyText(buildItem.level));
+            nameView.setText(building.name);
+            levelView.setText(Utils.toPrettyText(building.level));
 
             buildStateView.setText(getBuildStateText());
             buildButton.setVisibility(isCanBuild() ? View.VISIBLE : View.GONE);
@@ -85,16 +81,16 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
                 timer.cancel();
             buildProgressLayout.setVisibility(View.GONE);
 
-            if (buildItem.buildProgress != null) {
+            if (building.buildProgress != null) {
                 buildProgressLayout.setVisibility(View.VISIBLE);
 
-                timer = new BuildProgressTimer(buildItem.buildProgress, buildProgressLayout);
+                timer = new BuildProgressTimer(building.buildProgress, buildProgressLayout);
                 timer.start();
             }
         }
 
         private void setGrayImageIfUnmetRequirements() {
-            if (buildItem.buildState == BuildState.UnmetRequirements) {
+            if (building.buildState == BuildState.UnmetRequirements) {
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation(0);
                 iconView.setColorFilter(new ColorMatrixColorFilter(matrix));
@@ -108,7 +104,7 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         }
 
         private String getBuildStateText() {
-            switch (buildItem.buildState) {
+            switch (building.buildState) {
                 case TooFewResources:
                     return context.getString(R.string.too_few_resources);
                 case UnmetRequirements:
@@ -119,8 +115,8 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         }
 
         private boolean isCanBuild() {
-            return buildItem.buildState == BuildState.ReadyToBuild
-                    && buildItem.buildRequestUrl != null;
+            return building.buildState == BuildState.ReadyToBuild
+                    && building.buildRequestUrl != null;
         }
 
         @Override
@@ -133,31 +129,19 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
         }
 
         private void build() {
-            if (buildItem.buildState == BuildState.ReadyToBuild) {
+            if (building.buildState == BuildState.ReadyToBuild) {
                 GameActivity activity = (GameActivity) context;
-                activity.build(buildItem);
+                activity.build(building);
             }
         }
 
         private void showDetails() {
             AuthorizationData auth = activity.getAuth();
             String page = activity.getCurrentPage();
-            RequestPage requestPage = new BuildItemDetailsRequest(auth, page, buildItem);
 
-            ResultPage resultPage = new BuildItemDetailsResult();
-            ViewerPage viewerPage = new ViewerPage(activity) {
-                @Override
-                public void show(Object o) {
-                    DialogFragment dialog = new BuildItemDetailsDialog();
-
-                    Bundle args = new Bundle();
-                    args.putSerializable("details-data", (Serializable) o);
-                    dialog.setArguments(args);
-
-                    FragmentManager fm = activity.getSupportFragmentManager();
-                    dialog.show(fm, "build-item-details");
-                }
-            };
+            RequestPage requestPage = new BuildingDetailsRequest(auth, page, building);
+            ResultPage resultPage = new BuildingDetailsResult();
+            ViewerPage viewerPage = new BuildingDetailsViewer(activity);
             new DownloadTask(activity, requestPage, resultPage, viewerPage).execute();
         }
     }
@@ -165,11 +149,11 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
     private static Map<String, String> iconsMap;
 
     private Context context;
-    private List<BuildItem> buildItems;
+    private List<Building> buildings;
 
-    public BuildItemAdapter(Context context, List<BuildItem> buildItems) {
+    public BuildingAdapter(Context context, List<Building> buildings) {
         this.context = context;
-        this.buildItems = buildItems;
+        this.buildings = buildings;
 
         if (iconsMap == null)
             iconsMap = Utils.getHashMapResource(context, R.xml.build_item_icons);
@@ -185,23 +169,23 @@ public class BuildItemAdapter extends RecyclerView.Adapter<BuildItemAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        BuildItem buildItem = buildItems.get(position);
-        holder.set(buildItem);
+        Building building = buildings.get(position);
+        holder.set(building);
     }
 
     @Override
     public int getItemCount() {
-        return buildItems.size();
+        return buildings.size();
     }
 
-    public Drawable getBuildItemIcon(BuildItem buildItem) {
-        String drawableFilename = iconsMap.get(buildItem.id);
+    public Drawable getBuildItemIcon(Building building) {
+        String drawableFilename = iconsMap.get(building.id);
 
         try {
             InputStream stream = context.getAssets().open(drawableFilename);
             return Drawable.createFromStream(stream, null);
         } catch (IOException e) {
-            Log.e("BuildItem", "Failed load build item icon: ", e);
+            Log.e("Building", "Failed load build item icon: ", e);
             return null;
         }
     }

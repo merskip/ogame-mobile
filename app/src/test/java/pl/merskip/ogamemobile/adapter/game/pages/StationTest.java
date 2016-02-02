@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.adapter.game.pages;
 /**
  * Test strony stacji
  */
-public class StationTest extends BuildItemsPage {
+public class StationTest extends BuildingsPage {
 
 
     @Override

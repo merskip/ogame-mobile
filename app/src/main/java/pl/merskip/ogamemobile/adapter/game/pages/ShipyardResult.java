@@ -3,20 +3,20 @@ package pl.merskip.ogamemobile.adapter.game.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.Building;
 
 /**
  * Strona stoczni
  */
-public class ShipyardResult extends BuildItemsPage {
+public class ShipyardResult extends BuildingsResult {
 
     @Override
-    public List<BuildItem> onCreateResult() {
-        List<BuildItem> buildItems = new ArrayList<>();
+    public List<Building> onCreateResult() {
+        List<Building> buildings = new ArrayList<>();
 
-        appendFromListLi(buildItems, document.select("ul#military li"));
-        appendFromListLi(buildItems, document.select("ul#civil li"));
+        appendFromListLi(buildings, document.select("ul#military li"));
+        appendFromListLi(buildings, document.select("ul#civil li"));
 
-        return buildItems;
+        return buildings;
     }
 }

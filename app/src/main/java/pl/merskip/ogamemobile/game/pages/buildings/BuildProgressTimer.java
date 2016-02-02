@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.build_items;
+package pl.merskip.ogamemobile.game.pages.buildings;
 
 import android.os.CountDownTimer;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.Building;
 import pl.merskip.ogamemobile.game.Utils;
 
 /**
@@ -14,13 +14,13 @@ import pl.merskip.ogamemobile.game.Utils;
  */
 public class BuildProgressTimer extends CountDownTimer {
 
-    private BuildItem.BuildProgress buildProgress;
+    private Building.BuildProgress buildProgress;
 
     private TextView remainingLabelView;
     private TextView remainingTimeView;
     private ProgressBar progressBar;
 
-    public BuildProgressTimer(BuildItem.BuildProgress buildProgress, View progressLayout) {
+    public BuildProgressTimer(Building.BuildProgress buildProgress, View progressLayout) {
         super(buildProgress.finishTime - System.currentTimeMillis(), 1000);
         this.buildProgress = buildProgress;
 

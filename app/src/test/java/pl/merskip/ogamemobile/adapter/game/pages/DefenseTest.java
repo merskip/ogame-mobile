@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.adapter.game.pages;
 /**
  * Test strony obrony
  */
-public class DefenseTest extends BuildItemsPage {
+public class DefenseTest extends BuildingsPage {
 
     @Override
     protected String getPageName() {

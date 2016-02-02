@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.build_items;
+package pl.merskip.ogamemobile.game.pages.buildings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.Building;
 
-public class BuildItemsFragment extends Fragment {
+public class BuildingsListFragment extends Fragment {
 
     private Context context;
 
@@ -31,13 +31,13 @@ public class BuildItemsFragment extends Fragment {
 
         Bundle args = getArguments();
         @SuppressWarnings("unchecked")
-        List<BuildItem> buildItems = (List<BuildItem>) args.getSerializable("build-items");
+        List<Building> buildings = (List<Building>) args.getSerializable("build-items");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        RecyclerView.Adapter adapter = new BuildItemAdapter(context, buildItems);
+        RecyclerView.Adapter adapter = new BuildingAdapter(context, buildings);
         recyclerView.setAdapter(adapter);
 
         return view;

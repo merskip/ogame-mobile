@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * Test szczegółowych informacji o budynku
  */
-public class BuildItemDetailsTest extends PageTest {
+public class BuildingDetailsTest extends PageTest {
 
     @Test
     public void testDetails() throws Exception {
@@ -18,7 +18,7 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private void testSimpleBuilding() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("1", "", 1));
+        BuildingDetails result = testBuildItem(new Building("1", "", 1));
 
         Assert.assertNotEquals(0, result.costMetal);
         Assert.assertNotEquals(0, result.costCrystal);
@@ -27,12 +27,12 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private void testCapacityBuilding() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("22", "", 1));
+        BuildingDetails result = testBuildItem(new Building("22", "", 1));
         Assert.assertTrue(result.hasCapacity);
     }
 
     private void testResearch() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("113", "", 1), "research");
+        BuildingDetails result = testBuildItem(new Building("113", "", 1), "research");
 
         Assert.assertEquals(0, result.costMetal);
         Assert.assertNotEquals(0, result.costCrystal);
@@ -41,7 +41,7 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private void testResearchWithEnergy() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("199", "", 1));
+        BuildingDetails result = testBuildItem(new Building("199", "", 1));
 
         Assert.assertEquals(0, result.costMetal);
         Assert.assertEquals(0, result.costCrystal);
@@ -50,7 +50,7 @@ public class BuildItemDetailsTest extends PageTest {
     }
 
     private void testShip() throws Exception {
-        BuildItemDetailsData result = testBuildItem(new BuildItem("204", "", 1));
+        BuildingDetails result = testBuildItem(new Building("204", "", 1));
 
         Assert.assertNotEquals(0, result.costMetal);
         Assert.assertNotEquals(0, result.costCrystal);
@@ -59,15 +59,15 @@ public class BuildItemDetailsTest extends PageTest {
         Assert.assertTrue(result.hasAmountBuild);
     }
 
-    private BuildItemDetailsData testBuildItem(BuildItem buildItem) throws Exception {
-        return testBuildItem(buildItem, "resources");
+    private BuildingDetails testBuildItem(Building building) throws Exception {
+        return testBuildItem(building, "resources");
     }
 
-    private BuildItemDetailsData testBuildItem(BuildItem buildItem, String page) throws Exception {
-        RequestPage request = new BuildItemDetailsRequest(auth, page, buildItem);
-        ResultPage result = new BuildItemDetailsResult().createFromRequest(request);
+    private BuildingDetails testBuildItem(Building building, String page) throws Exception {
+        RequestPage request = new BuildingDetailsRequest(auth, page, building);
+        ResultPage result = new BuildingDetailsResult().createFromRequest(request);
 
-        BuildItemDetailsData details = (BuildItemDetailsData) result.getResult();
+        BuildingDetails details = (BuildingDetails) result.getResult();
         boolean hasExtraInfo = hasExtraInfo(details);
 
         System.out.printf("\n%s\n", details.name);
@@ -115,7 +115,7 @@ public class BuildItemDetailsTest extends PageTest {
         return details;
     }
 
-    private static boolean hasExtraInfo(BuildItemDetailsData result) {
+    private static boolean hasExtraInfo(BuildingDetails result) {
         return result.extraInfoLabel != null || result.extraInfoValue != null;
     }
 }

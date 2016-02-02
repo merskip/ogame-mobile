@@ -105,6 +105,10 @@ public class RequestPage {
                 uniId, lang, host);
     }
 
+    public DownloadTimer getTimer() {
+        return timer;
+    }
+
     public static boolean isSuccessResponse(Connection.Response response) {
         return response.url().getPath().equals("/game/index.php");
     }
@@ -115,7 +119,7 @@ public class RequestPage {
      * Dostarcza narzędzi do pomiaru czasu pobierania i parsowania
      * oraz automatycznie generuje logi
      */
-    protected class DownloadTimer {
+    public class DownloadTimer {
         private long startedTime;
         private long downloadedTime;
         private long parsedTime;

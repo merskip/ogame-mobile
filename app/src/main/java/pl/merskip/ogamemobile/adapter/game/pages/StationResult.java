@@ -3,19 +3,19 @@ package pl.merskip.ogamemobile.adapter.game.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.Building;
 
 /**
  * Strona stacji
  */
-public class StationResult extends BuildItemsPage {
+public class StationResult extends BuildingsResult {
 
     @Override
-    public List<BuildItem> onCreateResult() {
-        List<BuildItem> buildItems = new ArrayList<>();
+    public List<Building> onCreateResult() {
+        List<Building> buildings = new ArrayList<>();
 
-        appendFromListLi(buildItems, document.select("ul#stationbuilding li"));
+        appendFromListLi(buildings, document.select("ul#stationbuilding li"));
 
-        return buildItems;
+        return buildings;
     }
 }

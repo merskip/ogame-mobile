@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.build_items;
+package pl.merskip.ogamemobile.game.pages.buildings;
 
 import android.os.Bundle;
 
@@ -9,11 +9,11 @@ import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.pages.ViewerPage;
 
 /**
- * Pobieranie strony z pozycjami budowania
+ * Wyświetlanie strony z listą budynków
  */
-public class BuildItemsViewer extends ViewerPage {
+public class BuildingsListViewer extends ViewerPage {
 
-    public BuildItemsViewer(GameActivity activity) {
+    public BuildingsListViewer(GameActivity activity) {
         super(activity);
     }
 
@@ -23,7 +23,7 @@ public class BuildItemsViewer extends ViewerPage {
 
         Bundle args = new Bundle();
 
-        BuildItemsFragment fragment = new BuildItemsFragment();
+        BuildingsListFragment fragment = new BuildingsListFragment();
         args.putSerializable("build-items", (Serializable) buildItems);
         fragment.setArguments(args);
 

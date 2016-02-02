@@ -33,7 +33,7 @@ import pl.merskip.ogamemobile.adapter.PlanetList;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
+import pl.merskip.ogamemobile.adapter.game.Building;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
 import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
@@ -193,7 +193,7 @@ public class GameActivity
         return currentPlanet;
     }
 
-    public void abortBuild(final BuildItem buildItem, final String listId) {
+    public void abortBuild(final Building building, final String listId) {
         String pageName = currentPage;
         final String abortToken = lastScriptData.getAbortToken();
         RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
@@ -202,7 +202,7 @@ public class GameActivity
                 return super.createConnection()
                         .data("token", abortToken)
                         .data("modus", "2")
-                        .data("techid", buildItem.id)
+                        .data("techid", building.id)
                         .data("listid", listId);
             }
         };
@@ -212,17 +212,17 @@ public class GameActivity
 
         new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
 
-        Log.d("GameActivity", "Request abort name=" + buildItem.name
+        Log.d("GameActivity", "Request abort name=" + building.name
                 + ", page=" + pageName
                 + ", planet=" + currentPlanet.name);
     }
 
-    public void build(final BuildItem buildItem) {
+    public void build(final Building building) {
         String pageName = currentPage;
         RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
             @Override
             protected String getRequestUrl() {
-                return buildItem.buildRequestUrl;
+                return building.buildRequestUrl;
             }
         };
         ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
@@ -230,12 +230,12 @@ public class GameActivity
 
         new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
 
-        Log.d("GameActivity", "Request build name=" + buildItem.name
+        Log.d("GameActivity", "Request build name=" + building.name
                 + ", page=" + pageName
                 + ", planet=" + currentPlanet.name);
     }
 
-    public void buildAmount(final BuildItem buildItem, final int amount) {
+    public void buildAmount(final Building building, final int amount) {
         String pageName = currentPage;
         final String token = lastMainDocument.select("form[name=form] input[name=token]").attr("value");
         RequestPage requestPage = new RequestPage(auth, pageName, currentPlanet.id) {
@@ -245,14 +245,14 @@ public class GameActivity
                         .method(Connection.Method.POST)
                         .data("token", token)
                         .data("modus", "1")
-                        .data("type", buildItem.id)
+                        .data("type", building.id)
                         .data("menge", String.valueOf(amount));
             }
         };
 
         new DownloadTask(this, requestPage, null, null).execute();
 
-        Log.d("GameActivity", "Request amount build name=" + buildItem.name
+        Log.d("GameActivity", "Request amount build name=" + building.name
                 + ", amount=" + amount
                 + ", page=" + pageName
                 + ", planet=" + currentPlanet.name);

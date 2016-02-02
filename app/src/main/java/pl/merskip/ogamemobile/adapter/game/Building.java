@@ -1,11 +1,11 @@
-package pl.merskip.ogamemobile.adapter.pages;
+package pl.merskip.ogamemobile.adapter.game;
 
 import java.io.Serializable;
 
 /**
- * Pozycja budowania, takie jak budynki i badania
+ * Budynek, badanie, flota
  */
-public class BuildItem implements Serializable {
+public class Building implements Serializable {
 
     public String id;
     public String name;
@@ -27,7 +27,7 @@ public class BuildItem implements Serializable {
         public long finishTime;
     }
 
-    public BuildItem(String id, String name, int level) {
+    public Building(String id, String name, int level) {
         this.id = id;
         this.name = name;
         this.level = level;

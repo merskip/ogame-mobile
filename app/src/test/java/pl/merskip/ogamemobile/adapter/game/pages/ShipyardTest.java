@@ -3,7 +3,7 @@ package pl.merskip.ogamemobile.adapter.game.pages;
 /**
  * Test strony stoczni
  */
-public class ShipyardTest extends BuildItemsPage {
+public class ShipyardTest extends BuildingsPage {
 
 
     @Override

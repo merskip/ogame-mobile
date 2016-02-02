@@ -1,4 +1,4 @@
-package pl.merskip.ogamemobile.game.pages.build_items;
+package pl.merskip.ogamemobile.game.pages.buildings;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -28,20 +28,20 @@ import java.util.List;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.ResourceItem;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
-import pl.merskip.ogamemobile.adapter.game.BuildItemDetailsData;
+import pl.merskip.ogamemobile.adapter.game.BuildingDetails;
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.Utils;
 
 /**
- * Alert ze szczegółami budynku
+ * Dialog ze szczegółami budynku
  */
-public class BuildItemDetailsDialog extends DialogFragment implements View.OnClickListener {
+public class BuildingDetailsDialog extends DialogFragment implements View.OnClickListener {
 
     private View view;
     private GameActivity activity;
     private ResourcesSummary actualResources;
 
-    private BuildItemDetailsData data;
+    private BuildingDetails details;
 
     @NonNull
     @SuppressLint("InflateParams")
@@ -60,13 +60,13 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
         view = activity.getLayoutInflater().inflate(R.layout.build_item_details, null);
 
         Bundle args = getArguments();
-        data = (BuildItemDetailsData) args.getSerializable("details-data");
+        details = (BuildingDetails) args.getSerializable("details-data");
         setupUI();
 
-        if (data.canAbort)
+        if (details.canAbort)
             builder.setNeutralButton(R.string.more, null);
 
-        builder.setTitle(data.name);
+        builder.setTitle(details.name);
         builder.setView(view);
         return builder.create();
     }
@@ -92,7 +92,7 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
 
         final String abortBuild = activity.getString(R.string.abort_build);
 
-        if (data.canAbort)
+        if (details.canAbort)
             adapter.add(abortBuild);
 
         if (adapter.isEmpty())
@@ -104,7 +104,7 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
                     public void onClick(DialogInterface dialog, int which) {
                         String option = adapter.getItem(which);
                         if (option.equals(abortBuild)) {
-                            activity.abortBuild(data.originBuildItem, data.abortListId);
+                            activity.abortBuild(details.originBuilding, details.abortListId);
                         }
 
                     }
@@ -116,20 +116,20 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
         TextView extraInfoView = (TextView) view.findViewById(R.id.extra_info);
 
         String levelText = activity.getString(R.string.level,
-                "<font color='#ffffff'>" + data.level + "</font>");
+                "<font color='#ffffff'>" + details.level + "</font>");
         levelView.setText(Html.fromHtml(levelText));
 
-        if (data.extraInfoLabel != null) {
+        if (details.extraInfoLabel != null) {
             String extraInfo = String.format("%s: <font color='#ffffff'>%s</font>",
-                    data.extraInfoLabel, data.extraInfoValue);
+                    details.extraInfoLabel, details.extraInfoValue);
             extraInfoView.setText(Html.fromHtml(extraInfo));
             extraInfoView.setVisibility(View.VISIBLE);
         }
 
-        setResourceCost(R.id.cost_metal, data.costMetal, actualResources.metal);
-        setResourceCost(R.id.cost_crystal, data.costCrystal, actualResources.crystal);
-        setResourceCost(R.id.cost_deuterium, data.costDeuterium, actualResources.deuterium);
-        setResourceCost(R.id.cost_energy, data.costEnergy, actualResources.energy);
+        setResourceCost(R.id.cost_metal, details.costMetal, actualResources.metal);
+        setResourceCost(R.id.cost_crystal, details.costCrystal, actualResources.crystal);
+        setResourceCost(R.id.cost_deuterium, details.costDeuterium, actualResources.deuterium);
+        setResourceCost(R.id.cost_energy, details.costEnergy, actualResources.energy);
 
         setupCapacity();
         setupAmountBuild();
@@ -167,7 +167,7 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
     }
 
     private void setupCapacity() {
-        if (data.hasCapacity) {
+        if (details.hasCapacity) {
             View capacityLayout = view.findViewById(R.id.capacity_layout);
             capacityLayout.setVisibility(View.VISIBLE);
 
@@ -175,15 +175,15 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
             ProgressBar capacityBar = (ProgressBar) capacityLayout.findViewById(R.id.capacity_bar);
             TextView fillTimeView = (TextView) capacityLayout.findViewById(R.id.fill_time);
 
-            String capacityText = toPrettyText(data.actualCapacity)
-                    + " / " + toPrettyText(data.storageCapacity);
+            String capacityText = toPrettyText(details.actualCapacity)
+                    + " / " + toPrettyText(details.storageCapacity);
             actualView.setText(capacityText);
-            capacityBar.setMax(data.storageCapacity);
-            capacityBar.setProgress(data.actualCapacity);
+            capacityBar.setMax(details.storageCapacity);
+            capacityBar.setProgress(details.actualCapacity);
 
             ResourceItem resource = getResourceForCapacity();
             if (resource != null) {
-                int secondsToFull = getSecondsToEnough(resource, data.storageCapacity);
+                int secondsToFull = getSecondsToEnough(resource, details.storageCapacity);
                 fillTimeView.setText(Utils.timeCountdownConvert(secondsToFull));
             }
         }
@@ -209,7 +209,7 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
 
     private ResourceItem getResourceForCapacity() {
         ResourcesSummary resources = activity.getActualResources();
-        switch (data.id) {
+        switch (details.id) {
             case "22": return resources.metal;
             case "23": return resources.crystal;
             case "24": return resources.deuterium;
@@ -219,18 +219,18 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
 
     private void setupAmountBuild() {
         View amountBuildLayout = view.findViewById(R.id.amount_build_layout);
-        amountBuildLayout.setVisibility(data.hasAmountBuild ? View.VISIBLE : View.GONE);
-        if (data.hasAmountBuild) {
+        amountBuildLayout.setVisibility(details.hasAmountBuild ? View.VISIBLE : View.GONE);
+        if (details.hasAmountBuild) {
             EditText amountEdit = (EditText) view.findViewById(R.id.amount);
             int maxAmount = getMaxAmountBuild();
             amountEdit.setHint(Utils.toPrettyText(maxAmount));
 
             ImageButton buildButton = (ImageButton) view.findViewById(R.id.build);
-            buildButton.setEnabled(data.isActiveBuild);
-            amountEdit.setEnabled(data.isActiveBuild);
+            buildButton.setEnabled(details.isActiveBuild);
+            amountEdit.setEnabled(details.isActiveBuild);
 
             Drawable buildIcon = buildButton.getDrawable();
-            if (data.isActiveBuild)
+            if (details.isActiveBuild)
                 buildIcon.clearColorFilter();
             else
                 buildIcon.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
@@ -243,17 +243,17 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
     private int getMaxAmountBuild() {
         List<Integer> maxAmount = new ArrayList<>(3);
 
-        if (data.costMetal != 0)
-            maxAmount.add(getMaxAmountForResource(actualResources.metal, data.costMetal));
+        if (details.costMetal != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.metal, details.costMetal));
 
-        if (data.costCrystal != 0)
-            maxAmount.add(getMaxAmountForResource(actualResources.crystal, data.costCrystal));
+        if (details.costCrystal != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.crystal, details.costCrystal));
 
-        if (data.costDeuterium != 0)
-            maxAmount.add(getMaxAmountForResource(actualResources.deuterium, data.costDeuterium));
+        if (details.costDeuterium != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.deuterium, details.costDeuterium));
 
-        if (data.costEnergy != 0)
-            maxAmount.add(getMaxAmountForResource(actualResources.energy, data.costEnergy));
+        if (details.costEnergy != 0)
+            maxAmount.add(getMaxAmountForResource(actualResources.energy, details.costEnergy));
 
         return Collections.min(maxAmount);
     }
@@ -276,7 +276,7 @@ public class BuildItemDetailsDialog extends DialogFragment implements View.OnCli
             userAmount = amountEdit.getHint().toString();
         int amount = Integer.parseInt(userAmount);
 
-        activity.buildAmount(data.originBuildItem, amount);
+        activity.buildAmount(details.originBuilding, amount);
     }
 
 }

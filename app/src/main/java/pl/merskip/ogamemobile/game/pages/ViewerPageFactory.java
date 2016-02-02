@@ -1,7 +1,7 @@
 package pl.merskip.ogamemobile.game.pages;
 
 import pl.merskip.ogamemobile.game.GameActivity;
-import pl.merskip.ogamemobile.game.pages.build_items.BuildItemsViewer;
+import pl.merskip.ogamemobile.game.pages.buildings.BuildingsListViewer;
 import pl.merskip.ogamemobile.game.pages.overview.OverviewViewer;
 
 /**
@@ -20,7 +20,7 @@ public class ViewerPageFactory {
             case "research":
             case "shipyard":
             case "defense":
-                return new BuildItemsViewer(activity);
+                return new BuildingsListViewer(activity);
             default:
                 throw new IllegalArgumentException("Unknown pageName: " + pageName);
         }

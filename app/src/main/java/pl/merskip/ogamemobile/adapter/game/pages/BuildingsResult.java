@@ -10,46 +10,47 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.merskip.ogamemobile.adapter.ScriptData;
-import pl.merskip.ogamemobile.adapter.game.BuildItem;
-import pl.merskip.ogamemobile.adapter.game.BuildItem.BuildState;
+import pl.merskip.ogamemobile.adapter.game.Building;
+import pl.merskip.ogamemobile.adapter.game.Building.BuildState;
+import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
 
 /**
  * Strona zawierająca pozycje do budowania
  */
-public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
+public abstract class BuildingsResult extends ResultPage<List<Building>> {
 
-    protected void appendFromListLi(List<BuildItem> buildItems, Elements elementsLi) {
+    protected void appendFromListLi(List<Building> buildings, Elements elementsLi) {
         for (Element element : elementsLi) {
-            BuildItem buildItem = createFromLi(element);
-            buildItems.add(buildItem);
+            Building building = createFromLi(element);
+            buildings.add(building);
         }
     }
 
-    protected BuildItem createFromLi(Element li) {
+    protected Building createFromLi(Element li) {
         String id = li.select("a[ref]").attr("ref");
         String name = li.select(".textlabel").text().trim();
         String levelWithNameAndDots = li.select(".level").text();
         String level = levelWithNameAndDots.replace(name, "").replace(".", "").trim();
 
-        BuildItem buildItem = new BuildItem(id, name, Integer.parseInt(level));
-        buildItem.buildState = getBuildSate(li);
+        Building building = new Building(id, name, Integer.parseInt(level));
+        building.buildState = getBuildSate(li);
 
         /* Gdy budynek jest rozbudowywany,
          * nazwa budynku i poziom są napisane w innym miejscu */
-        if (buildItem.buildState == BuildState.Upgrading) {
-            buildItem.name = li.select(".tooltip").attr("title").replaceAll(" \\(.*?\\)", "");
+        if (building.buildState == BuildState.Upgrading) {
+            building.name = li.select(".tooltip").attr("title").replaceAll(" \\(.*?\\)", "");
             String levelWithDots = li.select(".ecke .level").text();
             level = levelWithDots.replace(".", "").trim();
-            buildItem.level = Integer.parseInt(level);
+            building.level = Integer.parseInt(level);
         }
 
-        if (buildItem.buildState == BuildState.ReadyToBuild)
-            buildItem.buildRequestUrl = getBuildRequestUrl(li);
-        if (buildItem.buildState == BuildState.Upgrading)
-            buildItem.buildProgress = getBuildingUpgrading(li, scriptData);
+        if (building.buildState == BuildState.ReadyToBuild)
+            building.buildRequestUrl = getBuildRequestUrl(li);
+        if (building.buildState == BuildState.Upgrading)
+            building.buildProgress = getBuildingUpgrading(li, scriptData);
 
-        return buildItem;
+        return building;
     }
 
     private static BuildState getBuildSate(Element li) {
@@ -63,7 +64,7 @@ public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
         else if (li.hasClass("off"))
             return BuildState.UnmetRequirements;
         else
-            Log.e("BuildItem", "Unknown building state: " + li.className());
+            Log.e("Building", "Unknown building state: " + li.className());
         return null;
     }
 
@@ -82,7 +83,7 @@ public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
         return null;
     }
 
-    private BuildItem.BuildProgress getBuildingUpgrading(Element li,
+    private Building.BuildProgress getBuildingUpgrading(Element li,
                                                       ScriptData scriptData) {
 
         Element pusherElement = li.select(".pusher").first();
@@ -95,7 +96,7 @@ public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
 
         if (matcher.find()) {
             int remainingSeconds = Integer.parseInt(matcher.group(1));
-            BuildItem.BuildProgress buildProgress = new BuildItem.BuildProgress();
+            Building.BuildProgress buildProgress = new Building.BuildProgress();
             buildProgress.finishTime = getFinishTime(remainingSeconds);
             buildProgress.totalSeconds = Integer.parseInt(matcher.group(2));
             return buildProgress;
@@ -108,8 +109,10 @@ public abstract class BuildItemsPage extends ResultPage<List<BuildItem>> {
         long currentTime = System.currentTimeMillis();
         long remainingMillis = remainingSeconds * 1000;
         long totalDownloadMillis = 0;
-        if (request != null)
-            totalDownloadMillis = (long) (request.timer.getTotalDownloadSecs() * 1000);
+        if (request != null) {
+            RequestPage.DownloadTimer timer = request.getTimer();
+            totalDownloadMillis = (long) (timer.getTotalDownloadSecs() * 1000);
+        }
 
         return currentTime + remainingMillis - totalDownloadMillis;
     }

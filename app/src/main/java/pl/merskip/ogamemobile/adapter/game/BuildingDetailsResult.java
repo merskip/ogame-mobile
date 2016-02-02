@@ -9,16 +9,16 @@ import java.util.regex.Pattern;
 /**
  * Szczegółowe informacje o budowanej pozycji
  */
-public class BuildItemDetailsResult extends ResultPage<BuildItemDetailsData> {
+public class BuildingDetailsResult extends ResultPage<BuildingDetails> {
 
-    private BuildItemDetailsData result;
+    private BuildingDetails result;
 
     @Override
-    protected BuildItemDetailsData onCreateResult() {
-        BuildItemDetailsRequest request = (BuildItemDetailsRequest) getRequest();
+    protected BuildingDetails onCreateResult() {
+        BuildingDetailsRequest request = (BuildingDetailsRequest) getRequest();
 
-        result = new BuildItemDetailsData();
-        result.originBuildItem = request.buildItem;
+        result = new BuildingDetails();
+        result.originBuilding = request.building;
 
         appendBaseAttributes();
         appendCosts();
