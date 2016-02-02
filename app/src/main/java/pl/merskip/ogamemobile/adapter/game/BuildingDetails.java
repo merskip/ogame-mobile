@@ -34,4 +34,5 @@ public class BuildingDetails implements Serializable {
     public boolean canAbort = false;
     public String abortListId;
 
+    public boolean canDemolish = false;
 }

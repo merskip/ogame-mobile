@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,6 +42,8 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
     private GameActivity activity;
     private ResourcesSummary actualResources;
 
+    private List<String> moreOptions = new ArrayList<>(2);
+
     private BuildingDetails details;
 
     @NonNull
@@ -63,7 +66,7 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
         details = (BuildingDetails) args.getSerializable("details-data");
         setupUI();
 
-        if (details.canAbort)
+        if (details.canAbort || details.canDemolish)
             builder.setNeutralButton(R.string.more, null);
 
         builder.setTitle(details.name);
@@ -91,9 +94,12 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
                 new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1);
 
         final String abortBuild = activity.getString(R.string.abort_build);
+        final String demolish = activity.getString(R.string.demolish);
 
         if (details.canAbort)
             adapter.add(abortBuild);
+        if (details.canDemolish)
+            adapter.add(demolish);
 
         if (adapter.isEmpty())
             return;
@@ -105,8 +111,11 @@ public class BuildingDetailsDialog extends DialogFragment implements View.OnClic
                         String option = adapter.getItem(which);
                         if (option.equals(abortBuild)) {
                             activity.abortBuild(details.originBuilding, details.abortListId);
+                        } else if (option.equals(demolish)) {
+                            activity.demolish(details.originBuilding);
+                        } else {
+                            Log.e("BuildingDetails", "Chosen unknown option: " + option);
                         }
-
                     }
                 }).show();
     }

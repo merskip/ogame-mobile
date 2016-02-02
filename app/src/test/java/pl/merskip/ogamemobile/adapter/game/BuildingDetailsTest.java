@@ -95,6 +95,10 @@ public class BuildingDetailsTest extends PageTest {
                     details.abortListId);
         }
 
+        if (details.canDemolish) {
+            System.out.printf(" - can demolish\n");
+        }
+
         Assert.assertNotNull(details.id);
         Assert.assertNotNull(details.name);
         Assert.assertNotNull(details.level);

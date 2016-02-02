@@ -26,6 +26,7 @@ public class BuildingDetailsResult extends ResultPage<BuildingDetails> {
         appendCapacity();
         appendHasAmountBuild();
         appendAbort();
+        appendDemolish();
 
         return result;
     }
@@ -64,9 +65,9 @@ public class BuildingDetailsResult extends ResultPage<BuildingDetails> {
     }
 
     private void appendExtraInfo() {
-        Elements prodInformationsLi = document.select(".production_info li");
-        if (prodInformationsLi.size() > 1) {
-            Element extraInfo = prodInformationsLi.last();
+        Elements prodInfoLi = document.select(".production_info li");
+        if (prodInfoLi.size() > 1) {
+            Element extraInfo = prodInfoLi.last();
 
              // Ignorowanie czasu możliwej budowy od komandora
             if (!extraInfo.select("#possibleInTime").isEmpty())
@@ -102,6 +103,13 @@ public class BuildingDetailsResult extends ResultPage<BuildingDetails> {
             Matcher matcher = Pattern.compile(regex).matcher(onclick);
             if (matcher.find())
                 result.abortListId = matcher.group(2);
+        }
+    }
+
+    private void appendDemolish() {
+        Element demolishLink = document.select(".demolish_link").first();
+        if (demolishLink != null && !demolishLink.hasClass("demolishDisabled")) {
+            result.canDemolish = true;
         }
     }
 }

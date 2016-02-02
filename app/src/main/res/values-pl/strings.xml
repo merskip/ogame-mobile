@@ -36,4 +36,5 @@
     <string name="close">Zamknij</string>
     <string name="more">Wiecej</string>
     <string name="abort_build">Zatrzymaj budowę</string>
+    <string name="demolish">Wyburz</string>
 </resources>

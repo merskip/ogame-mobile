@@ -36,6 +36,7 @@ import pl.merskip.ogamemobile.adapter.game.AbortBuildRequest;
 import pl.merskip.ogamemobile.adapter.game.AmountBuildRequest;
 import pl.merskip.ogamemobile.adapter.game.BuildRequest;
 import pl.merskip.ogamemobile.adapter.game.Building;
+import pl.merskip.ogamemobile.adapter.game.DemolishRequest;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
 import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
@@ -210,6 +211,23 @@ public class GameActivity
         Log.d("GameActivity", "Request abort name=" + building.name
                 + ", page=" + pageName
                 + ", planet=" + currentPlanet.name);
+    }
+
+    public void demolish(Building building) {
+        String pageName = currentPage;
+        String planetId = currentPlanet.id;
+        String demolishToken = lastScriptData.getDemolishToken();
+        RequestPage requestPage =
+                new DemolishRequest(auth, pageName, planetId, building, demolishToken);
+
+        ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
+        ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
+
+        new DownloadTask(this, requestPage, resultPage, viewerPage).execute();
+
+        Log.d("GameActivity", "Request demolish name=" + building.name
+                + ", page=" + pageName
+                + ", planet=" + planetId);
     }
 
     public void build(Building building) {

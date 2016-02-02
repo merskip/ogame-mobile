@@ -51,4 +51,14 @@ public class ScriptData {
         else
             return null;
     }
+
+    public String getDemolishToken() {
+        String regex = "modus=3&token=(.*?)(\"|&)";
+        Matcher matcher = Pattern.compile(regex, Pattern.DOTALL).matcher(content);
+
+        if (matcher.find())
+            return matcher.group(1);
+        else
+            return null;
+    }
 }
