@@ -46,10 +46,14 @@ public class PlanetList {
         Element moonLink = planetDiv.select(".moonLink").first();
         if (moonLink != null) {
             String href = moonLink.attr("href");
+
             int startId = href.lastIndexOf("cp=") + 3;
             String id = href.substring(startId);
 
-            planet.moon = planet. new Moon(id);
+            String title = moonLink.attr("title");
+            String name = title.substring("<B>".length(), title.lastIndexOf('[')).trim();
+
+            planet.moon = planet. new Moon(id, name);
             planet.moon.iconUrl = moonLink.select("img.icon-moon").attr("src");
         }
     }

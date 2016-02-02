@@ -55,14 +55,16 @@ public class PlanetListTest extends PageTest {
             Assert.assertNotEquals("", planet.iconUrl);
 
             if (planet.moon != null) {
-                System.out.printf("\t * moon: id=%s, coords=%s\n",
-                        planet.moon.id, planet.moon.coordinate);
+                System.out.printf("\t * moon: id=%s, name=%s coords=%s\n",
+                        planet.moon.id, planet.moon.name, planet.moon.coordinate);
 
                 Assert.assertNotNull(planet.moon.id);
+                Assert.assertNotNull(planet.moon.name);
                 Assert.assertNotNull(planet.moon.coordinate);
                 Assert.assertNotNull(planet.moon.iconUrl);
 
                 Assert.assertNotEquals("", planet.moon.id);
+                Assert.assertNotEquals("", planet.moon.name);
                 Assert.assertEquals(planet.moon.coordinate, planet.moon.coordinate);
                 Assert.assertNotEquals("", planet.moon.iconUrl);
             }

@@ -355,9 +355,14 @@ public class GameActivity
 
     private void updatePlanetList(Document document) {
         List<Planet> planetList = PlanetList.fromDocument(document);
+        Planet superPlanet = new Planet("0", "Nazwa planety", "[0:0:0]");
+        superPlanet.moon = superPlanet. new Moon("0", "NAzwa księzyca");
+
         if (planetList != null) {
+            planetList.add(superPlanet);
             planetListAdapter.setPlanetList(planetList);
         }
+
     }
 
     private void updateCurrentPlanet(Document document) {

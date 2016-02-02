@@ -21,9 +21,9 @@ public class Planet implements Serializable {
 
     public class Moon extends Planet {
 
-        public Moon(String id) {
+        public Moon(String id, String name) {
             // Koordynaty księżyca są takie same jak planety macierzystej
-            super(id, null, Planet.this.coordinate);
+            super(id, name, Planet.this.coordinate);
         }
     }
 
