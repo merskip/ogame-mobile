@@ -232,7 +232,7 @@ public class GameActivity
 
     public void build(Building building) {
         String pageName = currentPage;
-        RequestPage requestPage = new BuildRequest(auth, building);
+        RequestPage requestPage = new BuildRequest(auth, pageName, building);
         ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
         ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
 
@@ -285,8 +285,8 @@ public class GameActivity
      * Wyświetla treść strony i ustawia ją na aktualnie otwartą
      */
     public void showContentPage(String pageName, Fragment fragment) {
-        if (pageName == null)
-            Log.e("GameActivity", "showContentPage: pageName is null!");
+        if (pageName == null || pageName.isEmpty())
+            Log.e("GameActivity", "showContentPage: pageName is null or empty!");
 
         this.currentPage = pageName;
 

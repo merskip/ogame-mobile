@@ -9,8 +9,8 @@ public class BuildRequest extends RequestPage {
 
     private Building building;
 
-    public BuildRequest(AuthorizationData auth, Building building) {
-        super(auth, "");
+    public BuildRequest(AuthorizationData auth, String pageName, Building building) {
+        super(auth, pageName);
         this.building = building;
     }
 
