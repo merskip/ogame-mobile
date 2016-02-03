@@ -37,4 +37,9 @@
     <string name="more">Wiecej</string>
     <string name="abort_build">Zatrzymaj budowę</string>
     <string name="demolish">Wyburz</string>
+    <string name="settings">Ustawienia</string>
+    <string name="login_settings">Ustawienia logowania</string>
+    <string name="ogame_server">Serwer OGame</string>
+    <string name="save_login">Zapamiętaj login</string>
+    <string name="save_login_desc">Pamiętaj ostatni login i wybrane uniwersum</string>
 </resources>

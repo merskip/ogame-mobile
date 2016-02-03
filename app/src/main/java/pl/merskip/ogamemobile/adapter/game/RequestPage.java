@@ -98,11 +98,9 @@ public class RequestPage {
 
     public String getGameIndexUrl() {
         String uniId = auth.loginData.uniId;
-        String lang = auth.loginData.server.lang;
-        String host = auth.loginData.server.host;
+        String host = auth.loginData.host;
 
-        return String.format("http://s%s-%s.%s/game/index.php",
-                uniId, lang, host);
+        return String.format("http://s%s-%s/game/index.php", uniId, host);
     }
 
     public DownloadTimer getTimer() {

@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Map;
 
-import pl.merskip.ogamemobile.adapter.ServerHost;
-
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,9 +16,9 @@ public class UniversumListTest {
 
     @Test
     public void testDownloadUniversumList() throws IOException {
-        ServerHost server = TestUser.getLoginData().server;
+        String host = TestUser.getLoginData().host;
 
-        UniversumList universumList = new UniversumList(server);
+        UniversumList universumList = new UniversumList(host);
         Map<String, String> uniList = universumList.downloadUniversumList();
 
         assertNotEquals(0, uniList.size());

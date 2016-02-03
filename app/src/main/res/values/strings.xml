@@ -40,4 +40,9 @@
     <string name="level_upgrade"><![CDATA[%1$s <small>%2$s</small>]]></string>
     <string name="level_downgrade"><![CDATA[<small>%2$s</small> %1$s]]></string>
     <string name="level_build_count"><![CDATA[%1$s <small>+ %2$s</small>]]></string>
+    <string name="settings">Settings</string>
+    <string name="login_settings">Login settings</string>
+    <string name="ogame_server">OGame server</string>
+    <string name="save_login">Remember login</string>
+    <string name="save_login_desc">Remember last login and selected universe</string>
 </resources>

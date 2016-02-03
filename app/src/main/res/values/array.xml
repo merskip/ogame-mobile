@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="servers_hosts" translatable="false">
+        <item>ar.ogame.gameforge.com</item>
+        <item>br.ogame.gameforge.com</item>
+        <item>dk.ogame.gameforge.com</item>
+        <item>de.ogame.gameforge.com</item>
+        <item>es.ogame.gameforge.com</item>
+        <item>fr.ogame.gameforge.com</item>
+        <item>ogame.com.hr</item>
+        <item>it.ogame.gameforge.com</item>
+        <item>hu.ogame.gameforge.com</item>
+        <item>mx.ogame.gameforge.com</item>
+        <item>nl.ogame.gameforge.com</item>
+        <item>ogame.no</item>
+        <item>pl.ogame.gameforge.com</item>
+        <item>pt.ogame.gameforge.com</item>
+        <item>ro.ogame.gameforge.com</item>
+        <item>ogame.si</item>
+        <item>sk.ogame.gameforge.com</item>
+        <item>fi.ogame.org</item>
+        <item>se.ogame.gameforge.com</item>
+        <item>tr.ogame.gameforge.com</item>
+        <item>us.ogame.gameforge.com</item>
+        <item>en.ogame.gameforge.com</item>
+        <item>cz.ogame.gameforge.com</item>
+        <item>gr.ogame.gameforge.com</item>
+        <item>ru.ogame.gameforge.com</item>
+        <item>tw.ogame.gameforge.com</item>
+        <item>jp.ogame.gameforge.com</item>
+    </string-array>
+    <string-array name="servers_names" translatable="false">
+        <item>Argentina</item>
+        <item>Brazil</item>
+        <item>Danmark</item>
+        <item>Deutschland</item>
+        <item>España</item>
+        <item>France</item>
+        <item>Hrvatska</item>
+        <item>Italia</item>
+        <item>Magyarország</item>
+        <item>México</item>
+        <item>Nederland</item>
+        <item>Norge</item>
+        <item>Polska</item>
+        <item>Portugal</item>
+        <item>Romania</item>
+        <item>Slovenija</item>
+        <item>Slovensko</item>
+        <item>Suomi</item>
+        <item>Sverige</item>
+        <item>Türkiye</item>
+        <item>USA</item>
+        <item>United Kingdom</item>
+        <item>Česká Republika</item>
+        <item>Ελλάδα</item>
+        <item>Российская Федерация</item>
+        <item>台灣</item>
+        <item>日本</item>
+    </string-array>
+</resources>

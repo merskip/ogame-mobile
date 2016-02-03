@@ -12,7 +12,6 @@ import java.net.UnknownHostException;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.ServerHost;
 import pl.merskip.ogamemobile.adapter.login.UniversumList;
 
 /**
@@ -21,14 +20,14 @@ import pl.merskip.ogamemobile.adapter.login.UniversumList;
 public class GetUniversumListTask extends AsyncTask<Void, Void, Map<String, String>> {
 
     private LoginActivity activity;
-    private ServerHost server;
+    private String host;
 
     private ProgressDialog progressDialog;
     private Exception exception = null;
 
-    public GetUniversumListTask(LoginActivity activity, ServerHost server) {
+    public GetUniversumListTask(LoginActivity activity, String host) {
         this.activity = activity;
-        this.server = server;
+        this.host = host;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class GetUniversumListTask extends AsyncTask<Void, Void, Map<String, Stri
     protected Map<String, String> doInBackground(Void... params) {
 
         try {
-            UniversumList universumList = new UniversumList(server);
+            UniversumList universumList = new UniversumList(host);
             return universumList.downloadUniversumList();
         } catch (UnknownHostException e) {
             exception = e;
@@ -86,7 +85,7 @@ public class GetUniversumListTask extends AsyncTask<Void, Void, Map<String, Stri
                 .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new GetUniversumListTask(activity, server).execute();
+                        new GetUniversumListTask(activity, host).execute();
                     }
                 })
                 .setCancelable(false)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/login_settings">
+
+        <ListPreference
+            android:key="login.serverHost"
+            android:title="@string/ogame_server"
+            android:entries="@array/servers_names"
+            android:entryValues="@array/servers_hosts"
+            android:defaultValue="pl.ogame.gameforge.com" />
+
+        <CheckBoxPreference
+            android:key="login.saveLoginAndUniversum"
+            android:title="@string/save_login"
+            android:summary="@string/save_login_desc"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,6 +1,7 @@
 package pl.merskip.ogamemobile.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,14 +27,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pl.merskip.ogamemobile.R;
-import pl.merskip.ogamemobile.adapter.ServerHost;
+import pl.merskip.ogamemobile.SettingsActivity;
 import pl.merskip.ogamemobile.adapter.login.Login;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity
+        extends AppCompatActivity
+        implements View.OnClickListener {
 
-    private static final String DEFAULT_SERVER_LANG = "pl";
+    private static final String DEFAULT_SERVER_HOST = "pl.ogame.gameforge.com";
 
-    private ServerHost serverHost;
+    private SharedPreferences pref;
+
+    private String serverHost;
 
     private EditText loginEdit;
     private EditText passwordEdit;
@@ -42,7 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Map<String, String> universumList;
 
     public LoginActivity() {
-        this.serverHost = new ServerHost(DEFAULT_SERVER_LANG);
         this.universumList = new LinkedHashMap<>();
     }
 
@@ -50,6 +54,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        serverHost = pref.getString("login.serverHost", DEFAULT_SERVER_HOST);
 
         loginEdit = (EditText) findViewById(R.id.login);
         passwordEdit = (EditText) findViewById(R.id.password);
@@ -60,7 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!loadUniversumList())
             downloadUniversumList();
 
-        restoreLastLoginAndUniversum();
+        if (isEnableSaveLastLoginAndUniversum())
+            restoreLastLoginAndUniversum();
 
         if (isLoginDataInIntent())
             loginFromIntent();
@@ -93,6 +101,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.sign_in:
                 singIn();
                 return true;
+            case R.id.settings:
+                openSettings();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -106,6 +117,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getIntent().putExtra("last_server_host", serverHost);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        serverHost = pref.getString("login.serverHost", DEFAULT_SERVER_HOST);
+
+        String lastServerHost = getIntent().getStringExtra("last_server_host");
+        if (!serverHost.equals(lastServerHost) && lastServerHost != null)
+            downloadUniversumList();
+    }
+
+    private void openSettings() {
+        startActivityForResult(new Intent(this, SettingsActivity.class), 0);
+    }
+
     public void downloadUniversumList() {
         new GetUniversumListTask(this, serverHost).execute();
     }
@@ -117,29 +148,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void singIn(Login.Data loginData) {
         new LoginTask(this, loginData).execute();
-        Log.d("Login", "login=" + loginData.login + ", uniId=" + loginData.uniId);
+        Log.d("Login", "Sign in with " +
+                "host=" + loginData.host +
+                ", login=" + loginData.login +
+                ", uniId=" + loginData.uniId);
 
-        saveUserLoginAndUniversum();
+        if (isEnableSaveLastLoginAndUniversum())
+            saveUserLoginAndUniversum();
+    }
+
+    private boolean isEnableSaveLastLoginAndUniversum() {
+        return pref.getBoolean("login.saveLoginAndUniversum", true);
     }
 
     private void saveUserLoginAndUniversum() {
         Login.Data loginData = getLoginData();
-        SharedPreferences.Editor editor =
-                PreferenceManager.getDefaultSharedPreferences(this).edit();
-
-        editor.putString("last_login.login", loginData.login);
-        editor.putString("last_login.uniId", loginData.uniId);
-        editor.apply();
+        pref.edit()
+                .putString("last_login.login", loginData.login)
+                .putString("last_login.uniId", loginData.uniId)
+                .apply();
 
         Log.d("Login", "Saved as last login: login="
                 + loginData.login + ", uniId=" +loginData.uniId);
     }
 
     private void restoreLastLoginAndUniversum() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        String login = preferences.getString("last_login.login", null);
-        String uniId = preferences.getString("last_login.uniId", null);
+        String login = pref.getString("last_login.login", null);
+        String uniId = pref.getString("last_login.uniId", null);
         Log.d("Login", "Restore from last: login="
                 + login + ", uniId=" + uniId);
 
@@ -157,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Login.Data getLoginData() {
         Login.Data loginData = new Login.Data();
-        loginData.server = serverHost;
+        loginData.host = serverHost;
 
         loginData.login = loginEdit.getText().toString();
         loginData.password = passwordEdit.getText().toString();

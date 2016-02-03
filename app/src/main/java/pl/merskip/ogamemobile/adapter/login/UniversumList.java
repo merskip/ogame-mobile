@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import pl.merskip.ogamemobile.adapter.ServerHost;
-
 /**
  * Pobieranie listy universum
  *
@@ -19,14 +17,14 @@ import pl.merskip.ogamemobile.adapter.ServerHost;
  */
 public class UniversumList {
 
-    private ServerHost server;
+    private String host;
 
-    public UniversumList(ServerHost server) {
-        this.server = server;
+    public UniversumList(String host) {
+        this.host = host;
     }
 
     public Map<String, String> downloadUniversumList() throws IOException {
-        String serverUrl = server.getServerUrl();
+        String serverUrl = "http://" + host;
         Document document = Jsoup.connect(serverUrl).get();
 
         Map<String, String> universumList = new LinkedHashMap<>();

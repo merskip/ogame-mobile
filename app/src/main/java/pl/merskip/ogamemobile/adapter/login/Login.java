@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
-import pl.merskip.ogamemobile.adapter.ServerHost;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 
 /**
@@ -19,7 +18,7 @@ public class Login {
      * Przechowuje dane niezbędne do logowania
      */
     public static class Data implements Serializable {
-        public ServerHost server = new ServerHost();
+        public String host;
         public String uniId;
         public String login;
         public String password;
@@ -55,12 +54,11 @@ public class Login {
     }
 
     public String getLoginUrl() {
-        return loginData.server.getServerUrl() + "/main/login";
+        return "http://" + loginData.host + "/main/login";
     }
 
     public String getUniversumHost() {
-        return String.format("s%s-%s.%s",
-                loginData.uniId, loginData.server.lang, loginData.server.host);
+        return String.format("s%s-%s", loginData.uniId, loginData.host);
     }
 
     /**
