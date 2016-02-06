@@ -8,6 +8,7 @@ import pl.merskip.ogamemobile.adapter.game.PageTest;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetDetailsRequest;
 import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetDetailsResult;
+import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetMovementRequest;
 import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetSendRequest;
 import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetSendResult;
 import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetShipsRequest;
@@ -34,6 +35,11 @@ public class FleetTest extends PageTest {
         System.out.println("\n === Send ===");
         FleetSendResult.Set send = downloadSend(details);
         printSend(send);
+
+        send.mission = "3"; // Transportuj
+        send.metal = "10";
+
+        sendFleet(send);
     }
 
     private FleetShipsResult.Set downloadShips() throws Exception {
@@ -106,7 +112,11 @@ public class FleetTest extends PageTest {
         System.out.printf(" - metal: %s\n", result.metal);
         System.out.printf(" - crystal: %s\n", result.crystal);
         System.out.printf(" - deuterium: %s\n", result.deuterium);
+    }
 
+    private void sendFleet(FleetSendResult.Set send) throws Exception {
+        RequestPage request = new FleetMovementRequest(auth, send);
+        request.download();
     }
 
 }

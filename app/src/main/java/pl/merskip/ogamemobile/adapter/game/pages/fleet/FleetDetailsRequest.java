@@ -23,6 +23,8 @@ public class FleetDetailsRequest extends RequestPage {
     @Override
     protected Connection createConnection() {
         Connection connection = super.createConnection()
+                .method(Connection.Method.POST)
+
                 .data("galaxy", shipsResult.galaxy)
                 .data("system", shipsResult.system)
                 .data("position", shipsResult.position)
