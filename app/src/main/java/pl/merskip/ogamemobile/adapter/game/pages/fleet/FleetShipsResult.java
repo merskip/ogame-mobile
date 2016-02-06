@@ -26,13 +26,14 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
         public String mission;
         public String speed;
 
-        public List<Ship> shipsMax = new ArrayList<>();
+        public List<Ship> ships = new ArrayList<>();
     }
 
     public static class Ship {
         public String id;
-        public int max;
         public String name;
+        public int amount = 0;
+        public int max;
     }
 
     private Set result;
@@ -71,7 +72,7 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
             ship.max = Integer.parseInt(matcher.group(2));
             ship.name = getShipNameById(ship.id);
 
-            result.shipsMax.add(ship);
+            result.ships.add(ship);
         }
     }
 

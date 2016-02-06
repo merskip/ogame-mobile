@@ -11,7 +11,7 @@ public class FleetShipsTest extends PageTest {
 
     @Test
     public void testPage() throws Exception {
-        RequestPage request = new RequestPage(auth, "fleet1");
+        RequestPage request = new FleetShipsRequest(auth);
         Document document = request.download();
         FleetShipsResult.Set result = new FleetShipsResult().createResult(document, request);
 
@@ -22,7 +22,7 @@ public class FleetShipsTest extends PageTest {
         System.out.printf(" - speed: %s0%%\n", result.speed);
 
         System.out.printf(" - ships max:\n");
-        for (FleetShipsResult.Ship ship : result.shipsMax) {
+        for (FleetShipsResult.Ship ship : result.ships) {
             System.out.printf("   * id=%s, max=%d, name=%s\n",
                     ship.id, ship.max, ship.name);
         }
