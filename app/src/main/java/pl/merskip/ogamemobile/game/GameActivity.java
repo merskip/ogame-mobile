@@ -19,7 +19,6 @@ import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
 import pl.merskip.ogamemobile.adapter.Planet;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
-import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.ScriptData;
 import pl.merskip.ogamemobile.adapter.game.AbortBuildRequest;
 import pl.merskip.ogamemobile.adapter.game.AmountBuildRequest;
@@ -28,6 +27,8 @@ import pl.merskip.ogamemobile.adapter.game.Building;
 import pl.merskip.ogamemobile.adapter.game.DemolishRequest;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
 import pl.merskip.ogamemobile.adapter.game.ResultPage;
+import pl.merskip.ogamemobile.adapter.game.pages.RequestPageFactory;
+import pl.merskip.ogamemobile.adapter.game.pages.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.login.AuthorizationData;
 import pl.merskip.ogamemobile.game.DownloadPageNotifier.DownloadPageListener;
 import pl.merskip.ogamemobile.game.pages.ViewerPage;
@@ -194,7 +195,7 @@ public class GameActivity
     }
 
     public void openPage(String pageName, Planet planet) {
-        RequestPage requestPage = new RequestPage(auth, pageName, planet.id);
+        RequestPage requestPage = RequestPageFactory.getRequestPage(auth, pageName, planet.id);
         ResultPage resultPage = ResultPageFactory.getResultPage(pageName);
         ViewerPage viewerPage = ViewerPageFactory.getViewerPage(this, pageName);
 
