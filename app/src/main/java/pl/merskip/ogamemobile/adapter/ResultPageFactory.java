@@ -7,7 +7,7 @@ import pl.merskip.ogamemobile.adapter.game.pages.ResearchResult;
 import pl.merskip.ogamemobile.adapter.game.pages.ResourcesResult;
 import pl.merskip.ogamemobile.adapter.game.pages.ShipyardResult;
 import pl.merskip.ogamemobile.adapter.game.pages.StationResult;
-import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetShipsChosenResult;
+import pl.merskip.ogamemobile.adapter.game.pages.fleet.FleetShipsResult;
 
 /**
  * Fabryka stron
@@ -31,7 +31,7 @@ public class ResultPageFactory {
             case "defense":
                 return new DefenseResult();
             case "fleet":
-                return new FleetShipsChosenResult();
+                return new FleetShipsResult();
             default:
                 throw new IllegalArgumentException("Unknown pageName: " + pageName);
         }

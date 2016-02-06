@@ -13,7 +13,7 @@ import pl.merskip.ogamemobile.adapter.game.ResultPage;
 /**
  * Żądanie strony z listą statków do wyboru
  */
-public class FleetShipsChosenResult extends ResultPage<FleetShipsChosenResult.Set> {
+public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
 
     /**
      * Zestaw danych otrzymywanych przy pobieraniu formularzu wyboru statków

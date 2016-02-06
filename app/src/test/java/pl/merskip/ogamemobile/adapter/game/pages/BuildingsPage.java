@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.merskip.ogamemobile.adapter.ResultPageFactory;
 import pl.merskip.ogamemobile.adapter.game.Building;
 import pl.merskip.ogamemobile.adapter.game.PageTest;
 import pl.merskip.ogamemobile.adapter.game.RequestPage;
