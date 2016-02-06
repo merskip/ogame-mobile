@@ -18,15 +18,17 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
     /**
      * Zestaw danych otrzymywanych przy pobieraniu formularzu wyboru statków
      */
-    public class Set implements Serializable {
+    public static class Set implements Serializable {
+        public List<Ship> ships = new ArrayList<>();
+
+        /* Ukryte domyślne wartości */
         public String galaxy;
         public String system;
         public String position;
+
         public String type;
         public String mission;
         public String speed;
-
-        public List<Ship> ships = new ArrayList<>();
     }
 
     public static class Ship {
@@ -34,6 +36,8 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
         public String name;
         public int amount = 0;
         public int max;
+
+
     }
 
     private Set result;
@@ -45,7 +49,7 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
 
         form = document.select("#shipsChosen").first();
         appendValuesFromHiddenField();
-        appendChipsMax();
+        appendShipsMax();
 
         return result;
     }
@@ -59,7 +63,7 @@ public class FleetShipsResult extends ResultPage<FleetShipsResult.Set> {
         result.speed = form.select("input[name=speed]").val();
     }
 
-    private void appendChipsMax() {
+    private void appendShipsMax() {
         Element sendAllButton = document.select("#sendall").first();
         String onclick = sendAllButton.attr("onclick");
 
