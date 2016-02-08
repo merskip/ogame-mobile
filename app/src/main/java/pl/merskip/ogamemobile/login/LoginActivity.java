@@ -134,7 +134,7 @@ public class LoginActivity
     }
 
     private void openSettings() {
-        startActivityForResult(new Intent(this, SettingsActivity.class), 0);
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public void downloadUniversumList() {

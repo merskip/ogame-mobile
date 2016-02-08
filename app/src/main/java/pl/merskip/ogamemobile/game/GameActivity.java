@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 
 import pl.merskip.ogamemobile.BuildConfig;
 import pl.merskip.ogamemobile.R;
+import pl.merskip.ogamemobile.SettingsActivity;
 import pl.merskip.ogamemobile.adapter.Planet;
 import pl.merskip.ogamemobile.adapter.ResourcesSummary;
 import pl.merskip.ogamemobile.adapter.ScriptData;
@@ -103,9 +104,16 @@ public class GameActivity
             case R.id.refresh:
                 refreshCurrentPage();
                 return true;
+            case R.id.settings:
+                openSettings();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void openSettings() {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public AuthorizationData getAuth() {
