@@ -54,7 +54,7 @@ public class Login {
     }
 
     public String getLoginUrl() {
-        return "http://" + loginData.host + "/main/login";
+        return "https://" + loginData.host + ":443/main/login";
     }
 
     public String getUniversumHost() {

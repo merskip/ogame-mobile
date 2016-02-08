@@ -100,7 +100,7 @@ public class RequestPage {
         String uniId = auth.loginData.uniId;
         String host = auth.loginData.host;
 
-        return String.format("http://s%s-%s/game/index.php", uniId, host);
+        return String.format("https://s%s-%s/game/index.php", uniId, host);
     }
 
     public DownloadTimer getTimer() {
