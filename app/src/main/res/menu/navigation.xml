@@ -25,5 +25,9 @@
         <item
             android:id="@+id/defense"
             android:title="@string/defense" />
+
+        <item
+            android:id="@+id/fleet"
+            android:title="@string/fleet" />
     </group>
 </menu>

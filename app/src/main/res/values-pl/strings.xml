@@ -42,4 +42,6 @@
     <string name="ogame_server">Serwer OGame</string>
     <string name="save_login">Zapamiętaj login</string>
     <string name="save_login_desc">Pamiętaj ostatni login i wybrane uniwersum</string>
+    <string name="fleet">Flota</string>
+    <string name="next">Dalej</string>
 </resources>

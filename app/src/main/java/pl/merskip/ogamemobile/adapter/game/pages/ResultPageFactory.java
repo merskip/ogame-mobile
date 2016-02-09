@@ -25,6 +25,7 @@ public class ResultPageFactory {
             case "defense":
                 return new DefenseResult();
             case "fleet":
+            case "fleet1":
                 return new FleetShipsResult();
             default:
                 throw new IllegalArgumentException("Unknown pageName: " + pageName);

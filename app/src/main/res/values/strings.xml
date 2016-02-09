@@ -45,4 +45,6 @@
     <string name="ogame_server">OGame server</string>
     <string name="save_login">Remember login</string>
     <string name="save_login_desc">Remember last login and selected universe</string>
+    <string name="fleet">Fleet</string>
+    <string name="next">Next</string>
 </resources>

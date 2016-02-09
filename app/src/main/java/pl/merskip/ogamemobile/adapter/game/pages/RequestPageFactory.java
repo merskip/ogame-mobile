@@ -12,6 +12,7 @@ public class RequestPageFactory {
             (AuthorizationData auth, String pageName, String planetId) {
         switch (pageName) {
             case "fleet":
+            case "fleet1":
                 return new FleetShipsRequest(auth, planetId);
             default:
                 return new RequestPage(auth, pageName, planetId);

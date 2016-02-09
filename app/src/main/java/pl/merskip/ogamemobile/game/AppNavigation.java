@@ -94,6 +94,9 @@ DownloadPageNotifier.DownloadPageListener {
             case R.id.defense:
                 activity.openPage("defense");
                 return false;
+            case R.id.fleet:
+                activity.openPage("fleet");
+                return false;
             default:
                 Log.w("GameActivity", "Selected unknown menu item: " + item);
                 return false;
