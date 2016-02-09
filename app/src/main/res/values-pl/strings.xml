@@ -44,4 +44,6 @@
     <string name="save_login_desc">Pamiętaj ostatni login i wybrane uniwersum</string>
     <string name="fleet">Flota</string>
     <string name="next">Dalej</string>
+    <string name="select_all">Wszystkie</string>
+    <string name="clear">Czyść</string>
 </resources>

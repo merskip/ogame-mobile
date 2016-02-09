@@ -47,4 +47,6 @@
     <string name="save_login_desc">Remember last login and selected universe</string>
     <string name="fleet">Fleet</string>
     <string name="next">Next</string>
+    <string name="select_all">All</string>
+    <string name="clear">Clear</string>
 </resources>
