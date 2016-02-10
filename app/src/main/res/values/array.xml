@@ -58,4 +58,10 @@
         <item>台灣</item>
         <item>日本</item>
     </string-array>
+
+    <string-array name="fleet_target_type">
+        <item>Planet</item>
+        <item>Moon</item>
+        <item>Debris field</item>
+    </string-array>
 </resources>

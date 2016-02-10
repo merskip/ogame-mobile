@@ -2,7 +2,7 @@ package pl.merskip.ogamemobile.game.pages;
 
 import pl.merskip.ogamemobile.game.GameActivity;
 import pl.merskip.ogamemobile.game.pages.buildings.BuildingsListViewer;
-import pl.merskip.ogamemobile.game.pages.fleet.FleetShipsViewer;
+import pl.merskip.ogamemobile.game.pages.fleet.FleetShipsFragment;
 import pl.merskip.ogamemobile.game.pages.overview.OverviewViewer;
 
 /**
@@ -24,7 +24,7 @@ public class ViewerPageFactory {
                 return new BuildingsListViewer(activity);
             case "fleet":
             case "fleet1":
-                return new FleetShipsViewer(activity);
+                return new SimpleFragmentViewer(activity, new FleetShipsFragment());
             default:
                 throw new IllegalArgumentException("Unknown pageName: " + pageName);
         }
