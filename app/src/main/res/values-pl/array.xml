@@ -5,4 +5,17 @@
         <item>Księżyc</item>
         <item>Pole zniszczeń</item>
     </string-array>
+
+    <string-array name="fleet_mission">
+        <item>Ekspedycja</item>
+        <item>Kolonizuj</item>
+        <item>Recykluj pola zniszczeń</item>
+        <item>Transportuj</item>
+        <item>Stacjonuj</item>
+        <item>Szpieguj</item>
+        <item>Zatrzymaj</item>
+        <item>Atakuj</item>
+        <item>Atak związku</item>
+        <item>Niszcz</item>
+    </string-array>
 </resources>

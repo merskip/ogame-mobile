@@ -64,4 +64,17 @@
         <item>Moon</item>
         <item>Debris field</item>
     </string-array>
+
+    <string-array name="fleet_missions">
+        <item>Expedition</item>
+        <item>Colonization</item>
+        <item>Recycle</item>
+        <item>Transport</item>
+        <item>Deployment</item>
+        <item>Espionage</item>
+        <item>ACS Defend</item>
+        <item>Attack</item>
+        <item>ACS Attack</item>
+        <item>Destroy</item>
+    </string-array>
 </resources>
