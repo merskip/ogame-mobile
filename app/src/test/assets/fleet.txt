@@ -1,0 +1,150 @@
+
+!!!!
+holdingtime=1 - czas zatrzymania
+expeditiontime=1 - długość ekspedycji
+token=HASH - Token
+galaxy=3 - Koordynaty
+system=100 - ...
+position=10 - ...
+type=1 - cel na orbicie
+        1 - planeta
+        2 - pole zniszczeń (?)
+        3 - księżyc
+mission=3 - rodzaj misji
+        15 - ekspedycja
+        7 - kolonizuj
+        8 - Recykluj pola zniszcze
+        3 - transportuj
+        4 - Stacjonuj
+        6 - Szpieguj
+        5 - zatrzymaj
+        1 - atakuj
+        2 - atak związku
+        9 - zniszcz
+union2=0 - ???
+holdingOrExpTime= - ? duplikat?
+speed=7 - prędkość 1-10
+acsValues=- - atak związku
+prioMetal=1 - ???
+prioCrystal=2 - ??
+prioDeuterium=3 -- ???
+am202=1 - flota
+am204=2 - flota
+metal=1000
+crystal=500
+deuterium=250
+(?) retreatAfterDefenderRetreat=1 - Odwrót podczas ucieczki obrońcy
+
+!!!!
+
+== fleet1 ==
+ * 2x lekki myśliwiec (id=204)
+ * 1x mały transportowiec(id=202)
+
+-- W dokumencie --
+w <form>
+<input type="hidden" name="galaxy" value="3">
+<input type="hidden" name="system" value="116">
+<input type="hidden" name="position" value="4">
+<input type="hidden" name="type" value="1">
+<input type="hidden" name="mission" value="0">
+<input type="hidden" name="speed" value="10">
+
+Liczba statków:
+setMaxIntInput("form[name=shipsChosen]", {"202":1,"204":9,"210":2});
+
+Sposób wysłania: zwykły submit
+
+-- Żądanie --
+
+POST /game/index.php?page=fleet2
+Data:
+ + galaxy=3
+ + system=116
+ + position=4
+ + type=1
+ + mission=0
+ + speed=10
+ ++ am204=2
+ ++ am202=1
+ ++ am210=
+
+== fleet2 ==
+ * na [3:116:9]
+ * pomocne linki: Andar [3:116:9]
+ * brak ataku związku
+ * prędkość 70%
+
+ -- W dokumencie --
+ w <form>
+ <input name="type" type="hidden" value="1">
+ <input name="mission" type="hidden" value="0">
+ <input name="union" type="hidden" value="0">
+ <input type="hidden" name="am202" value="1">
+ <input type="hidden" name="am204" value="2">
+
+Sposób wysłania: chyba zwykły submit
+
+Żądanie:
+
+POST /game/index.php?page=fleet3
+Data:
+ + type=1
+ + mission=0
+ + union=0
+ + am202=1
+ + am204=2
+ ++ galaxy=3
+ ++ system=100
+ ++ position=10
+ ++ acsValues=-
+ ++ speed=7
+
+== fleet3 ==
+ * typ misji: transportuj (mission=3)
+ * surowce: m=1000 c=500 d=250
+
+-- W dokumencie --
+ w <form>
+ <input type="hidden" name="token" value="abed0aef26609490c62a341c8e4d0741">
+ <input name="galaxy" type="hidden" value="3">
+ <input name="system" type="hidden" value="116">
+ <input name="position" type="hidden" value="9">
+ <input name="type" type="hidden" value="1">
+ <input name="mission" type="hidden" value="3">
+ <input name="union2" type="hidden" value="0">
+ <input name="holdingOrExpTime" id="holdingOrExpTime" type="hidden" value="0">
+ <input name="speed" type="hidden" value="7">
+ <input name="acsValues" type="hidden" value="-">
+<input name="prioMetal" type="hidden" value="1">
+<input name="prioCrystal" type="hidden" value="2">
+<input name="prioDeuterium" type="hidden" value="3">
+<input type="hidden" name="am202" value="1">
+<input type="hidden" name="am204" value="2">
+
+Ładowność
+<div class="fleft bar_container" data-current-amount="0" data-capacity="5100">
+
+Sposób wysłania: zwykły submit
+
+POST /game/index.php?page=movement
+holdingtime=1
+expeditiontime=1
+token=7c269d7e25c04f371f9012efa81aa71a
+galaxy=3
+system=100
+position=10
+type=1
+mission=3
+union2=0
+holdingOrExpTime=0
+speed=7
+acsValues=-
+prioMetal=1
+prioCrystal=2
+prioDeuterium=3
+am202=1
+am204=2
+metal=1000
+crystal=500
+deuterium=250
